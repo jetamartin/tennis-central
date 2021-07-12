@@ -2,7 +2,7 @@
   "name": "tennis-central-backend",
   "version": "1.0.0",
   "description": "Backend server for Tennis-Central app",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,9 +15,12 @@
   "author": "Jet Martin",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "jsonschema": "^1.4.0",
     "jsonwebtoken": "^8.5.1",
+    "pg": "^8.6.0",
+    "pg-hstore": "^2.3.4",
     "sequelize": "^6.6.5"
   }
 }
