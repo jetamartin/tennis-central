@@ -19,20 +19,20 @@ import isNil from 'lodash/isNil';
 import './App.css';
 
 const App = () => {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState('123');
   console.log('App.js isNil? result =', isNil(token));
-  const [username, setUsername] = useState(null);
+  const [username, setUsername] = useState('JetM');
 
-  const logout = () => {
-    alert('Logged out')
-    setToken('')
+  const logoutUser = () => {
+    setToken(null);
+    setUsername(null);
   }
 
 
   return (
     <div>
       <BrowserRouter>
-        <NavBar token={token} />
+        <NavBar token={token} username={username} logoutUser={logoutUser} />
         <Switch>
           <Route exact path="/">
             <Home username={username} />

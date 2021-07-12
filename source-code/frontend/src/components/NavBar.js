@@ -1,15 +1,23 @@
 import React from 'react';
 import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
 import isNil from 'lodash/isNil';
+import {useHistory} from "react-router-dom";
 
 
 
-const NavBar = token => {
+const NavBar = ({token, username, logoutUser}) => {
   console.log("TOKEN VALUE = ", token);
   console.log("NavBar: Is token value nil ", isNil(token))
 
+  const history = useHistory();
+
   // Lodash isNil checks whether an object's value is null or u
   const isLoggedIn = (!isNil(token)) ? true : false;
+
+  const logoutClicked = (e) => {
+    logoutUser();
+    history.push("/");
+  }
  
   return (
     <Navbar bg="light" expand="lg">
@@ -18,14 +26,16 @@ const NavBar = token => {
       <Navbar.Collapse id="basic-navbar-nav">
          {isLoggedIn ?
           <Nav className="ml-auto">
-          <Nav.Link href="Find-A-Partner">Find-a-partner</Nav.Link>
-          <Nav.Link href="Partners">Partners</Nav.Link>
-          <Nav.Link href="Messages">Messages</Nav.Link>
-          <NavDropdown title="MyProfile" id="basic-nav-dropdown">
-            <NavDropdown.Item href="AboutMe">About Me</NavDropdown.Item>
-            <NavDropdown.Item href="SkillsPrefs">Skills & Prefs</NavDropdown.Item>
-            <NavDropdown.Item href="MatchAvail">Match Availabilty</NavDropdown.Item>
-         </NavDropdown>
+            <Nav.Link href="Find-A-Partner">Find-a-partner</Nav.Link>
+            <Nav.Link href="Partners">Partners</Nav.Link>
+            <Nav.Link href="Messages">Messages</Nav.Link>
+            <NavDropdown title="MyProfile" id="basic-nav-dropdown">
+              <NavDropdown.Item href="AboutMe">About Me</NavDropdown.Item>
+              <NavDropdown.Item href="SkillsPrefs">Skills & Prefs</NavDropdown.Item>
+              <NavDropdown.Item href="MatchAvail">Match Availabilty</NavDropdown.Item>
+          </NavDropdown>
+          <Nav.Link id="logout" onClick={logoutClicked} to ="\">Logout {username}</Nav.Link>
+          {/* <NavLink id="logout" onClick={logoutClicked} to="\" >Log Out {username}</NavLink> */}
          </Nav>
         //  User is not logged in
          :
