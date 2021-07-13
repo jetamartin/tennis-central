@@ -1,33 +1,32 @@
-import React, {useEffect, useState} from 'react';
-import {Switch, BrowserRouter, Route } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Switch, BrowserRouter, Route } from "react-router-dom";
 
-import NavBar from './components/NavBar';
-import Home from './components/Home';
-import Login from './components/Login';
-import Join from './components/Join';
-import AboutMe from './components/myProfile/AboutMe';
-import SkillsPrefs from './components/myProfile/SkillsPrefs';
-import MatchAvail from './components/myProfile/MatchAvail';
-import FindAPartner from './components/FindAPartner';
-import Messages from './components/Messages';
-import Partners from './components/Partners'; 
-import NotFound from './components/NotFound';
+import NavBar from "./components/NavBar";
+import Home from "./components/Home";
+import Login from "./components/Login";
+import Join from "./components/Join";
+import AboutMe from "./components/myProfile/AboutMe";
+import AboutMeTest from "./components/myProfile/AboutMe";
+import SkillsPrefs from "./components/myProfile/SkillsPrefs";
+import MatchAvail from "./components/myProfile/MatchAvail";
+import FindAPartner from "./components/FindAPartner";
+import Messages from "./components/Messages";
+import Partners from "./components/Partners";
+import NotFound from "./components/NotFound";
 
-import isNil from 'lodash/isNil';
+import isNil from "lodash/isNil";
 
-
-import './App.css';
+import "./App.css";
 
 const App = () => {
-  const [token, setToken] = useState('123');
-  console.log('App.js isNil? result =', isNil(token));
-  const [username, setUsername] = useState('JetM');
+  const [token, setToken] = useState("123");
+  console.log("App.js isNil? result =", isNil(token));
+  const [username, setUsername] = useState("JetM");
 
   const logoutUser = () => {
     setToken(null);
     setUsername(null);
-  }
-
+  };
 
   return (
     <div>
@@ -66,6 +65,6 @@ const App = () => {
       </BrowserRouter>
     </div>
   );
-}
+};
 
 export default App;
