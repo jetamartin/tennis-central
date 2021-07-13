@@ -20,7 +20,7 @@ const NavBar = ({token, username, logoutUser}) => {
   }
  
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="primary" variant="dark" expand="lg">
       <Navbar.Brand href="/">TennisCentral</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
