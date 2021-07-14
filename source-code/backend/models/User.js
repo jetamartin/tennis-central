@@ -1,6 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const { sequelize } = require("../db");
 
+// Model Definition
 const User = sequelize.define(
   "User",
   {
@@ -14,7 +15,9 @@ const User = sequelize.define(
       // allowNull defaults to true
     },
   },
-  {}
+  {
+    // Other model options go here.
+  }
 );
 
 module.exports = { User };

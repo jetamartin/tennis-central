@@ -26,7 +26,6 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object({
-  test: Yup.string().required("Required"),
   firstName: Yup.string().required("Required"),
   lastName: Yup.string().required("Required"),
   email: Yup.string().email("Invalid email format").required("Required"),
@@ -34,8 +33,8 @@ const validationSchema = Yup.object({
   gender: Yup.string().required("Select a gender"),
 });
 
-const onSubmit = values => {
-  console.log('Form Data', values);
+const onSubmit = (values) => {
+  console.log("Form Data", values);
 };
 
 const AboutMeTest = () => {
@@ -64,10 +63,10 @@ const AboutMeTest = () => {
             validationSchema={validationSchema}
             onSubmit={onSubmit}
           >
-            {({ values }) => (
+            {({ values, handleSubmit, isSubmitting, setFieldValue, handleChange, touched, errors }) => (
               <Container>
                 <Form className="mx-auto mb-5">
-                  <pre>{JSON.stringify(values, null, 4)}</pre>
+                  {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
                   <fieldset>
                     <legend>Contact</legend>
                     <hr></hr>
@@ -171,8 +170,6 @@ const AboutMeTest = () => {
 
                   <fieldset>
                     <legend>Demographics</legend>
-                    {/* <p>Demographics</p> */}
-
                     <hr></hr>
                     <FormGroup>
                       <FormLabel>Birthday</FormLabel>
