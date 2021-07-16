@@ -1,6 +1,5 @@
 const { Sequelize, DataTypes, ENUM } = require("sequelize");
 const { sequelize } = require("../db");
-const { User } = require("../models/User");
 
 // Model Definition
 const Message = sequelize.define("Message", {
@@ -26,10 +25,5 @@ const Message = sequelize.define("Message", {
     // allowNull: false,
   },
 });
-
-Message.belongsTo(User, { as: "fromUser" });
-Message.belongsTo(User, { as: "toUser" });
-User.hasMany(Message, { foreignKey: "fromUserId", as: "sentMessages" });
-User.hasMany(Message, { foreignKey: "toUserId", as: "receivedMessages" });
 
 module.exports = { Message };

@@ -4,7 +4,8 @@ const { sequelize } = require("../db");
 // Model Definition
 const User = sequelize.define(
   "User",
-  { // Model attributes are defined here
+  {
+    // Model attributes are defined here
     username: {
       type: DataTypes.STRING(10),
       unique: true,
@@ -12,12 +13,12 @@ const User = sequelize.define(
     },
     password: {
       type: DataTypes.STRING(25),
-      // allowNull: false, 
+      // allowNull: false,
     },
     email: {
       type: DataTypes.STRING(30),
       // allowNull: false,
-    }, 
+    },
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -32,25 +33,39 @@ const User = sequelize.define(
       type: DataTypes.STRING(30),
     },
     city: {
-      type: DataTypes.STRING(30)
-    }, 
+      type: DataTypes.STRING(30),
+    },
     postal_code: {
       type: DataTypes.STRING(10),
-      // allowNull: false, 
+      // allowNull: false,
     },
     gender: {
       // Male or Female
-      type: DataTypes.ENUM ('Male', 'Female'),
+      type: DataTypes.ENUM("Male", "Female"),
       // allowNull: false
     },
     ntrp_rating: {
       // (1.0 -> 7.0 by increments of .5)
-      type: DataTypes.ENUM ('1.0', '1.5', '2.0', '2.5', '3.0', '3.5', '4.0', '4.5', '5.0', '5.5', '6.0', '6.5', '7.0'),
+      type: DataTypes.ENUM(
+        "1.0",
+        "1.5",
+        "2.0",
+        "2.5",
+        "3.0",
+        "3.5",
+        "4.0",
+        "4.5",
+        "5.0",
+        "5.5",
+        "6.0",
+        "6.5",
+        "7.0"
+      ),
       // allowNull: false
     },
     opponent_gender: {
       // Male, Female, Either
-      type: DataTypes.ENUM('Male only', 'Female only', 'Either gender'),
+      type: DataTypes.ENUM("Male only", "Female only", "Either gender"),
       // allowNull: false
     },
     oppponent_ntrp_rating_range: {
@@ -68,16 +83,11 @@ const User = sequelize.define(
       //  "day": "Sunday",   "availability": ['Afternoon']
       // }
       type: DataTypes.JSONB,
-    }
+    },
   },
   {
     // Other model options go here.
   }
-  
-
-
-
 );
-
 
 module.exports = { User };
