@@ -27,9 +27,9 @@ const Message = sequelize.define("Message", {
   },
 });
 
-Message.belongsTo(User, { as: "fromUser" });
-Message.belongsTo(User, { as: "toUser" });
-User.hasMany(Message, { foreignKey: "fromUserId", as: "sentMessages" });
-User.hasMany(Message, { foreignKey: "toUserId", as: "receivedMessages" });
+// Message.belongsTo(User, { as: "fromUser" });
+// Message.belongsTo(User, { as: "toUser" });
+// User.hasMany(Message, { foreignKey: "fromUserId", as: "sentMessages" });
+// User.hasMany(Message, { foreignKey: "toUserId", as: "receivedMessages" });
 
 module.exports = { Message };

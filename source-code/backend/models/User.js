@@ -32,7 +32,7 @@ const User = sequelize.define(
       type: DataTypes.STRING(30),
     },
     city: {
-      type: DataTypes.STRING(30)
+      type: DataTypes.STRING(30),
     }, 
     postal_code: {
       type: DataTypes.STRING(10),
@@ -40,21 +40,21 @@ const User = sequelize.define(
     },
     gender: {
       // Male or Female
-      type: DataTypes.ENUM ('Male', 'Female'),
+      type: DataTypes.ENUM ("Male", "Female"),
       // allowNull: false
     },
     ntrp_rating: {
       // (1.0 -> 7.0 by increments of .5)
-      type: DataTypes.ENUM ('1.0', '1.5', '2.0', '2.5', '3.0', '3.5', '4.0', '4.5', '5.0', '5.5', '6.0', '6.5', '7.0'),
+      type: DataTypes.ENUM ("1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5", "5.0", "5.5", "6.0", "6.5", "7.0"),
       // allowNull: false
     },
     opponent_gender: {
       // Male, Female, Either
-      type: DataTypes.ENUM('Male only', 'Female only', 'Either gender'),
+      type: DataTypes.ENUM("Male only", "Female only", "Either gender"),
       // allowNull: false
     },
     oppponent_ntrp_rating_range: {
-      // {ntrp_range: {low: '4.5', high: '5.5' }
+      // {ntrp_range: {low: "4.5", high: "5.5" }
       type: DataTypes.JSONB,
       // allowNull: false
     },
@@ -63,9 +63,9 @@ const User = sequelize.define(
       // allowNull: false,
     },
     match_availability: {
-      // {"day": "Monday",   "availability": ['Early Morning', 'Evening'],
-      //  "day": "Saturday", "availability": ['Morning','Afternoon'],
-      //  "day": "Sunday",   "availability": ['Afternoon']
+      // {"day": "Monday",   "availability": ["Early Morning", "Evening"],
+      //  "day": "Saturday", "availability": ["Morning","Afternoon"],
+      //  "day": "Sunday",   "availability": ["Afternoon"]
       // }
       type: DataTypes.JSONB,
     }

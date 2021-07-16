@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Partner } = require("../models/partner");
+const { Partner } = require("../models");
 /* 
   get /partners  (read)
   post /partners (create)
