@@ -1,23 +1,23 @@
 const express = require("express");
 const router = express.Router();
-const { User } = require("../models/user");
+const { Message } = require("../models/message");
 
 /* 
-  get /users  (read)
-  post /users (create)
-  get /users/:id (read)
-  patch /users/:id (update)
-  delete /users/:id (delete)
+  get /messages  (read)
+  post /messages (create)
+  get /messages/:id (read)
+  patch /messages/:id (update)
+  delete /messages/:id (delete)
  */
 
 router.get("", async (req, res) => {
-  const users = await User.findAll();
-  res.json(users);
+  const messages = await Message.findAll();
+  res.json(messages);
 });
 
 router.post("", async (req, res) => {
-  const user = await User.create(req.body);
-  res.json(user);
+  const message = await Message.create(req.body);
+  res.json(message);
 });
 
 router.get("/:id", (req, res) => {
@@ -32,5 +32,4 @@ router.delete("/:id", (req, res) => {
   res.json({ id: req.params.id });
 });
 
-// ?? shouldn't I be exporting userRouter?? rather than router
 module.exports = { router };
