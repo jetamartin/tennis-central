@@ -25,7 +25,7 @@ async function seedData() {
     password: "1234",
     email: "test2@gmail.com",
     city: "San Diego",
-    firstName: "Test Two",
+    firstName: "Test",
     gender: "Male",
     lastName: "User",
     match_availability: {},
@@ -67,6 +67,11 @@ async function seedData() {
 
   testUser2.addPlayer(partner2);
   testUser.addPartner(partner2);
+
+  // partner1.addPlayer(testUser.id)
+  // partner1.addPartner(testUser2.id)
+  // partner2.addPlayer(testUser2.id)
+  // partner2.addPartner(testUser.id)
 }
 
 module.exports = {

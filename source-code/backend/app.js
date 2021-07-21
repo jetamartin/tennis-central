@@ -5,13 +5,36 @@ const { router: usersRouter } = require("./routes/users");
 const { router: messagesRouter } = require("./routes/messages");
 const { router: partnersRouter } = require("./routes/partners");
 const { sequelize } = require("./db");
-const { seedData} = require("./seed");
+const { seedData } = require("./seed");
+const ErrorRequest = require("./ExpressError");
+
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.get('/favicon..ico', (req, res) => res.sendStatus(204));
+
 app.use("/users", usersRouter);
-app.use("/messages", messagesRouter);
-app.use("/partners", partnersRouter);
+// app.use("/users/:userId/messages", messagesRouter);
+app.use("", messagesRouter);
+
+// app.use("/users/:userId/partners", partnersRouter);
+app.use("", partnersRouter);
+
+app.use(( req, res, next) => {
+  const error = new ErrorRequest(404, "Page not found");
+  next(error)
+});
+
+app.use((error, req, res, next) => {
+  // Default status is 500: Server Internal Error 
+  let status = error.status || 500;
+  let message = error.msg;
+
+  return res.status(status).json({
+    error: { message, status },
+  });
+});
 
 app.listen(3001, async () => {
   console.log("Server is running on port 3001");
@@ -22,10 +45,9 @@ app.listen(3001, async () => {
     // re-creating it to match model attributes    //
     await sequelize.sync({ force: true });
     console.log("Connection has been established successfully.");
-    await seedData(); 
+    await seedData();
     console.log("Database has been seeded successfully");
   } catch (error) {
     console.error("Unable to connect to the database:", error);
   }
-
 });

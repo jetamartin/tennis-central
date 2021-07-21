@@ -1,6 +1,5 @@
 const { Sequelize, DataTypes, ENUM } = require("sequelize");
 const { sequelize } = require("../db");
-// const { User } = require("../models/User");
 
 // Model Definition
 const Message = sequelize.define("Message", {
