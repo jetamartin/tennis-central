@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const { router: authRouter } = require("./routes/auth");
 const { router: usersRouter } = require("./routes/users");
 const { router: messagesRouter } = require("./routes/messages");
 const { router: partnersRouter } = require("./routes/partners");
@@ -13,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.get('/favicon..ico', (req, res) => res.sendStatus(204));
-
+app.use("/auth", authRouter); 
 app.use("/users", usersRouter);
 // app.use("/users/:userId/messages", messagesRouter);
 app.use("", messagesRouter);
@@ -21,7 +22,10 @@ app.use("", messagesRouter);
 // app.use("/users/:userId/partners", partnersRouter);
 app.use("", partnersRouter);
 
+
+
 app.use(( req, res, next) => {
+  debugger;
   const error = new ErrorRequest(404, "Page not found");
   next(error)
 });

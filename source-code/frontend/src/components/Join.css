@@ -1,0 +1,34 @@
+/* Needed to set heights of all parent elements to 100% to enable form centering vertically */
+body,
+html {
+  /* height: 150%; */
+  padding: 0% !important;
+}
+#root {
+  height: 125%;
+}
+/* --------------------------------------------------------------- */
+
+.form-border {
+  border: 1px grey solid;
+  padding: 2rem;
+  border-radius: 0.5rem;
+}
+
+/* legend {
+  border: grey solid 1px;
+  padding: 1rem;
+  background-color: lightgrey;
+  border-radius: .5rem;
+} */
+
+
+.disclaimer {
+  font-size: .75rem;
+  color: red;
+}
+/* .footer {
+  height: 15%vh;
+  background-color: black;
+  padding: 0%!important;
+} */

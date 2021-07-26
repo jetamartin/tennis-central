@@ -1,44 +1,155 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import React, { useState, useContext } from "react";
+import ReactDOM from "react-dom";
+import { useHistory } from "react-router-dom";
 
-const Join = () => (
-  <div>
-    <h1>Join</h1>
-    <Formik
-      initialValues={{
-        username: '',
-        password: '', 
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { FormGroup, FormLabel, FormControl, FormCheck } from "react-bootstrap";
 
-        firstName: '',
-        LastName: '',
-        email: ''
-      }}
-      onSubmit={async (values) => {
-        await new Promise((r) => setTimeout(r, 500));
-        alert(JSON.stringify(values, null, 2));
-      }}
-    >
-      <Form>
-        <label htmlFor="username">Username</label>
-        <Field id="username" name="userName" placeholder="jDoe" />
+import { Container, Col, Row } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import * as Yup from "yup";
+import TextError from "./TextError";
+import "./Join.css";
+import { mapValues } from "lodash";
+import ErrorMsg from './ErrorMsg';
+import UserContext from './UserContext'; 
 
-        <label htmlFor="password">Password</label>
-        <Field id="password" name="password" placeholder="12345" />
 
-        <label htmlFor="firstName">First Name</label>
-        <Field id="firstName" name="firstName" placeholder="Jane" />
+const Join = ({registerUser}) => {
 
-        <label htmlFor="lastName">Last Name</label>
-        <Field id="lastName" name="lastName" placeholder="Doe" />
+  const [ joinErrorFormMsg, setJoinErrorFormMsg] = useState([]);
+  const userInfo = useContext(UserContext);
+  const history = useHistory();
+  const initialValues = {
+    username: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+  };
+  
+  const validationSchema = Yup.object({
+    username: Yup.string().required("Required"),
+    password: Yup.string().required("Required"),
+    email: Yup.string().email("Invalid email format").required("Required"),
+    firstName: Yup.string().required("Required"),
+    lastName: Yup.string().required("Required"),
+  });
+  
+  const onSubmit = async (values, {setSubmitting, resetForm}) => {
+    console.log("Form Data", values);
+    try {
+      await registerUser(values)
+      debugger;
+      setSubmitting(false)
+      history.push("/")
+      // resetForm();
+    } catch (error) {
+      console.log(error);
+      if (Array.isArray(error)) {
+        setJoinErrorFormMsg(error)
+      }
+    }
+  };
+  return (
+    <Container fluid className="h-100">
+      <Row className="h-100 justify-content-center align-items-center mt-4 mb-4">
+        <Col sm={6} className="mx-auto form-border">
+          <h1>Join</h1>
+          <p className="disclaimer">
+            All information provided is private and will not be shared!
+          </p>
+          <hr></hr>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+          >
+            {({ isSubmitting }) => (
+            <Form className="mx-auto">
+              <fieldset>
+                <legend>Login info</legend>
+                <FormGroup>
+                  <FormLabel htmlFor="username">Username</FormLabel>
+                  <Field
+                    className="form-control"
+                    id="username"
+                    name="username"
+                    placeholder="jDoe"
+                  />
+                  <ErrorMessage name="username" component={TextError} />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel htmlFor="password">Password</FormLabel>
+                  <Field
+                    className="form-control"
+                    id="password"
+                    name="password"
+                    placeholder="12345"
+                  />
+                  <ErrorMessage name="password" component={TextError} />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel htmlFor="password">Confirm Password</FormLabel>
+                  <Field
+                    className="form-control"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="12345"
+                  />
+                  <ErrorMessage name="password" component={TextError} />
+                </FormGroup>
+              </fieldset>
+              <fieldset>
+                <legend>Contact info</legend>
+                <FormGroup>
+                  <FormLabel htmlFor="firstName">First Name</FormLabel>
+                  <Field
+                    className="form-control"
+                    id="firstName"
+                    name="firstName"
+                    placeholder="Jane"
+                  />
+                  <ErrorMessage name="firstName" component={TextError} />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel htmlFor="lastName">Last Name</FormLabel>
+                  <Field
+                    className="form-control"
+                    id="lastName"
+                    name="lastName"
+                    placeholder="Doe"
+                  />
+                  <ErrorMessage name="lastName" component={TextError} />
+                </FormGroup>
+                <FormGroup>
+                  <FormLabel htmlFor="email">Email</FormLabel>
+                  <Field
+                    className="form-control"
+                    id="email"
+                    name="email"
+                    placeholder="jDoe@email.com"
+                  />
+                  <ErrorMessage name="email" component={TextError} />
+                </FormGroup>
+              </fieldset>
+              {joinErrorFormMsg.length !== 0 ? 
+                joinErrorFormMsg.map(errorMsg => <ErrorMsg errorMsg={errorMsg} />)
+               : null }
+              <Button type="submit"   
+                // className="mt-3 float-right">
+                className="btn btn-primary btn-lg btn-block mt-3">
 
-        <label htmlFor="email">Email</label>
-        <Field id="email" name="email" placeholder="jDoe@email.com" />
-
-        <button type="submit">Submit</button>
-      </Form>
-    </Formik>
-  </div>
- );
+                Submit
+              </Button>
+            </Form>
+            )}
+          </Formik>
+        </Col>
+      </Row>
+      <div className="footer"></div>
+    </Container>
+  );
+};
 
 export default Join;

@@ -8,3 +8,23 @@ fieldset {
 .custom-form-label {
   margin-top: 1rem;
 }
+
+legend {
+  width: 40%;
+  color: #007bff;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: .2rem;
+  padding-left: .5rem
+  
+}
+
+fieldset {
+  padding-left: 1rem;
+    padding-right: 1rem;
+    border: 1px solid #cccc;
+    /* border: 1px solid #007bff; */
+    /* border: 2px solid lightgrey; */
+    padding-bottom: 1rem;
+    border-radius: 5px;
+}

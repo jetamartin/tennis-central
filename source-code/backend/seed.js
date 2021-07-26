@@ -15,7 +15,7 @@ async function seedData() {
     ntrp_rating: "1.0",
     opponent_gender: "Male only",
     oppponent_ntrp_rating_range: {},
-    postal_code: 90210,
+    postalCode: 90210,
     street_address: "1 Fake Street",
   });
 
@@ -33,8 +33,8 @@ async function seedData() {
     ntrp_rating: "1.0",
     opponent_gender: "Male only",
     oppponent_ntrp_rating_range: {},
-    postal_code: 90210,
-    street_address: "2 Fake Street",
+    postalCode: 90210,
+    streetAddress: "2 Fake Street",
   });
 
   // create a message
@@ -49,11 +49,11 @@ async function seedData() {
   // create partners
   const partner1 = await Partner.create({
     // partner_id: 1,
-    contact: { email: "test@gmail.com", tel_num: "858-366-2045" },
+    contact: { email: "test@gmail.com", telNum: "858-366-2045" },
   });
   const partner2 = await Partner.create({
     // partner_id: 2,
-    contact: { email: "test2@gmail.com", tel_num: "858-367=2046" },
+    contact: { email: "test2@gmail.com", telNum: "858-367=2046" },
   });
 
 

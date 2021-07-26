@@ -20,24 +20,15 @@ router.get("", async (req, res) => {
   }
 });
 
-router.post("", async (req, res, next) => {
-  try {
-    const user = await User.create(req.body);
-    return res.status(201).json({user});
-  } catch (error) {
-    if (error.name === "SequelizeValidationError") {
-      return res.status(400).json({
-        error: {
-          message: error.errors.map((e) => e.message),
-        },
-      });
-    } else {
-      return next(
-        new ExpressError(404, `Sorry, could not save ${req.body.username}`)
-      );
-    }
-  }
-});
+
+// Sample code to generate error messages from validation errors
+// if (error.name === "SequelizeValidationError") {
+//   return res.status(400).json({
+//     error: {
+//       message: error.errors.map((e) => e.message),
+//     },
+//   });
+
 
 router.get("/:id", async (req, res, next) => {
   try {
@@ -54,6 +45,7 @@ router.patch("/:id", async (req, res, next) => {
   try {
     // First check to see if requested record exist in db
     const requestedId = req.params.id;
+    debugger;
     const result = await User.update(req.body, {
       where: { id: requestedId },
       returning: true,

@@ -1,43 +1,121 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { FormGroup, FormLabel, FormControl, FormCheck } from "react-bootstrap";
+import { FormGroup, FormLabel, FormControl} from "react-bootstrap";
 
 import { Container, Col, Row } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import * as Yup from "yup";
 import TextError from "../TextError";
+import ErrorMsg from '../ErrorMsg';
+import UserContext from '../UserContext';
+
+import TennisCentralAPI from "../../TennisCentralAPI";
 
 import "./MyProfileForms.css";
 
-const initialValues = {
-  test: "",
-  firstName: "",
-  lastName: "",
-  email: "",
-  telNum: "",
-  streetAddress: "",
-  city: "",
-  postalCode: "",
-  month: "",
-  day: "",
-  year: "",
-  gender: "",
-};
+const AboutMe = ({updateUserRecord}) => {
+  const [ profileData, setProfileData ] = useState({});
+  const [ updateAboutMeErrorFormMsg, setUpdateAboutMeErrorFormMsg] = useState([]);
+  const [ isLoading, setIsLoading ] = useState(true)
+  const userInfo = useContext(UserContext);
 
-const validationSchema = Yup.object({
-  firstName: Yup.string().required("Required"),
-  lastName: Yup.string().required("Required"),
-  email: Yup.string().email("Invalid email format").required("Required"),
-  postalCode: Yup.string().required("Required"),
-  gender: Yup.string().required("Select a gender"),
-});
+  const loadDBValuesIntoForm = () => {
+    if (userInfo) {
+      // get user and set form fields
+        const fields = ['firstName', 'lastName', 'email', 
+          'telNum', 'streetAddress', 'city', 'postalCode', 'gender'];
+        fields.forEach(field => setFieldValue(field, profileData.user[field], false));
+    }
+  }
 
-const onSubmit = (values) => {
-  console.log("Form Data", values);
-};
 
-const AboutMeTest = () => {
+  useEffect(() => {
+    const loadFormData = async () => {
+      debugger;
+      try {
+        let profileData = await TennisCentralAPI.getUserProfile(userInfo.userId);
+        debugger;
+        setProfileData(profileData.user);
+        loadDBValuesIntoForm();
+        setIsLoading(false)
+      } catch (error) {
+        console.log(error)
+      }
+     }
+    loadFormData()
+  }, [userInfo])
+
+  // useEffect(() => {
+  //   console.log("====UserInfo value: ", userInfo)
+  //   if (userInfo) {
+  //     // get user and set form fields
+  //       const fields = ['firstName', 'lastName', 'email', 
+  //         'telNum', 'streetAddress', 'city', 'postalCode', 'gender'];
+  //       fields.forEach(field => setFieldValue(field, profileData[field], false));
+  //   }
+  // }, [userInfo]);
+
+ 
+  let initialValues = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    telNum: "",
+    streetAddress: "",
+    city: "",
+    postalCode: "",
+    month: "",
+    day: "",
+    year: "",
+    gender: ""
+  };
+  console.log(userInfo)
+  // if (userInfo !== {}) {
+  //   initialValues = {
+  //     firstName: profileData.user.firstName,
+  //     lastName: profileData.user.lastName,
+  //     email: profileData.user.email,
+  //     telNum: profileData.user.telNum,
+  //     streetAddress: profileData.user.streetAddress,
+  //     city: profileData.user.city,
+  //     postalCode: profileData.postCode,
+  //     month: "",
+  //     day: "",
+  //     year: "",
+  //     gender: profileData.gender,
+  //   }
+  // }
+ 
+  const validationSchema = Yup.object({
+    firstName: Yup.string().required("Required"),
+    lastName: Yup.string().required("Required"),
+    email: Yup.string().email("Invalid email format").required("Required"),
+    postalCode: Yup.string().required("Required"),
+    gender: Yup.string().required("Select a gender"),
+  });
+
+
+  
+  const onSubmit = async (values, {setSubmitting, setFieldValue}) => {
+
+    console.log("Form Data", values);
+    try {
+      debugger;
+      await updateUserRecord(values, userInfo.userId)
+      setSubmitting(false)
+      
+    } catch (error) {
+      console.log(error);
+      if (Array.isArray(error)) {
+        setUpdateAboutMeErrorFormMsg(error)
+      }
+      
+    }
+  };
+  if (isLoading) {
+    return <p className="">Loading &hellip;</p>;
+  } 
   return (
     <Container fluid className="pb-5 ml-1">
       <Row>
@@ -69,7 +147,6 @@ const AboutMeTest = () => {
                   {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
                   <fieldset>
                     <legend>Contact</legend>
-                    <hr></hr>
                     <Row>
                       <Col>
                         <FormGroup>
@@ -121,6 +198,7 @@ const AboutMeTest = () => {
                           <Field
                             className="form-control"
                             id="telNum"
+                            type="text"
                             name="telNum"
                             placeholder="818-222-4531"
                           />
@@ -131,7 +209,6 @@ const AboutMeTest = () => {
 
                   <fieldset>
                     <legend>Location</legend>
-                    <hr></hr>
                     <Row>
                       <Col>
                         <FormGroup>
@@ -170,12 +247,11 @@ const AboutMeTest = () => {
 
                   <fieldset>
                     <legend>Demographics</legend>
-                    <hr></hr>
                     <FormGroup>
                       <FormLabel>Birthday</FormLabel>
                       <Row>
                         <Col>
-                          <FormControl as="select" name="month">
+                          <FormControl as="select" name="month" id="month">
                             <option value="">Month</option>
                             <option value="1">Jan</option>
                             <option value="2">Feb</option>
@@ -183,7 +259,7 @@ const AboutMeTest = () => {
                           </FormControl>
                         </Col>
                         <Col>
-                          <FormControl as="select" name="month">
+                          <FormControl as="select" name="day" id="day">
                             <option value="">Day</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -191,7 +267,7 @@ const AboutMeTest = () => {
                           </FormControl>
                         </Col>
                         <Col>
-                          <FormControl as="select" name="year">
+                          <FormControl as="select" name="year" id="year">
                             <option value="">Year</option>
                             <option value="2007">2007</option>
                             <option value="2006">2006</option>
@@ -235,10 +311,13 @@ const AboutMeTest = () => {
                       </div>
                     </FormGroup>
                   </fieldset>
+                  {updateAboutMeErrorFormMsg.length !== 0 ? 
+                    updateAboutMeErrorFormMsg.map(errorMsg => <ErrorMsg errorMsg={errorMsg} />)
+                    : null }
 
                   <Button
                     type="submit"
-                    className="btn btn-primary btn-lg btn-block"
+                    className="btn btn-primary btn-lg btn-block mt-3"
                   >
                     Submit
                   </Button>
@@ -252,4 +331,4 @@ const AboutMeTest = () => {
   );
 };
 
-export default AboutMeTest;
+export default AboutMe;
