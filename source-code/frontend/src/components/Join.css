@@ -26,9 +26,16 @@ html {
 .disclaimer {
   font-size: .75rem;
   color: red;
+  font-weight:200
+  
 }
 /* .footer {
   height: 15%vh;
   background-color: black;
   padding: 0%!important;
 } */
+
+input::placeholder {
+  font-style: italic;
+  letter-spacing: .1rem;
+}

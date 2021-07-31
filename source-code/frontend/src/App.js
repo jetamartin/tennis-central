@@ -35,7 +35,6 @@ const App = () => {
   }, [])
 
   const updateUserInfo = (userRegInfo) => {
-    debugger;
     setUserInfo(userRegInfo);
     localStorage.setItem('userInfo', JSON.stringify(userRegInfo));
 
@@ -50,7 +49,6 @@ const App = () => {
 
   const registerUser = async (userRegInfo) => {
     let results = await TennisCentralAPI.registerUser(userRegInfo);
-    debugger;
     updateUserInfo(results.userinfo);
     // localStorage.setItem('userInfo', JSON.stringify(results.userInfo));
     return results;
@@ -59,16 +57,13 @@ const App = () => {
   // Edit later
   const loginUser = async (userCredentials) => {
     console.log('App.js loginUser: ', userCredentials)
-    debugger;
     let results = await TennisCentralAPI.loginUser(userCredentials)
     setUserInfo(results.userinfo);
-    debugger;
     localStorage.setItem('userInfo', JSON.stringify(results.userinfo));
     return results; 
   }
 
   const updateUserRecord = async (userRecord, userId) => {
-    debugger;
     console.log('App.js userRecord: ', userRecord)
     let results = await TennisCentralAPI.updateUserRecord(userRecord, userId)
     return results; 
@@ -97,7 +92,7 @@ const App = () => {
             <SkillsPrefs />
           </Route>
           <Route exact path="/MatchAvail">
-            <MatchAvail />
+            <MatchAvail updateUserRecord={updateUserRecord} />
           </Route>
           <Route exact path="/Messages">
             <Messages />

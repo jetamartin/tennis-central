@@ -31,9 +31,16 @@ const Join = ({registerUser}) => {
   const validationSchema = Yup.object({
     username: Yup.string().required("Required"),
     password: Yup.string().required("Required"),
+    confirmPassword: Yup.string()
+    .test('match', 
+      'passwords do not match', 
+       function(confirmPassword) { 
+         return confirmPassword === this.parent.password; 
+       }),
     email: Yup.string().email("Invalid email format").required("Required"),
     firstName: Yup.string().required("Required"),
     lastName: Yup.string().required("Required"),
+
   });
   
   const onSubmit = async (values, {setSubmitting, resetForm}) => {
@@ -85,7 +92,7 @@ const Join = ({registerUser}) => {
                     className="form-control"
                     id="password"
                     name="password"
-                    placeholder="12345"
+                    placeholder="password123"
                   />
                   <ErrorMessage name="password" component={TextError} />
                 </FormGroup>
@@ -95,9 +102,9 @@ const Join = ({registerUser}) => {
                     className="form-control"
                     id="confirmPassword"
                     name="confirmPassword"
-                    placeholder="12345"
+                    placeholder="password123"
                   />
-                  <ErrorMessage name="password" component={TextError} />
+                  <ErrorMessage name="confirmPassword" component={TextError} />
                 </FormGroup>
               </fieldset>
               <fieldset>

@@ -9,26 +9,30 @@ import * as Yup from "yup";
 import TextError from "../TextError";
 import ErrorMsg from '../ErrorMsg';
 import UserContext from '../UserContext';
-
 import TennisCentralAPI from "../../TennisCentralAPI";
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import setHours from "date-fns/setHours";
+import setMinutes from "date-fns/setMinutes";
 
 import "./MyProfileForms.css";
 
 const AboutMe = ({updateUserRecord}) => {
   const [ profileData, setProfileData ] = useState({});
+  const [ startDate, setStartDate ] = useState()
   const [ updateAboutMeErrorFormMsg, setUpdateAboutMeErrorFormMsg] = useState([]);
   const [ isLoading, setIsLoading ] = useState(true)
   const userInfo = useContext(UserContext);
 
-  const loadDBValuesIntoForm = () => {
-    if (userInfo) {
-      // get user and set form fields
-        const fields = ['firstName', 'lastName', 'email', 
-          'telNum', 'streetAddress', 'city', 'postalCode', 'gender'];
-        fields.forEach(field => setFieldValue(field, profileData.user[field], false));
-    }
-  }
-
+  // const loadDBValuesIntoForm = ({setFieldValue}) => {
+  //   if (userInfo) {
+  //     // get user and set form fields
+  //       const fields = ['firstName', 'lastName', 'email', 
+  //         'telNum', 'streetAddress', 'city', 'postalCode', 'gender'];
+  //       fields.forEach(field => setFieldValue(field, profileData.user[field], false));
+  //   }
+  // }
 
   useEffect(() => {
     const loadFormData = async () => {
@@ -37,7 +41,7 @@ const AboutMe = ({updateUserRecord}) => {
         let profileData = await TennisCentralAPI.getUserProfile(userInfo.userId);
         debugger;
         setProfileData(profileData.user);
-        loadDBValuesIntoForm();
+        // loadDBValuesIntoForm();
         setIsLoading(false)
       } catch (error) {
         console.log(error)
@@ -56,36 +60,9 @@ const AboutMe = ({updateUserRecord}) => {
   //   }
   // }, [userInfo]);
 
- 
-  let initialValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    telNum: "",
-    streetAddress: "",
-    city: "",
-    postalCode: "",
-    month: "",
-    day: "",
-    year: "",
-    gender: ""
-  };
-  console.log(userInfo)
-  // if (userInfo !== {}) {
-  //   initialValues = {
-  //     firstName: profileData.user.firstName,
-  //     lastName: profileData.user.lastName,
-  //     email: profileData.user.email,
-  //     telNum: profileData.user.telNum,
-  //     streetAddress: profileData.user.streetAddress,
-  //     city: profileData.user.city,
-  //     postalCode: profileData.postCode,
-  //     month: "",
-  //     day: "",
-  //     year: "",
-  //     gender: profileData.gender,
-  //   }
-  // }
+  const initialValues = profileData;
+
+
  
   const validationSchema = Yup.object({
     firstName: Yup.string().required("Required"),
@@ -98,8 +75,8 @@ const AboutMe = ({updateUserRecord}) => {
 
   
   const onSubmit = async (values, {setSubmitting, setFieldValue}) => {
-
     console.log("Form Data", values);
+    values.birthday = startDate;
     try {
       debugger;
       await updateUserRecord(values, userInfo.userId)
@@ -110,7 +87,6 @@ const AboutMe = ({updateUserRecord}) => {
       if (Array.isArray(error)) {
         setUpdateAboutMeErrorFormMsg(error)
       }
-      
     }
   };
   if (isLoading) {
@@ -248,15 +224,29 @@ const AboutMe = ({updateUserRecord}) => {
                   <fieldset>
                     <legend>Demographics</legend>
                     <FormGroup>
-                      <FormLabel>Birthday</FormLabel>
-                      <Row>
+                    <FormLabel
+                        className="datePickerLabel"
+                        htmlFor="dateAndTime"
+                      >
+                        Birthday
+                      </FormLabel>
+                      <DatePicker
+                        className="form-control"
+                        selected={startDate}
+                        onChange={(date) => setStartDate(date)}
+                        showYearDropdown
+                        dateFormatCalendar="MMMM"
+                        yearDropdownItemNumber={70}
+                        scrollableYearDropdown
+                      />
+                      {/* <Row>
                         <Col>
-                          <FormControl as="select" name="month" id="month">
+                          <Field as="select" name="month" id="month" className="form-control">
                             <option value="">Month</option>
                             <option value="1">Jan</option>
                             <option value="2">Feb</option>
                             <option value="3">Mar</option>
-                          </FormControl>
+                          </Field>
                         </Col>
                         <Col>
                           <FormControl as="select" name="day" id="day">
@@ -274,7 +264,7 @@ const AboutMe = ({updateUserRecord}) => {
                             <option value="2005">2005</option>
                           </FormControl>
                         </Col>
-                      </Row>
+                      </Row> */}
                     </FormGroup>
                     <FormGroup className="form-group">
                       <div className="custom-form-label">Gender</div>

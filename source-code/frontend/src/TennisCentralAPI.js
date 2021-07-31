@@ -68,18 +68,15 @@ class TennisCentralAPI {
 
   static async registerUser(newUserInfo) {
     let res = await this.request(`auth/register`, newUserInfo, "post");
-    debugger;
     return res;
   }
 
   static async loginUser(userCredentials) {
-    debugger;
     let res = await this.request(`auth/login`, userCredentials, "post");
     return res;
   }
 
   static async updateUserRecord(userRecord, userId) {
-    debugger;
     let res = await this.request(`users/${userId}`, userRecord, "patch");
     return res; 
   }

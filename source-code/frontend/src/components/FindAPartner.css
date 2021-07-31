@@ -1,0 +1,23 @@
+.ntrpLabel {
+  margin-right: 1rem;
+}
+
+.form-range {
+  margin-right: 1rem;
+} 
+
+.datePickerLabel {
+  width: 100%
+}
+
+.fullWidth {
+  width: 100%
+}
+
+tr > th  {
+  font-size: .75rem;
+}
+legend {
+  font-size: .75rem;
+  width: 60%;
+}
