@@ -6,7 +6,6 @@ const ExpressError = require("../ExpressError");
 router.post("/register", async (req, res, next) => {
   try {
     const newUser = await User.register(req.body);
-    debugger;
     const token = "123";
     return res
       .status(201)

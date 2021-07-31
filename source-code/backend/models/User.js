@@ -59,6 +59,10 @@ const User = sequelize.define(
     telNum: {
       type: DataTypes.STRING(20),
     },
+    birthday: {
+      // {month: 12, day: 10, year: 1970}
+      type: DataTypes.DATEONLY,
+    },
     gender: {
       // Male or Female
       type: DataTypes.ENUM("Male", "Female"),
@@ -113,6 +117,7 @@ const User = sequelize.define(
       //  "day": "Sunday",   "availability": ["Afternoon"]
       // }
       type: DataTypes.JSONB,
+      defaultValue: {}
     },
   },
   {
@@ -124,7 +129,6 @@ User.authenticate = async function (username, password) {
   const user = await User.findOne({
     where: { username: username },
   });
-  debugger;
   if (user) {
     if (user.password === password) {
       delete user.password;
@@ -146,7 +150,6 @@ User.register = async function (userRegInfo) {
   const duplicateUser = await User.findOne({
     where: { username: userRegInfo.username },
   });
-  debugger;
   if (duplicateUser) {
     throw new ExpressError(
       400,
