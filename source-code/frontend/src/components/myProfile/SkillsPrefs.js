@@ -1,126 +1,338 @@
-import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import {Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Link } from "react-router-dom";
+import * as Yup from "yup";
+import { Container, Col, Row, Table } from "react-bootstrap";
+import {
+  FormGroup,
+  FormLabel,
+  FormControl,
+  FormCheck,
+  Button,
+} from "react-bootstrap";
+import UserContext from "../UserContext";
+import "./SkillsPref.css";
+import TextError from "../TextError";
+import ErrorMsg from "../ErrorMsg";
 
-const SkillsPrefs = () => (
-  <div>
-  <h1>Skills & Preferences</h1>
-  <Formik
-    initialValues={{
+const SkillsPrefs = ({ updateUserRecord }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const userInfo = useContext(UserContext);
+  const [updateSkillsPrefFormErrorMsg, setUpdateSkillsPrefFormErrorMsg] =
+    useState([]);
 
-    }}
-    onSubmit={async (values) => {
-      await new Promise((r) => setTimeout(r, 500));
-      alert(JSON.stringify(values, null, 2));
-    }}
-  >
-    <Form>
-      <label htmlfor="ntrp">What is your NTRP rating?</label>
-      <Field as="select" name="ntrp">
-        <option value="">Rating #</option>
-        <option value='2' >2.0</option>
-        <option value="2.5">2.5</option>
-        <option value="3.0">3.0</option>
-        <option value="3.5">3.5</option>
-      </Field>
-      <Link to={{  pathname: "https://www.usta.com/content/dam/usta/pdfs/NTRP%20General%20Characteristics.pdf" }} target="_blank">How to determine your rating</Link>
-      <div id="checkbox-group">Types of matches you'd consider playing?</div>
-      <div role="group" aria-labelledby="checkbox-group">
-            <label>
-              <Field type="checkbox" name="matchType" value="singles" />
-              Singles
-            </label>
-            <label>
-              <Field type="checkbox" name="matchType" value="doubles" />
-              Doubles
-            </label>
-            <label>
-              <Field type="checkbox" name="matchType" value="mixed" />
-              Mixed Doubles
-            </label>
+  const initialValues = {
+    my_ntrp_rating: 1.0,
+    minNtrp: 1.0,
+    maxNtrp: 1.0,
+  };
+  const validationSchema = Yup.object({
+    minNtrp: Yup.number().required("Please select a minimum NTRP rating"),
+    maxNtrp: Yup.number()
+      .required("Please select a maximum NTRP rating")
+      .moreThan(
+        Yup.ref("minNtrp"),
+        "Max NTRP rating must be higer than Min NTRP"
+      ),
+  });
+  const transformNtrpValues = (values) => {
+    return { low: values.minNtrp, high: values.maxNtrp };
+  };
+
+  const onSubmit = async (values, { setSubmitting, setFieldValue }) => {
+    console.log("Form Values: ", values);
+    values.opponent_ntrp_rating_range = transformNtrpValues(values);
+    try {
+      // debugger;
+      await updateUserRecord(values, userInfo.userId);
+      setSubmitting(false);
+    } catch (error) {
+      console.log(error);
+      if (Array.isArray(error)) {
+        setUpdateSkillsPrefFormErrorMsg(error);
+      }
+    }
+  };
+  return (
+    <Container fluid className="pb-5 ml-1">
+      <Row>
+        <Col sm={2} className="pt-5 bg-light">
+          <div className="mt-3">
+            <p>
+              <Link exact to="/AboutMe">
+                About Me
+              </Link>
+            </p>
+            <p className="font-weight-bold">Skills & Preferences</p>
+            <p>
+              <Link exact to="/SkillsPrefs">
+                Match Availability
+              </Link>
+            </p>
           </div>
+        </Col>
+        <Col sm={10} className="pt-5">
+          <h3 className="form-header">Skills & Preferences</h3>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+          >
+            {({
+              values,
+              handleSubmit,
+              isSubmitting,
+              setFieldValue,
+              handleChange,
+              touched,
+              errors,
+            }) => (
+              <Form className="mx-auto">
+                <pre>{JSON.stringify(values, null, 4)}</pre>
+                <fieldset>
+                  <legend>Your skill level</legend>
+                  <FormGroup>
+                    What is your NTRP rating?
+                    <div className="external-link">
+                      <Link
+                        to={{
+                          pathname:
+                            "https://www.usta.com/content/dam/usta/pdfs/NTRP%20General%20Characteristics.pdf",
+                        }}
+                        target="_blank"
+                      >
+                        ( How to determine your NTRP rating )
+                      </Link>
+                    </div>
+                  </FormGroup>
 
-        <div id="session-type-group">What type of session would you consider? </div>
-          <div role="group" aria-labelledby="session-type-group">
-            <label>
-              <Field type="radio" name="picked" value="Practice" />
-              Practice Sessions Only
-            </label>
-            <label>
-              <Field type="radio" name="picked" value="Matches" />
-              Matches Only 
-            </label>
-            <label>
-              <Field type="radio" name="picked" value="Either" />
-              Either Practice or Matches 
-            </label>
-            {/* <div>Picked: {values.picked}</div> */}
-          </div>
+                  <FormGroup>
+                    {/* <Link to={{  pathname: "https://www.usta.com/content/dam/usta/pdfs/NTRP%20General%20Characteristics.pdf" }} target="_blank"> */}
+                    <FormLabel className="ntrpLabel" htmlFor="my_ntrp_rating">
+                      Your NTRP rating?
+                    </FormLabel>
+                    {/* </Link> */}
+                    <Field
+                      type="range"
+                      name="my_ntrp_rating"
+                      className="form-range"
+                      id="my_ntrp_rating"
+                      min="1.0"
+                      max="7.0"
+                      step=".5"
+                    />
+                    <div className="ntrp-num">
+                      {" "}
+                      {JSON.stringify(values.my_ntrp_rating)}
+                    </div>
+                  </FormGroup>
+                </fieldset>
 
-          <div id="opponents-gender-group">Preferred Opponents Gender? </div>
-          <div role="group" aria-labelledby="opponents-gender-group">
-            <label>
-              <Field type="radio" name="picked" value="Male" />
-              Male
-            </label>
-            <label>
-              <Field type="radio" name="picked" value="Female" />
-              Female 
-            </label>
-            <label>
-              <Field type="radio" name="picked" value="Either" />
-              Either Gender 
-            </label>
-            {/* <div>Picked: {values.picked}</div> */}
-          </div>
-          <div>
-          <div id="opponents-gender-group">Acceptable NTRP rating range of your partner? </div>
-          <label htmlFor="low-rating">Lowest Rating</label>
-          <Field as="select" id='low-rating' name="low-rating">
-            <option value="2.0">2.0</option>
-            <option value="2.5">2.5</option>
-            <option value="3.0">3.0</option>
-            <option value="3.5">3.5</option>
-            <option value="4.0">4.0</option>
-            <option value="4.5">4.5</option>
-            <option value="5.0">5.0</option>
-            <option value="5.5">5.5</option>
-            <option value="6.0">6.0</option>
-            <option value="6.5">6.5</option>
-            <option value="7.0">7.0</option>
-          </Field>
-          <label htmlFor="high-rating">Highest Rating</label>
-          <Field as="select" id="high-rating" name="hig-rating">
-            <option value="2.0">2.0</option>
-            <option value="2.5">2.5</option>
-            <option value="3.0">3.0</option>
-            <option value="3.5">3.5</option>
-            <option value="4.0">4.0</option>
-            <option value="4.5">4.5</option>
-            <option value="5.0">5.0</option>
-            <option value="5.5">5.5</option>
-            <option value="6.0">6.0</option>
-            <option value="6.5">6.5</option>
-            <option value="7.0">7.0</option>
-          </Field>
-          <label htmlFor="high-rating">Max travel distance (miles) to play a match?</label>
-          <Field as="select" id="max-distance" name="max-distance">
-            <option value="5">less than 5 miles</option>
-            <option value="10">less than 10 miles</option>
-            <option value="15">less than 15 miles</option>
-            <option value="20">less than 20 miles</option>
-            <option value="30">less than 30 miles</option>
-           </Field>
+                <fieldset>
+                  <legend>Match Types</legend>
+                  <FormGroup id="checkbox-group">
+                    Types of matches you'd consider playing?
+                  </FormGroup>
+                  <FormGroup role="group" aria-labelledby="checkbox-group">
+                    <FormGroup className="form-check form-check-inline">
+                      <Field
+                        className="form-check-input"
+                        type="checkbox"
+                        name="match_type"
+                        value="singles"
+                      />
+                      <FormLabel className="form-check-label">
+                        Singles
+                      </FormLabel>
+                    </FormGroup>
 
-          </div>
+                    <FormGroup className="form-check form-check-inline">
+                      <Field
+                        className="form-check-input"
+                        type="checkbox"
+                        name="match_type"
+                        value="doubles"
+                      />
+                      <FormLabel className="form-check-label">
+                        Doubles
+                      </FormLabel>
+                    </FormGroup>
 
+                    <FormGroup className="form-check form-check-inline">
+                      <Field
+                        className="form-check-input"
+                        type="checkbox"
+                        name="match_type"
+                        value="mixed"
+                      />
+                      <FormLabel className="form-check-label">Mixed</FormLabel>
+                    </FormGroup>
+                  </FormGroup>
+                </fieldset>
+                <fieldset>
+                  <legend>Tennis Sessions</legend>
+                  <FormGroup id="radio-group">
+                    Types of sessions you'd consider?
+                  </FormGroup>
+                  <FormGroup role="group" aria-labelledby="checkbox-group">
+                    <FormGroup className="form-check form-check-inline">
+                      <Field
+                        className="form-check-input"
+                        type="radio"
+                        name="session_type"
+                        value="matches"
+                      />
+                      <FormLabel className="form-check-label">
+                        Match/Set Play Only
+                      </FormLabel>
+                    </FormGroup>
 
-      <button type="submit">Submit</button>
-    </Form>
-  </Formik>
-</div>
-);
+                    <FormGroup className="form-check form-check-inline">
+                      <Field
+                        className="form-check-input"
+                        type="radio"
+                        name="session_type"
+                        value="practice"
+                      />
+                      <FormLabel className="form-check-label">
+                        Rallying/Drills Only
+                      </FormLabel>
+                    </FormGroup>
 
+                    <FormGroup className="form-check form-check-inline">
+                      <Field
+                        className="form-check-input"
+                        type="radio"
+                        name="session_type"
+                        value="either"
+                      />
+                      <FormLabel className="form-check-label">Either</FormLabel>
+                    </FormGroup>
+                  </FormGroup>
+                </fieldset>
+                <fieldset>
+                  <legend>Opponent's Gender</legend>
+                  <FormGroup id="radio-group">
+                    Preferred gender of your opponent?
+                  </FormGroup>
+                  <FormGroup role="group" aria-labelledby="radio-group">
+                    <FormGroup className="form-check form-check-inline">
+                      <Field
+                        className="form-check-input"
+                        type="radio"
+                        name="opponent_gender"
+                        value="Male only"
+                      />
+                      <FormLabel className="form-check-label">
+                        Male only
+                      </FormLabel>
+                    </FormGroup>
 
+                    <FormGroup className="form-check form-check-inline">
+                      <Field
+                        className="form-check-input"
+                        type="radio"
+                        name="opponent_gender"
+                        value="Female only"
+                      />
+                      <FormLabel className="form-check-label">
+                        Female only
+                      </FormLabel>
+                    </FormGroup>
 
-export default SkillsPrefs; 
+                    <FormGroup className="form-check form-check-inline">
+                      <Field
+                        className="form-check-input"
+                        type="radio"
+                        name="opponent_gender"
+                        value="Either gender"
+                      />
+                      <FormLabel className="form-check-label">
+                        Either gender
+                      </FormLabel>
+                    </FormGroup>
+                  </FormGroup>
+                </fieldset>
+
+                <fieldset>
+                  <legend>Partner's NTRP range</legend>
+                  <FormGroup>
+                    Select min and max NTRP rating for an opponent
+                  </FormGroup>
+
+                  <FormGroup>
+                    <FormLabel className="ntrpLabel" htmlFor="minNtrp">
+                      Min NTRP rating
+                    </FormLabel>
+                    <Field
+                      type="range"
+                      name="minNtrp"
+                      className="form-range"
+                      id="minNtrp"
+                      min="1.0"
+                      max="7.0"
+                      step=".5"
+                    ></Field>
+                    {JSON.stringify(values.minNtrp)}
+                  </FormGroup>
+                  <ErrorMessage name="minNtrp" component={TextError} />
+
+                  <FormGroup>
+                    <FormLabel className="ntrpLabel" htmlFor="maxNtrp">
+                      Max NTRP rating
+                    </FormLabel>
+
+                    <Field
+                      type="range"
+                      name="maxNtrp"
+                      className="form-range"
+                      id="maxNtrp"
+                      min="1.0"
+                      max="7.0"
+                      step=".5"
+                    ></Field>
+                    {JSON.stringify(values.maxNtrp)}
+                  </FormGroup>
+                  <ErrorMessage name="maxNtrp" component={TextError} />
+                </fieldset>
+                <fieldset>
+                  <legend>Match Travel Distance</legend>
+                  <FormGroup>
+                    Maximum distance you'd travel for a match?
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel>Match Type</FormLabel>
+                    <Field
+                      as="select"
+                      name="max_travel_distance"
+                      className="form-control"
+                      id="travelDistance"
+                    >
+                      <option>Select Max Match Travel Distance</option>
+                      <option value="5">less than 5 miles</option>
+                      <option value="10">less than 10 miles</option>
+                      <option value="15">less than 15 miles</option>
+                      <option value="20">less than 20 miles</option>
+                      <option value="30">less than 30 miles</option>
+                      <option value="1000">No Limit</option>
+                    </Field>
+                  </FormGroup>
+                  <ErrorMessage name="travelDistance" component={TextError} />
+                </fieldset>
+                <Button
+                  type="submit"
+                  // className="btn btn-primary mt-3 float-right"
+                  className="btn btn-primary btn-lg btn-block mt-3"
+                >
+                  Save
+                </Button>
+              </Form>
+            )}
+          </Formik>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
+
+export default SkillsPrefs;

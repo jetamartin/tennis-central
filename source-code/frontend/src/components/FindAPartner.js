@@ -16,15 +16,14 @@ import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import { propTypes } from "react-bootstrap/esm/Image";
 import TennisCentralAPI from "../TennisCentralAPI";
-import UserContext from './UserContext';
-
+import UserContext from "./UserContext";
 
 const FindAPartner = () => {
   const [startDate, setStartDate] = useState(
     setHours(setMinutes(new Date(), 30), 16)
   );
-  const [ profileData, setProfileData ] = useState({});
-  const [ isLoading, setIsLoading ] = useState(false);
+  const [profileData, setProfileData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const [loadFromProfile, setLoadFromProfile] = useState(false);
   const userInfo = useContext(UserContext);
 
@@ -32,21 +31,25 @@ const FindAPartner = () => {
     const loadFormData = async () => {
       try {
         debugger;
-        setIsLoading(true);
-        let data = await TennisCentralAPI.getUserProfile(userInfo.userId);        
-        let profileInfo = transformBuildMatchAvailObject(data.user.match_availability);
-        setProfileData(Object.assign({}, data.user, profileInfo))
-        // var obj = Object.assign({}, data.user, profileInfo);
-        setIsLoading(false)
+        if (loadFromProfile) {
+          setIsLoading(true);
+          let data = await TennisCentralAPI.getUserProfile(userInfo.userId);
+          let profileInfo = transformBuildMatchAvailObject(
+            data.user.match_availability
+          );
+          
+          setProfileData(Object.assign({}, data.user, profileInfo));
+          setIsLoading(false);
+        }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-     }
-    loadFormData()
-  }, [loadFromProfile])
+    };
+    loadFormData();
+  }, [loadFromProfile]);
 
   const initialValues = profileData;
- 
+
   const validationSchema = Yup.object({
     partnerMatchType: Yup.string().required("Select a partner match type"),
     partnerGender: Yup.string().required("Please select a gender type"),
@@ -63,52 +66,51 @@ const FindAPartner = () => {
   });
 
   const buildMatchAvailObject = (values) => {
-
-    const keysArray = Object.keys(values)
+    const keysArray = Object.keys(values);
     const avail = [];
     const matchAvail = [];
-    keysArray.forEach(key => {
-      if (key.includes('-')) {
+    keysArray.forEach((key) => {
+      if (key.includes("-")) {
         matchAvail.push(key);
       }
-    })
-   
-   return matchAvail.reduce(function(obj, v) {
+    });
+
+    return matchAvail.reduce(function (obj, v) {
       const avail = [];
       const keyValuePair = v.split("-");
       if (keyValuePair[0] in obj) {
-           obj[keyValuePair[0]].push(keyValuePair[1]);
+        obj[keyValuePair[0]].push(keyValuePair[1]);
       } else {
         obj[keyValuePair[0]] = [keyValuePair[1]];
       }
       return obj;
-    }, {})
-  }
+    }, {});
+  };
 
   const transformBuildMatchAvailObject = (matchAvailability) => {
     if (isNil(matchAvailability)) {
-      return {}
+      return {};
     }
     const days = Object.keys(matchAvailability);
-    const checkboxValuesObj =  {}; 
+    const checkboxValuesObj = {};
     days.forEach((day) => {
-      const timesArray = matchAvailability[day]; 
+      const timesArray = matchAvailability[day];
       timesArray.forEach((time) => {
-        const dateTime = `${day}-${time}`
+        const dateTime = `${day}-${time}`;
         checkboxValuesObj[dateTime] = true;
-      }) 
-    })
-    return checkboxValuesObj;  
-  }
+      });
+    });
+    return checkboxValuesObj;
+  };
   const loadfromProfile = (e) => {
     debugger;
-    console.log("loadFromProfile")
+    console.log("loadFromProfile");
     setLoadFromProfile(true);
-  }
+  };
 
   const onSubmit = async (values, { setSubmitting }) => {
     values.dateAndTime = startDate;
-    values.match_availability =  buildMatchAvailObject(values);
+    values.match_availability = buildMatchAvailObject(values);
     console.log(values.match_availability);
     debugger;
     console.log("Form values:", values);
@@ -116,7 +118,7 @@ const FindAPartner = () => {
   };
   if (isLoading) {
     return <p className="">Loading &hellip;</p>;
-  } 
+  }
   return (
     <Container className="h-100">
       <Row className="h-100 justify-content-center align-items-center">
@@ -313,8 +315,10 @@ const FindAPartner = () => {
                           type="checkbox"
                           id="loadProfileData"
                           name="loadProfileData"
-                          onChange={(e) => {handleChange(e); loadfromProfile(e)}}
-
+                          onChange={(e) => {
+                            handleChange(e);
+                            loadfromProfile(e);
+                          }}
                         />
                         <FormLabel
                           className="form-check-label"
@@ -644,10 +648,13 @@ const FindAPartner = () => {
                             </tr>
                           </tbody>
                         </Table>
-                        <ErrorMessage name="availabilityTable" component={TextError} />
+                        <ErrorMessage
+                          name="availabilityTable"
+                          component={TextError}
+                        />
 
                         {/****************************************************************/}
-                        <FormLabel>Match Type</FormLabel>
+                        <FormLabel htmlFor="matchType">Match Type</FormLabel>
                         <Field
                           as="select"
                           name="matchType"
@@ -754,9 +761,8 @@ const FindAPartner = () => {
                       </fieldset>
                     </fieldset>
                   ) : null}
-
+                  {/* // ) : null} */}
                 </Col>
-
 
                 {/* {loginErrorFormMsg.length !== 0 ? 
                 loginErrorFormMsg.map(errorMsg => <ErrorMsg errorMsg={errorMsg} />)

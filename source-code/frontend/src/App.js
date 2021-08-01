@@ -89,7 +89,7 @@ const App = () => {
             <AboutMe updateUserRecord={updateUserRecord} />
           </Route>
           <Route exact path="/SkillsPrefs">
-            <SkillsPrefs />
+            <SkillsPrefs updateUserRecord={updateUserRecord} />
           </Route>
           <Route exact path="/MatchAvail">
             <MatchAvail updateUserRecord={updateUserRecord} />

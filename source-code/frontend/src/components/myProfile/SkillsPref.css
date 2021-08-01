@@ -1,0 +1,10 @@
+.ntrp-num {
+  display: inline-block;
+  width: 2rem;
+}
+
+.external-link {
+  display: inline-block;
+  margin-left: 1rem;
+  font-size: .75rem;
+}
