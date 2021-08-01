@@ -43,7 +43,7 @@ router.get("/:id", async (req, res, next) => {
 
 router.patch("/:id", async (req, res, next) => {
   try {
-    debugger;
+    // debugger;
     // First check to see if requested record exist in db
     const requestedId = req.params.id;
     const result = await User.update(req.body, {
