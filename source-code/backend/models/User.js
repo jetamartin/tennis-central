@@ -73,22 +73,22 @@ const User = sequelize.define(
       //   }
       // }
     },
-    ntrp_rating: {
+    my_ntrp_rating: {
       // (1.0 -> 7.0 by increments of .5)
       type: DataTypes.ENUM(
-        "1.0",
+        "1",
         "1.5",
-        "2.0",
+        "2",
         "2.5",
-        "3.0",
+        "3",
         "3.5",
-        "4.0",
+        "4",
         "4.5",
-        "5.0",
+        "5",
         "5.5",
-        "6.0",
+        "6",
         "6.5",
-        "7.0"
+        "7"
       ),
       // allowNull: false,
       // validate: {
@@ -102,22 +102,28 @@ const User = sequelize.define(
       type: DataTypes.ENUM("Male only", "Female only", "Either gender"),
       // allowNull: false
     },
-    oppponent_ntrp_rating_range: {
+    match_type: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+    },
+    opponent_ntrp_rating_range: {
       // {ntrp_range: {low: "4.5", high: "5.5" }
       type: DataTypes.JSONB,
       // allowNull: false
     },
     max_travel_distance: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(5),
       // allowNull: false,
     },
     match_availability: {
-      // {"day": "Monday",   "availability": ["Early Morning", "Evening"],
-      //  "day": "Saturday", "availability": ["Morning","Afternoon"],
-      //  "day": "Sunday",   "availability": ["Afternoon"]
+      // {"mon": ["EAM", "EVE"],
+      //  "sat": ["AM","PM"],
+      //  "sun": ["EVE"]
       // }
       type: DataTypes.JSONB,
-      defaultValue: {}
+      defaultValue: {},
+    },
+    session_type: {
+      type: DataTypes.STRING(30),
     },
   },
   {
