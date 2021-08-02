@@ -24,32 +24,9 @@ const FindAPartner = () => {
   );
   const [profileData, setProfileData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [loadFromProfile, setLoadFromProfile] = useState(false);
+  // const [loadFromProfile, setLoadFromProfile] = useState(false);
   const [generalMatchPlay, setGeneralMatchPlay] = useState(false);
   const userInfo = useContext(UserContext);
-
-  // useEffect(() => {
-  //   const loadFormData = async () => {
-  //     try {
-  //       debugger;
-  //       if (loadFromProfile) {
-  //         // setIsLoading(true);
-  //         let data = await TennisCentralAPI.getUserProfile(userInfo.userId);
-  //         let profileInfo = transformBuildMatchAvailObject(
-  //           data.user.match_availability
-  //         );
-
-  //         setProfileData(Object.assign({}, data.user, profileInfo, generalMatchPlay));
-  //         debugger;
-  //         // setIsLoading(false);
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   loadFormData();
-  // }, [loadFromProfile]);
-
   const initialValues = profileData;
 
   const validationSchema = Yup.object({
@@ -106,44 +83,38 @@ const FindAPartner = () => {
   };
 
   const transformNtrpRatingRange = (ntrpRatingRange) => {
-    let ntrpValues = {}
-    ntrpValues = {minNtrp: ntrpRatingRange.low, maxNtrp: ntrpRatingRange.high}
+    let ntrpValues = {};
+    ntrpValues = {
+      minNtrp: ntrpRatingRange.low,
+      maxNtrp: ntrpRatingRange.high,
+    };
     return ntrpValues;
-  }
+  };
 
   const loadfromProfile = async (e, value, setFieldValue) => {
-    debugger;
-    console.log("loadFromProfile");
-    // setLoadFromProfile(true);
     let data = await TennisCentralAPI.getUserProfile(userInfo.userId);
-    // setFieldValue("partnerMatchType", "generalTime");
     let profileInfo = transformBuildMatchAvailObject(
       data.user.match_availability
     );
     let opponentNtrpRatingRange = transformNtrpRatingRange(
       data.user.opponent_ntrp_rating_range
-    )
+    );
     setProfileData(
       Object.assign(
         data.user,
         profileInfo,
-        opponentNtrpRatingRange, 
+        opponentNtrpRatingRange,
         { partnerMatchType: "generalTime" },
         { loadProfileData: true }
       )
     );
   };
 
-  const setGeneralMatchPlayValue = (e) => {
-    debugger;
-    setGeneralMatchPlay(true);
-  };
-
   const onSubmit = async (values, { setSubmitting }) => {
     values.dateAndTime = startDate;
     values.match_availability = buildMatchAvailObject(values);
     console.log(values.match_availability);
-    debugger;
+    // debugger;
     console.log("Form values:", values);
     setSubmitting(false);
   };
@@ -190,7 +161,7 @@ const FindAPartner = () => {
                           value="generalTime"
                           onChange={(e) => {
                             handleChange(e);
-                            setGeneralMatchPlayValue(e);
+                            // setGeneralMatchPlayValue(e);
                           }}
                         />
                         <FormLabel
@@ -234,7 +205,7 @@ const FindAPartner = () => {
                           component={TextError}
                         />
                       </FormGroup>
-                      <FormGroup>
+                      {/* <FormGroup>
                         <FormLabel>Match Type</FormLabel>
                         <Field
                           as="select"
@@ -248,9 +219,9 @@ const FindAPartner = () => {
                           <option value="mixed">Mixed Doubles</option>
                         </Field>
                       </FormGroup>
-                      <ErrorMessage name="matchType" component={TextError} />
+                      <ErrorMessage name="matchType" component={TextError} /> */}
 
-                      <FormGroup className="form-group">
+                      {/* <FormGroup className="form-group">
                         <div className="custom-form-label">Partner Gender</div>
                         <FormGroup className="form-check form-check-inline">
                           <Field
@@ -302,7 +273,99 @@ const FindAPartner = () => {
                           name="partnerGender"
                           component={TextError}
                         />
-                      </FormGroup>
+                      </FormGroup> */}
+                      <fieldset>
+                        <legend>Match Type</legend>
+                        <FormGroup
+                          role="group"
+                          aria-labelledby="checkbox-group"
+                        >
+                          <FormGroup className="form-check form-check-inline">
+                            <Field
+                              className="form-check-input"
+                              type="checkbox"
+                              name="match_type"
+                              value="singles"
+                            />
+                            <FormLabel className="form-check-label">
+                              Singles
+                            </FormLabel>
+                          </FormGroup>
+
+                          <FormGroup className="form-check form-check-inline">
+                            <Field
+                              className="form-check-input"
+                              type="checkbox"
+                              name="match_type"
+                              value="doubles"
+                            />
+                            <FormLabel className="form-check-label">
+                              Doubles
+                            </FormLabel>
+                          </FormGroup>
+
+                          <FormGroup className="form-check form-check-inline">
+                            <Field
+                              className="form-check-input"
+                              type="checkbox"
+                              name="match_type"
+                              value="mixed"
+                            />
+                            <FormLabel className="form-check-label">
+                              Mixed
+                            </FormLabel>
+                          </FormGroup>
+                        </FormGroup>
+                      </fieldset>
+                      <ErrorMessage name="matchType" component={TextError} />
+
+                      <fieldset>
+                        <legend>Opponent's Gender</legend>
+                        <FormGroup id="radio-group">
+                          {/* <FormLabel>Preffered Gender of Opponent</FormLabel> */}
+                          <FormGroup role="group" aria-labelledby="radio-group">
+                            <FormGroup className="form-check form-check-inline">
+                              <Field
+                                className="form-check-input"
+                                type="radio"
+                                name="opponent_gender"
+                                value="Male only"
+                              />
+                              <FormLabel className="form-check-label">
+                                Male only
+                              </FormLabel>
+                            </FormGroup>
+
+                            <FormGroup className="form-check form-check-inline">
+                              <Field
+                                className="form-check-input"
+                                type="radio"
+                                name="opponent_gender"
+                                value="Female only"
+                              />
+                              <FormLabel className="form-check-label">
+                                Female only
+                              </FormLabel>
+                            </FormGroup>
+
+                            <FormGroup className="form-check form-check-inline">
+                              <Field
+                                className="form-check-input"
+                                type="radio"
+                                name="opponent_gender"
+                                value="Either gender"
+                              />
+                              <FormLabel className="form-check-label">
+                                Either gender
+                              </FormLabel>
+                            </FormGroup>
+                          </FormGroup>
+                          <ErrorMessage
+                            name="partnerGender"
+                            component={TextError}
+                          />
+                        </FormGroup>
+                      </fieldset>
                       <fieldset>
                         <legend>Partner's NTRP range</legend>
                         <FormGroup>
@@ -834,7 +897,7 @@ const FindAPartner = () => {
                   // className="btn btn-primary mt-3 float-right"
                   className="btn btn-primary btn-lg btn-block mt-3"
                 >
-                  Submit
+                  Search
                 </Button>
               </Form>
             )}

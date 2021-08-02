@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
@@ -14,18 +14,52 @@ import UserContext from "../UserContext";
 import "./SkillsPref.css";
 import TextError from "../TextError";
 import ErrorMsg from "../ErrorMsg";
+import TennisCentralAPI from "../../TennisCentralAPI";
+import isNil from "lodash/isNil";
 
 const SkillsPrefs = ({ updateUserRecord }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [profileData, setProfileData] = useState({});
   const userInfo = useContext(UserContext);
   const [updateSkillsPrefFormErrorMsg, setUpdateSkillsPrefFormErrorMsg] =
     useState([]);
 
-  const initialValues = {
-    my_ntrp_rating: 1.0,
-    minNtrp: 1.0,
-    maxNtrp: 1.0,
+  useEffect(() => {
+    const loadFormData = async () => {
+      try {
+        let profileInfo = await TennisCentralAPI.getUserProfile(
+          userInfo.userId
+        );
+        let opponentNtrpRatingRange = transformNtrpRatingRange(
+          profileInfo.user.opponent_ntrp_rating_range
+        );
+        // debugger
+        // if (isNil(profileInfo.user.my_ntrp_rating) ) profileInfo.user.my_ntrp_rating = "";
+        setProfileData(
+          Object.assign(profileInfo.user, opponentNtrpRatingRange)
+        );
+
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    loadFormData();
+  }, [userInfo]);
+
+  const transformNtrpRatingRange = (ntrpRatingRange) => {
+    let ntrpValues = {};
+    if (! isNil(ntrpRatingRange)) {
+      ntrpValues = {
+        minNtrp: ntrpRatingRange.low,
+        maxNtrp: ntrpRatingRange.high,
+      };
+    }
+
+    return ntrpValues;
   };
+  const initialValues = profileData;
+
   const validationSchema = Yup.object({
     minNtrp: Yup.number().required("Please select a minimum NTRP rating"),
     maxNtrp: Yup.number()
@@ -36,6 +70,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
       ),
   });
   const transformNtrpValues = (values) => {
+    if(isNil(values.minNtrp)) return {};
     return { low: values.minNtrp, high: values.maxNtrp };
   };
 
@@ -43,7 +78,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
     console.log("Form Values: ", values);
     values.opponent_ntrp_rating_range = transformNtrpValues(values);
     try {
-      debugger;
+      // debugger;
       await updateUserRecord(values, userInfo.userId);
       setSubmitting(false);
     } catch (error) {
@@ -53,6 +88,9 @@ const SkillsPrefs = ({ updateUserRecord }) => {
       }
     }
   };
+  if (isLoading) {
+    return <p className="">Loading &hellip;</p>;
+  }
   return (
     <Container fluid className="pb-5 ml-1">
       <Row>
@@ -107,11 +145,6 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                   </FormGroup>
 
                   <FormGroup>
-                    {/* <Link to={{  pathname: "https://www.usta.com/content/dam/usta/pdfs/NTRP%20General%20Characteristics.pdf" }} target="_blank"> */}
-                    <FormLabel className="ntrpLabel" htmlFor="my_ntrp_rating">
-                      Your NTRP rating?
-                    </FormLabel>
-                    {/* </Link> */}
                     <Field
                       type="range"
                       name="my_ntrp_rating"
@@ -122,8 +155,12 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                       step=".5"
                     />
                     <div className="ntrp-num">
-                      {" "}
-                      {JSON.stringify(values.my_ntrp_rating)}
+                      { (values.my_ntrp_rating !== "" && values.my_ntrp_rating !== null) ?
+                      // { !isNil(values.my_ntrp_rating) ?
+                        JSON.stringify(parseFloat(values.my_ntrp_rating, 10))
+                        : ""
+                      }
+                      {/* {JSON.stringify(values.my_ntrp_rating)} */}
                     </div>
                   </FormGroup>
                 </fieldset>
@@ -301,7 +338,6 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                     Maximum distance you'd travel for a match?
                   </FormGroup>
                   <FormGroup>
-                    <FormLabel>Match Type</FormLabel>
                     <Field
                       as="select"
                       name="max_travel_distance"

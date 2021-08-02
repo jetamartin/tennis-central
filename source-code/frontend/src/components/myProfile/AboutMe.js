@@ -25,23 +25,12 @@ const AboutMe = ({updateUserRecord}) => {
   const [ isLoading, setIsLoading ] = useState(true)
   const userInfo = useContext(UserContext);
 
-  // const loadDBValuesIntoForm = ({setFieldValue}) => {
-  //   if (userInfo) {
-  //     // get user and set form fields
-  //       const fields = ['firstName', 'lastName', 'email', 
-  //         'telNum', 'streetAddress', 'city', 'postalCode', 'gender'];
-  //       fields.forEach(field => setFieldValue(field, profileData.user[field], false));
-  //   }
-  // }
-
   useEffect(() => {
     const loadFormData = async () => {
-      debugger;
       try {
+        // debugger;
         let profileData = await TennisCentralAPI.getUserProfile(userInfo.userId);
-        debugger;
         setProfileData(profileData.user);
-        // loadDBValuesIntoForm();
         setIsLoading(false)
       } catch (error) {
         console.log(error)
@@ -50,19 +39,7 @@ const AboutMe = ({updateUserRecord}) => {
     loadFormData()
   }, [userInfo])
 
-  // useEffect(() => {
-  //   console.log("====UserInfo value: ", userInfo)
-  //   if (userInfo) {
-  //     // get user and set form fields
-  //       const fields = ['firstName', 'lastName', 'email', 
-  //         'telNum', 'streetAddress', 'city', 'postalCode', 'gender'];
-  //       fields.forEach(field => setFieldValue(field, profileData[field], false));
-  //   }
-  // }, [userInfo]);
-
   const initialValues = profileData;
-
-
  
   const validationSchema = Yup.object({
     firstName: Yup.string().required("Required"),
@@ -78,7 +55,6 @@ const AboutMe = ({updateUserRecord}) => {
     console.log("Form Data", values);
     values.birthday = startDate;
     try {
-      debugger;
       await updateUserRecord(values, userInfo.userId)
       setSubmitting(false)
       
@@ -120,7 +96,7 @@ const AboutMe = ({updateUserRecord}) => {
             {({ values, handleSubmit, isSubmitting, setFieldValue, handleChange, touched, errors }) => (
               <Container>
                 <Form className="mx-auto mb-5">
-                  {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
+                  <pre>{JSON.stringify(values, null, 4)}</pre>
                   <fieldset>
                     <legend>Contact</legend>
                     <Row>
@@ -231,6 +207,11 @@ const AboutMe = ({updateUserRecord}) => {
                         Birthday
                       </FormLabel>
                       <DatePicker
+                        // filterDate={d => {
+                        //   return new Date() > d;
+                        // }}
+                        maxDate = {new Date()}
+                        isClearable
                         className="form-control"
                         selected={startDate}
                         onChange={(date) => setStartDate(date)}
@@ -238,33 +219,13 @@ const AboutMe = ({updateUserRecord}) => {
                         dateFormatCalendar="MMMM"
                         yearDropdownItemNumber={70}
                         scrollableYearDropdown
+                        // dateFormat="yyyy/MM/dd"
+                        dateFormat="MM/dd/yyyy"
+                        type="date"
+                        id="birthday"
+                        name="birthday"
+                        value={values.birthday}
                       />
-                      {/* <Row>
-                        <Col>
-                          <Field as="select" name="month" id="month" className="form-control">
-                            <option value="">Month</option>
-                            <option value="1">Jan</option>
-                            <option value="2">Feb</option>
-                            <option value="3">Mar</option>
-                          </Field>
-                        </Col>
-                        <Col>
-                          <FormControl as="select" name="day" id="day">
-                            <option value="">Day</option>
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                          </FormControl>
-                        </Col>
-                        <Col>
-                          <FormControl as="select" name="year" id="year">
-                            <option value="">Year</option>
-                            <option value="2007">2007</option>
-                            <option value="2006">2006</option>
-                            <option value="2005">2005</option>
-                          </FormControl>
-                        </Col>
-                      </Row> */}
                     </FormGroup>
                     <FormGroup className="form-group">
                       <div className="custom-form-label">Gender</div>

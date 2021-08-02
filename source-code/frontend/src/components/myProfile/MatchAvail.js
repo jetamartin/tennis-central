@@ -92,9 +92,7 @@ const MatchAvail = ({ updateUserRecord }) => {
   const onSubmit = async (values, { setSubmitting, setFieldValue }) => {
     values.match_availability = buildMatchAvailObject(values);
     console.log(values.match_availability);
-    // debugger;
     try {
-      // debugger;
       await updateUserRecord(values, userInfo.userId);
       setSubmitting(false);
     } catch (error) {
@@ -143,7 +141,7 @@ const MatchAvail = ({ updateUserRecord }) => {
               errors,
             }) => (
               <Form className="mx-auto">
-                <pre>{JSON.stringify(values, null, 4)}</pre>
+                {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
                 <Table striped bordered responsive="sm">
                   <thead>
                     <tr>

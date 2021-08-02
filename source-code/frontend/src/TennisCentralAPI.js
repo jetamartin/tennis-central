@@ -62,6 +62,7 @@ class TennisCentralAPI {
   // }
 
   static async getUserProfile(userId) {
+    // debugger
     let res = await this.request(`users/${userId}`);
     return res; 
   }

@@ -47,7 +47,6 @@ const Join = ({registerUser}) => {
     console.log("Form Data", values);
     try {
       await registerUser(values)
-      debugger;
       setSubmitting(false)
       history.push("/")
       // resetForm();

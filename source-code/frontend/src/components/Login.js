@@ -43,19 +43,7 @@ const Login = ({loginUser}) => {
     }
   };
   
-  // handleSubmit from Jobly LoginForm.js below:
-  // async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     await loginUser(formData);
-  //     setFormData(initialState);
-  //     history.push("/companies");
-  //   } catch (err) {
-  //     setLoginErrorFormMsg(err)
-  //     console.log(err)
-  //   }
-  // }
- return  (
+  return  (
 
   <Container className="h-100" >
     <Row className="h-100 justify-content-center align-items-center">
