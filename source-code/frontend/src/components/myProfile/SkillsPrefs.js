@@ -43,7 +43,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
     console.log("Form Values: ", values);
     values.opponent_ntrp_rating_range = transformNtrpValues(values);
     try {
-      // debugger;
+      debugger;
       await updateUserRecord(values, userInfo.userId);
       setSubmitting(false);
     } catch (error) {

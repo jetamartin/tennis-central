@@ -25,28 +25,30 @@ const FindAPartner = () => {
   const [profileData, setProfileData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [loadFromProfile, setLoadFromProfile] = useState(false);
+  const [generalMatchPlay, setGeneralMatchPlay] = useState(false);
   const userInfo = useContext(UserContext);
 
-  useEffect(() => {
-    const loadFormData = async () => {
-      try {
-        debugger;
-        if (loadFromProfile) {
-          setIsLoading(true);
-          let data = await TennisCentralAPI.getUserProfile(userInfo.userId);
-          let profileInfo = transformBuildMatchAvailObject(
-            data.user.match_availability
-          );
-          
-          setProfileData(Object.assign({}, data.user, profileInfo));
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    loadFormData();
-  }, [loadFromProfile]);
+  // useEffect(() => {
+  //   const loadFormData = async () => {
+  //     try {
+  //       debugger;
+  //       if (loadFromProfile) {
+  //         // setIsLoading(true);
+  //         let data = await TennisCentralAPI.getUserProfile(userInfo.userId);
+  //         let profileInfo = transformBuildMatchAvailObject(
+  //           data.user.match_availability
+  //         );
+
+  //         setProfileData(Object.assign({}, data.user, profileInfo, generalMatchPlay));
+  //         debugger;
+  //         // setIsLoading(false);
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   loadFormData();
+  // }, [loadFromProfile]);
 
   const initialValues = profileData;
 
@@ -102,10 +104,39 @@ const FindAPartner = () => {
     });
     return checkboxValuesObj;
   };
-  const loadfromProfile = (e) => {
+
+  const transformNtrpRatingRange = (ntrpRatingRange) => {
+    let ntrpValues = {}
+    ntrpValues = {minNtrp: ntrpRatingRange.low, maxNtrp: ntrpRatingRange.high}
+    return ntrpValues;
+  }
+
+  const loadfromProfile = async (e, value, setFieldValue) => {
     debugger;
     console.log("loadFromProfile");
-    setLoadFromProfile(true);
+    // setLoadFromProfile(true);
+    let data = await TennisCentralAPI.getUserProfile(userInfo.userId);
+    // setFieldValue("partnerMatchType", "generalTime");
+    let profileInfo = transformBuildMatchAvailObject(
+      data.user.match_availability
+    );
+    let opponentNtrpRatingRange = transformNtrpRatingRange(
+      data.user.opponent_ntrp_rating_range
+    )
+    setProfileData(
+      Object.assign(
+        data.user,
+        profileInfo,
+        opponentNtrpRatingRange, 
+        { partnerMatchType: "generalTime" },
+        { loadProfileData: true }
+      )
+    );
+  };
+
+  const setGeneralMatchPlayValue = (e) => {
+    debugger;
+    setGeneralMatchPlay(true);
   };
 
   const onSubmit = async (values, { setSubmitting }) => {
@@ -129,10 +160,11 @@ const FindAPartner = () => {
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={onSubmit}
+            enableReinitialize
           >
-            {({ values, isSubmitting, handleChange }) => (
+            {({ values, isSubmitting, handleChange, setFieldValue }) => (
               <Form className="mx-auto">
-                <pre>{JSON.stringify(values, null, 4)}</pre>
+                {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
                 <Col>
                   <fieldset>
                     <legend>Partner Match</legend>
@@ -156,6 +188,10 @@ const FindAPartner = () => {
                           id="generalTime"
                           name="partnerMatchType"
                           value="generalTime"
+                          onChange={(e) => {
+                            handleChange(e);
+                            setGeneralMatchPlayValue(e);
+                          }}
                         />
                         <FormLabel
                           className="form-check-label"
@@ -317,7 +353,7 @@ const FindAPartner = () => {
                           name="loadProfileData"
                           onChange={(e) => {
                             handleChange(e);
-                            loadfromProfile(e);
+                            loadfromProfile(e, "generalTime", setFieldValue);
                           }}
                         />
                         <FormLabel
@@ -652,76 +688,102 @@ const FindAPartner = () => {
                           name="availabilityTable"
                           component={TextError}
                         />
-
-                        {/****************************************************************/}
-                        <FormLabel htmlFor="matchType">Match Type</FormLabel>
-                        <Field
-                          as="select"
-                          name="matchType"
-                          className="form-control"
-                          id="matchType"
-                        >
-                          <option>Select Match Type</option>
-                          <option value="singles">Singles</option>
-                          <option value="doubles">Doubles</option>
-                          <option value="mixed">Mixed Doubles</option>
-                        </Field>
                       </FormGroup>
+
+                      {/****************************************************************/}
+
+                      <fieldset>
+                        <legend>Match Type</legend>
+                        <FormGroup
+                          role="group"
+                          aria-labelledby="checkbox-group"
+                        >
+                          <FormGroup className="form-check form-check-inline">
+                            <Field
+                              className="form-check-input"
+                              type="checkbox"
+                              name="match_type"
+                              value="singles"
+                            />
+                            <FormLabel className="form-check-label">
+                              Singles
+                            </FormLabel>
+                          </FormGroup>
+
+                          <FormGroup className="form-check form-check-inline">
+                            <Field
+                              className="form-check-input"
+                              type="checkbox"
+                              name="match_type"
+                              value="doubles"
+                            />
+                            <FormLabel className="form-check-label">
+                              Doubles
+                            </FormLabel>
+                          </FormGroup>
+
+                          <FormGroup className="form-check form-check-inline">
+                            <Field
+                              className="form-check-input"
+                              type="checkbox"
+                              name="match_type"
+                              value="mixed"
+                            />
+                            <FormLabel className="form-check-label">
+                              Mixed
+                            </FormLabel>
+                          </FormGroup>
+                        </FormGroup>
+                      </fieldset>
                       <ErrorMessage name="matchType" component={TextError} />
 
-                      <FormGroup className="form-group">
-                        <div className="custom-form-label">Partner Gender</div>
-                        <FormGroup className="form-check form-check-inline">
-                          <Field
-                            className="form-check-input"
-                            type="radio"
-                            id="male"
-                            name="partnerGender"
-                            value="Male"
-                          />
-                          <FormLabel
-                            className="form-check-label"
-                            htmlFor="male"
-                          >
-                            Male
-                          </FormLabel>
-                        </FormGroup>
+                      <fieldset>
+                        <legend>Opponent's Gender</legend>
+                        <FormGroup id="radio-group">
+                          {/* <FormLabel>Preffered Gender of Opponent</FormLabel> */}
+                          <FormGroup role="group" aria-labelledby="radio-group">
+                            <FormGroup className="form-check form-check-inline">
+                              <Field
+                                className="form-check-input"
+                                type="radio"
+                                name="opponent_gender"
+                                value="Male only"
+                              />
+                              <FormLabel className="form-check-label">
+                                Male only
+                              </FormLabel>
+                            </FormGroup>
 
-                        <FormGroup className="form-check form-check-inline">
-                          <Field
-                            className="form-check-input"
-                            type="radio"
-                            id="female"
+                            <FormGroup className="form-check form-check-inline">
+                              <Field
+                                className="form-check-input"
+                                type="radio"
+                                name="opponent_gender"
+                                value="Female only"
+                              />
+                              <FormLabel className="form-check-label">
+                                Female only
+                              </FormLabel>
+                            </FormGroup>
+
+                            <FormGroup className="form-check form-check-inline">
+                              <Field
+                                className="form-check-input"
+                                type="radio"
+                                name="opponent_gender"
+                                value="Either gender"
+                              />
+                              <FormLabel className="form-check-label">
+                                Either gender
+                              </FormLabel>
+                            </FormGroup>
+                          </FormGroup>
+                          <ErrorMessage
                             name="partnerGender"
-                            value="Female"
+                            component={TextError}
                           />
-                          <FormLabel
-                            className="form-check-label"
-                            htmlFor="female"
-                          >
-                            Female
-                          </FormLabel>
                         </FormGroup>
-                        <FormGroup className="form-check form-check-inline">
-                          <Field
-                            className="form-check-input"
-                            type="radio"
-                            id="eitherGender"
-                            name="partnerGender"
-                            value="eitherGender"
-                          />
-                          <FormLabel
-                            className="form-check-label"
-                            htmlFor="eitherGender"
-                          >
-                            Either Gender
-                          </FormLabel>
-                        </FormGroup>
-                        <ErrorMessage
-                          name="partnerGender"
-                          component={TextError}
-                        />
-                      </FormGroup>
+                      </fieldset>
                       <fieldset>
                         <legend>Partner's NTRP range</legend>
                         <FormGroup>
