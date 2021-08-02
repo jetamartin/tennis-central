@@ -32,6 +32,7 @@ router.get("", async (req, res) => {
 
 router.get("/:id", async (req, res, next) => {
   try {
+    // debugger;
     const requestedId = req.params.id;
     const user = await User.findOne({ where: { id: requestedId } });
     if (!user) throw new ExpressError(404, "User not found");

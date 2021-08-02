@@ -62,6 +62,9 @@ const User = sequelize.define(
     birthday: {
       // {month: 12, day: 10, year: 1970}
       type: DataTypes.DATEONLY,
+      // get: function() {
+      //      return moment(this.getDataValue('birthday')).format('MM.DD.YYYY')
+      //   }
     },
     gender: {
       // Male or Female
