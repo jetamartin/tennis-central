@@ -1,0 +1,48 @@
+thead,
+td {
+  text-align: center;
+}
+td {
+  font-size: 0.75rem;
+  padding-bottom: 0 !important;
+  text-align: center;
+}
+
+.icon-group {
+  /* text-align: center; */
+  font-size: 1.1rem;
+  padding-bottom: 0;
+}
+
+.icon-norm {
+  color: #007bff;
+}
+
+.icon-danger {
+  color: red;
+  cursor: pointer;
+}
+
+.icon-spacing {
+  padding-bottom: 0.5rem;
+}
+.time-slots {
+  padding-right: 5px;
+}
+
+span.avail-times::first-letter {
+  text-transform: uppercase;
+}
+
+/* .avail-times {
+  font-weight: bold;
+} */
+
+.separator {
+  padding-left: 0.2rem;
+  padding-right: 0.2rem;
+}
+
+.partner-avail {
+  text-align: left;
+}
