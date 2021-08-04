@@ -5,14 +5,15 @@ import "./PartnerSearchResultsTable.css";
 import PartnerAvailDays from "./PartnerAvailDays";
 import { daysInWeek } from "date-fns";
 
-const PartnerSearchResultsRow = ({partnerMatch}) => {
+const PartnerSearchResultsRow = ({partnerMatch, removePartner}) => {
 
-  const {id, date, name, gender, match_availability, status} = partnerMatch;
+  const {id, date, fullName, my_ntrp_rating, gender, match_availability, status} = partnerMatch;
     
-  const deleteSearchResultItem = (e) => {
-     // "e.target.parentElement.parentElement.parentElement.dataset.partneruserid"
-    console.log('Delete Search Result Item');
-  }
+  // const deleteSearchResultItem = (e) => {
+  //   debugger
+  //    // "e.target.parentElement.parentElement.parentElement.dataset.partneruserid"
+  //   console.log('Delete Search Result Item');
+  // }
 
   
   const transformAvailability = (match_availability) => {
@@ -26,9 +27,10 @@ const PartnerSearchResultsRow = ({partnerMatch}) => {
     
   return (
     <>
-    <tr data-partneruserid={id}>
+    <tr data-id={id}>
     <td>{date}</td>
-    <td>{name}</td>
+    <td>{fullName}</td>
+    <td>{my_ntrp_rating}</td>
     <td>{gender}</td>
     <td className="partner-avail1">
       <div >
@@ -40,18 +42,18 @@ const PartnerSearchResultsRow = ({partnerMatch}) => {
 
     <td>{partnerMatch.status}</td>
     <td className="icon-group icon-norm">
-      <div className="icon-spacing">
+      <div  className="icon-spacing" data-id={id}>
         <Link to="/messages">
           <i className="bi bi-envelope"></i>
         </Link>
       </div>
-      <div className="icon-spacing">
+      <div  className="icon-spacing" data-id={id}>
         <Link to="/partners">
           <i className="bi bi-person-plus icon-spacing"></i>
         </Link>
       </div>
-      <div className="icon-spacing">
-        <i className="bi bi-trash icon-danger icon-spacing" onClick={deleteSearchResultItem}></i>
+      <div  className="icon-spacing" data-id={id}>
+        <i className="bi bi-trash icon-danger icon-spacing" onClick={removePartner}></i>
       </div>
     </td>
   </tr>

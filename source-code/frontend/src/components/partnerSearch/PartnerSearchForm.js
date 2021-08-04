@@ -33,7 +33,8 @@ const FindAPartner = () => {
     {
       id: "1",
       date: "08/03/2021",
-      name: "Jason Davis",
+      fullName: "Jason Davis",
+      my_ntrp_rating: "4.5",
       gender: "male",
       match_availability: {
         Mon: ["eAM", "PM", "EVE"],
@@ -46,14 +47,15 @@ const FindAPartner = () => {
     {
       id: "2",
       date: "08/03/2021",
-      name: "Rich Bronson",
+      fullName: "Rich Bronson",
+      my_ntrp_rating: "4.5",
       gender: "male",
       match_availability: {
         Sat: ["AM", "PM", "EVE"],
         Sun: ["AM", "PM"],
       },
       status: "New",
-    },
+    }
   ];
 
   const initialValues = profileData;
@@ -139,6 +141,7 @@ const FindAPartner = () => {
       )
     );
   };
+
 
   const onSubmit = async (values, { setSubmitting }) => {
   
@@ -876,7 +879,7 @@ const FindAPartner = () => {
             </Formik>
           </Col>
           {displaySearchResults ? 
-          <PartnerSearchResultsTable partnerMatches={partnerMatches}  />
+          <PartnerSearchResultsTable partnerMatches={partnerMatches}   />
           : null 
           }
         </Row>
