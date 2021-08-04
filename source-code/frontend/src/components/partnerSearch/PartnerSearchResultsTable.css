@@ -43,6 +43,12 @@ span.avail-times::first-letter {
   padding-right: 0.2rem;
 }
 
-.partner-avail {
+/* .partner-avail {
+  text-align: left;
+} */
+
+.partner-avail1 {
+  display: flex;
+  justify-content: center;
   text-align: left;
 }

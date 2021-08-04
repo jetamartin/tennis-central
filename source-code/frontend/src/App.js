@@ -8,7 +8,7 @@ import Join from "./components/Join";
 import AboutMe from "./components/myProfile/AboutMe";
 import SkillsPrefs from "./components/myProfile/SkillsPrefs";
 import MatchAvail from "./components/myProfile/MatchAvail";
-import FindAPartner from "./components/FindAPartner";
+import PartnerSearchForm from "./components/partnerSearch/PartnerSearchForm";
 import Messages from "./components/Messages";
 import Partners from "./components/Partners";
 import NotFound from "./components/NotFound";
@@ -101,7 +101,7 @@ const App = () => {
             <Partners />
           </Route>
           <Route exact path="/Find-A-Partner">
-            <FindAPartner />
+            <PartnerSearchForm />
           </Route>
           <Route component={NotFound} />
         </Switch>

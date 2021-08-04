@@ -7,17 +7,16 @@ import { Button } from "react-bootstrap";
 import * as Yup from "yup";
 
 import isNil from "lodash/isNil";
-import TextError from "./TextError";
-import ErrorMsg from "./ErrorMsg";
-import "./FindAPartner.css";
+import TextError from "../TextError";
+import ErrorMsg from "../ErrorMsg";
+import "./PartnerSearchForm.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import { propTypes } from "react-bootstrap/esm/Image";
-import TennisCentralAPI from "../TennisCentralAPI";
-import UserContext from "./UserContext";
-import FindAPartnerSearchResults from "./PartnerSearchResultsTable";
+import TennisCentralAPI from "../../TennisCentralAPI";
+import UserContext from "../UserContext";
 import PartnerSearchResultsTable from "./PartnerSearchResultsTable";
 
 const FindAPartner = () => {
@@ -145,9 +144,7 @@ const FindAPartner = () => {
   
     values.dateAndTime = startDate;
     values.match_availability = buildMatchAvailObject(values);
-    console.log(values.match_availability);
     setDisplaySearchResults(true);
-    console.log("Form values:", values);
     setSubmitting(false);
   };
 

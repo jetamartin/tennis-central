@@ -2,41 +2,40 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { Container, Col, Row, Table } from "react-bootstrap";
 import "./PartnerSearchResultsTable.css";
-import PartnerAvailability from "./PartnerAvailability";
+import PartnerAvailDays from "./PartnerAvailDays";
 import { daysInWeek } from "date-fns";
 
 const PartnerSearchResultsRow = ({partnerMatch}) => {
 
   const {id, date, name, gender, match_availability, status} = partnerMatch;
-  console.log("Match Availability: ", match_availability)
-  
+    
   const deleteSearchResultItem = (e) => {
      // "e.target.parentElement.parentElement.parentElement.dataset.partneruserid"
     console.log('Delete Search Result Item');
   }
 
-  // console.log("Match Availability: ", match_availability);
+  
   const transformAvailability = (match_availability) => {
     let avail = []
     for (const day in match_availability) {
-      console.log(`${day}: ${match_availability[day]}`);
       avail.push({day: day, times: match_availability[day]})
     }
     return avail
   }
   const transformAvail = transformAvailability(match_availability);
-  // console.log(transformAvail)
-  
+    
   return (
     <>
     <tr data-partneruserid={id}>
     <td>{date}</td>
     <td>{name}</td>
     <td>{gender}</td>
-    <td className="partner-avail">
+    <td className="partner-avail1">
+      <div >
       {transformAvail.map((availability, index) => (
-        <PartnerAvailability key={index} availability={availability} />
+        <PartnerAvailDays key={index} availability={availability} />
       ))}
+      </div>
     </td>
 
     <td>{partnerMatch.status}</td>
