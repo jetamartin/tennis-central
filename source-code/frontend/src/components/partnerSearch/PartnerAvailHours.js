@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 
-const PartnerAvailTimes = ({timeSlot}) => {
-
-  debugger
+const PartnerAvailHours = ({timeSlot}) => {
 return (
   <span className="time-slots">
     {timeSlot}
   </span>
 )
 }
-export default PartnerAvailTimes;
+export default PartnerAvailHours;

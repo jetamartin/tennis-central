@@ -30,7 +30,7 @@ const PartnerSearchResultsTable = ({ partnerMatches }) => {
         <Row className="h-100 justify-content-center align-items-center">
           <Col sm={10} className="mx-auto form-border">
             <h3>Search Results</h3>
-            <Table striped bordered responsive="sm">
+            <Table striped responsive="sm">
               <thead>
                 <tr>
                   <th scope="col">Date</th>
