@@ -3,40 +3,68 @@ const { User, Message, Partner } = require("./models");
 async function seedData() {
   // create a user
   const testUser = await User.create({
-    username: "test",
+    username: "jDavis",
     password: "1234",
-    email: "test@gmail.com",
+    email: "jDavis@gmail.com",
     city: "San Diego",
-    firstName: "Test",
+    firstName: "Jason",
+    lastName: "Davis",
     gender: "Male",
-    lastName: "User",
-    match_availability: {},
-    max_travel_distance: 12,
-    ntrp_rating: "1.0",
+    match_availability: {
+      Mon: ["eAM", "PM", "EVE"],
+      Tue: ["PM", "EVE"],
+      Sat: ["AM", "PM", "EVE"],
+      Sun: ["AM", "PM"]
+    },
+    max_travel_distance: 10,
+    my_ntrp_rating: "4.5",
     opponent_gender: "Male only",
-    oppponent_ntrp_rating_range: {},
+    oppponent_ntrp_rating_range: {low: "4.0", high: "5.0"},
     postalCode: 90210,
     street_address: "1 Fake Street",
   });
 
   // create a second user
   const testUser2 = await User.create({
-    username: "test2",
+    username: "rBronson",
     password: "1234",
-    email: "test2@gmail.com",
+    email: "rBronson@gmail.com",
     city: "San Diego",
-    firstName: "Test",
+    firstName: "Rich",
+    lastName: "Bronson",
     gender: "Male",
-    lastName: "User",
-    match_availability: {},
-    max_travel_distance: 12,
-    ntrp_rating: "1.0",
+    match_availability: {
+      Sat: ["AM", "PM", "EVE"],
+      Sun: ["AM", "PM"]
+    },
+    max_travel_distance: 10,
+    my_ntrp_rating: "4.5",
     opponent_gender: "Male only",
-    oppponent_ntrp_rating_range: {},
+    oppponent_ntrp_rating_range: {low: "4.0", high: "5.0"},
     postalCode: 90210,
     streetAddress: "2 Fake Street",
   });
 
+    // create a third user
+    const testUser3 = await User.create({
+      username: "jMartin",
+      password: "1234",
+      email: "jMartin@gmail.com",
+      city: "San Diego",
+      firstName: "Jet",
+      lastName: "Martin",
+      gender: "Male",
+      match_availability: {
+        Sat: ["AM", "PM", "EVE"],
+        Sun: ["AM", "PM"]
+      },
+      max_travel_distance: 10,
+      my_ntrp_rating: "4.5",
+      opponent_gender: "Male only",
+      oppponent_ntrp_rating_range: {low: "4.0", high: "5.0"},
+      postalCode: 90210,
+      streetAddress: "2 Fake Street",
+    });
   // create a message
   const testMessage = await Message.create({
     content:
