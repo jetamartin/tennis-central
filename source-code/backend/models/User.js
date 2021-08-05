@@ -45,15 +45,15 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       // allowNull: false,
     },
-    // fullName: {
-    //   type: DataTypes.VIRTUAL,
-    //   get() {
-    //     return `${this.firstName} ${this.lastName}`;
-    //   },
-    //   set(value) {
-    //     throw new Error('Do not try to set the `fullName` value!');
-    //   }
-    // },
+    fullName: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return `${this.firstName} ${this.lastName}`;
+      },
+      set(value) {
+        throw new Error('Do not try to set the `fullName` value!');
+      }
+    },
     // Address information below (street_address, city, postal_code) could be separate table
     streetAddress: {
       type: DataTypes.STRING(30),
