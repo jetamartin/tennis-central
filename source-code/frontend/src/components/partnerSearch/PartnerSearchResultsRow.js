@@ -15,6 +15,10 @@ const PartnerSearchResultsRow = ({partnerMatch, removePartnerSearchResult}) => {
   //   console.log('Delete Search Result Item');
   // }
 
+  const createDate = () => {
+    const date = new Date();
+    return (new Intl.DateTimeFormat().format(date));
+  }
   
   const transformAvailability = (match_availability) => {
     let avail = []
@@ -28,7 +32,7 @@ const PartnerSearchResultsRow = ({partnerMatch, removePartnerSearchResult}) => {
   return (
     <>
     <tr data-id={id}>
-    <td>{date}</td>
+    <td>{createDate()}</td>
     <td>{fullName}</td>
     <td>{my_ntrp_rating}</td>
     <td>{gender}</td>
@@ -40,7 +44,7 @@ const PartnerSearchResultsRow = ({partnerMatch, removePartnerSearchResult}) => {
       </div>
     </td>
 
-    <td>{partnerMatch.status}</td>
+    <td>New</td>
     <td className="icon-group icon-norm">
       <div  className="icon-spacing" data-id={id}>
         <Link to="/messages">
