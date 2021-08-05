@@ -7,6 +7,8 @@ import { Button } from "react-bootstrap";
 import * as Yup from "yup";
 
 import isNil from "lodash/isNil";
+import inRange from "lodash/inRange";
+
 import TextError from "../TextError";
 import ErrorMsg from "../ErrorMsg";
 import "./PartnerSearchForm.css";
@@ -25,38 +27,40 @@ const FindAPartner = () => {
   );
   const [profileData, setProfileData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [generalMatchPlay, setGeneralMatchPlay] = useState(false);
-  const [ displaySearchResults, setDisplaySearchResults ] = useState(false);
+  // const [generalMatchPlay, setGeneralMatchPlay] = useState(false);
+  const [displaySearchResults, setDisplaySearchResults] = useState(false);
+  const [matchingPartners, setMatchingPartners] = useState([]);
   const userInfo = useContext(UserContext);
+  
 
-  const partnerMatches = [
-    {
-      id: "1",
-      date: "08/03/2021",
-      fullName: "Jason Davis",
-      my_ntrp_rating: "4.5",
-      gender: "male",
-      match_availability: {
-        Mon: ["eAM", "PM", "EVE"],
-        Tue: ["PM", "EVE"],
-        Sat: ["AM", "PM", "EVE"],
-        Sun: ["AM", "PM"],
-      },
-      status: "New",
-    },
-    {
-      id: "2",
-      date: "08/03/2021",
-      fullName: "Rich Bronson",
-      my_ntrp_rating: "4.5",
-      gender: "male",
-      match_availability: {
-        Sat: ["AM", "PM", "EVE"],
-        Sun: ["AM", "PM"],
-      },
-      status: "New",
-    }
-  ];
+  // const partnerMatches = [
+  //   {
+  //     id: "1",
+  //     date: "08/03/2021",
+  //     fullName: "Jason Davis",
+  //     my_ntrp_rating: "4.5",
+  //     gender: "male",
+  //     match_availability: {
+  //       Mon: ["eAM", "PM", "EVE"],
+  //       Tue: ["PM", "EVE"],
+  //       Sat: ["AM", "PM", "EVE"],
+  //       Sun: ["AM", "PM"],
+  //     },
+  //     status: "New",
+  //   },
+  //   {
+  //     id: "2",
+  //     date: "08/03/2021",
+  //     fullName: "Rich Bronson",
+  //     my_ntrp_rating: "4.5",
+  //     gender: "male",
+  //     match_availability: {
+  //       Sat: ["AM", "PM", "EVE"],
+  //       Sun: ["AM", "PM"],
+  //     },
+  //     status: "New",
+  //   },
+  // ];
 
   const initialValues = profileData;
 
@@ -115,11 +119,14 @@ const FindAPartner = () => {
   };
 
   const transformNtrpRatingRange = (ntrpRatingRange) => {
+    debugger;
     let ntrpValues = {};
-    ntrpValues = {
-      minNtrp: ntrpRatingRange.low,
-      maxNtrp: ntrpRatingRange.high,
-    };
+    if (ntrpRatingRange) {
+      ntrpValues = {
+        minNtrp: ntrpRatingRange.low,
+        maxNtrp: ntrpRatingRange.high,
+      };
+    }
     return ntrpValues;
   };
 
@@ -142,12 +149,74 @@ const FindAPartner = () => {
     );
   };
 
+  const fallsWithinRange = (currUserNtrpRating, opponentNtrpRating, ntrpRange) => {
+    const withinRangeCriteria = .5;
+    const highNtrpRange = ntrpRange.high + 5
+
+    // if no ntrpRange provided then we check to see if user ntrp rating is within an acceptable range of opponents ntrp range 
+    if (!ntrpRange) {
+      if (Math.abs(currUserNtrpRating - opponentNtrpRating) <= withinRangeCriteria ) return true
+    }  else {  // user provided a ntrp range for their opponent..check to see if opponents ntrp rating falls within range
+      return inRange(opponentNtrpRating, ntrpRange.low, highNtrpRange); 
+    }
+  }
+
+  const ntrpRatingCompatible = (currUser, potentialPartner) => {
+    const matchCriteria = .5
+    let match = false;
+    /* Compatibility rules: NOTE these rules below are currently single sided (validation done from currUser's perspective)
+      1 - if user didn't provide their rating OR potential partner didn't provide their rating then MATCH = FALSE;
+      2 - if user didn't provide an opponent rating range and potential partner didn't provide a opponent rating range
+          AND if users & partners rating within .5 NTRP points then MATCH = TRUE; 
+      3 - if user did provide a rating range AND potential partner's rating falls within the range then MATCH = TRUE;
+    */ 
+    // Rule #1
+    if (isNil(currUser.my_ntrp_rating) || isNil(currUser.my_ntrp_rating )) return false;
+
+    // Rule #2
+    if (isNil(currUser.opponent_ntrp_rating_range) && isNil(potentialPartner.opponent_ntrp_rating_range)) {
+      return fallsWithinRange(currUser.my_ntrp_rating, potentialPartner.my_ntrp_rating, null);
+    }
+
+    if (currUser.opponent_ntrp_rating_range && fallsWithinRange(currUser.my_ntrp_rating, potentialPartner.my_ntrp_rating, currUser.opponent_ntrp_rating_range)) {
+      return true;
+    } 
+    return false;
+  }
+
+  const matchPartners = (currUser, potentialPartners) => {
+    return potentialPartners.map((potentialPartner) => {
+      if ( ntrpRatingCompatible(currUser, potentialPartner) ) {
+        return potentialPartner;
+      }
+
+    })
+  }
+  const idPotentialPartners = (users) => {
+    const potentialPartners = users.filter(user => user.id !== userInfo.userId)
+    const currUser = users.filter(user => user.id === userInfo.userId )[0];
+    debugger; 
+    return matchPartners(currUser, potentialPartners);
+  
+  }
+
+  const updateMatchingPartners = (partners) => {
+    setMatchingPartners(partners); 
+  }
 
   const onSubmit = async (values, { setSubmitting }) => {
-  
     values.dateAndTime = startDate;
     values.match_availability = buildMatchAvailObject(values);
+
+    // Retrieve all users from DB
+    const allUsers = await TennisCentralAPI.getAllUsers();
+
+    // Determine which users are potential partner matches and set them 
+    setMatchingPartners(idPotentialPartners(allUsers.users));
+
+    // Set state variable to display results table with results
     setDisplaySearchResults(true);
+    
     setSubmitting(false);
   };
 
@@ -233,7 +302,6 @@ const FindAPartner = () => {
                             name="dateAndTime"
                             selected={startDate}
                             onChange={(date) => setStartDate(date)}
- 
                             showTimeSelect
                             dateFormat="MMMM d, yyyy h:mm aa"
                           />
@@ -423,8 +491,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="mon-EAM"
-                                      name="mon-EAM"
+                                      id="Mon-eAM"
+                                      name="Mon-eAM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -433,8 +501,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="tue-EAM"
-                                      name="tue-EAM"
+                                      id="Tue-eAM"
+                                      name="Tue-eAM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -443,8 +511,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="wed-EAM"
-                                      name="wed-EAM"
+                                      id="Wed-eAM"
+                                      name="Wed-eAM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -453,8 +521,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="thu-EAM"
-                                      name="thu-EAM"
+                                      id="Thu-eAM"
+                                      name="Thu-eAM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -463,8 +531,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="fri-EAM"
-                                      name="fri-EAM"
+                                      id="Fri-eAM"
+                                      name="Fri-eAM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -473,8 +541,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="sat-EAM"
-                                      name="sat-EAM"
+                                      id="Sat-eAM"
+                                      name="Sat-eAM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -483,8 +551,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="sun-EAM"
-                                      name="sun-EAM"
+                                      id="Sun-eAM"
+                                      name="Sun-eAM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -499,8 +567,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="mon-AM"
-                                      name="mon-AM"
+                                      id="Mon-AM"
+                                      name="Mon-AM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -509,8 +577,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="tue-AM"
-                                      name="tue-AM"
+                                      id="Tue-AM"
+                                      name="Tue-AM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -519,8 +587,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="wed-AM"
-                                      name="wed-AM"
+                                      id="Wed-AM"
+                                      name="Wed-AM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -529,8 +597,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="thu-AM"
-                                      name="thu-AM"
+                                      id="Thu-AM"
+                                      name="Thu-AM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -539,8 +607,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="fri-AM"
-                                      name="fri-AM"
+                                      id="Fri-AM"
+                                      name="Fri-AM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -549,8 +617,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="sat-AM"
-                                      name="sat-AM"
+                                      id="Sat-AM"
+                                      name="Sat-AM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -559,8 +627,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="sun-AM"
-                                      name="sun-AM"
+                                      id="Sun-AM"
+                                      name="Sun-AM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -575,8 +643,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="mon-PM"
-                                      name="mon-PM"
+                                      id="Mon-PM"
+                                      name="Mon-PM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -585,8 +653,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="tue-PM"
-                                      name="tue-PM"
+                                      id="Tue-PM"
+                                      name="Tue-PM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -595,8 +663,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="wed-PM"
-                                      name="wed-PM"
+                                      id="Wed-PM"
+                                      name="Wed-PM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -605,8 +673,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="thu-PM"
-                                      name="thu-PM"
+                                      id="Thu-PM"
+                                      name="Thu-PM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -615,8 +683,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="fri-PM"
-                                      name="fri-PM"
+                                      id="Fri-PM"
+                                      name="Fri-PM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -625,8 +693,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="sat-PM"
-                                      name="sat-PM"
+                                      id="Sat-PM"
+                                      name="Sat-PM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -635,8 +703,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="sun-PM"
-                                      name="sun-PM"
+                                      id="Sun-PM"
+                                      name="Sun-PM"
                                     />
                                   </FormGroup>
                                 </td>
@@ -651,8 +719,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="mon-EVE"
-                                      name="mon-EVE"
+                                      id="Mon-EVE"
+                                      name="Mon-EVE"
                                     />
                                   </FormGroup>
                                 </td>
@@ -661,8 +729,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="tue-EVE"
-                                      name="tue-EVE"
+                                      id="Tue-EVE"
+                                      name="Tue-EVE"
                                     />
                                   </FormGroup>
                                 </td>
@@ -671,8 +739,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="wed-EVE"
-                                      name="wed-EVE"
+                                      id="Wed-EVE"
+                                      name="Wed-EVE"
                                     />
                                   </FormGroup>
                                 </td>
@@ -681,8 +749,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="thu-EVE"
-                                      name="thu-EVE"
+                                      id="Thu-EVE"
+                                      name="Thu-EVE"
                                     />
                                   </FormGroup>
                                 </td>
@@ -691,8 +759,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="fri-EVE"
-                                      name="fri-EVE"
+                                      id="Fri-EVE"
+                                      name="Fri-EVE"
                                     />
                                   </FormGroup>
                                 </td>
@@ -701,8 +769,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="sat-EVE"
-                                      name="sat-EVE"
+                                      id="Sat-EVE"
+                                      name="Sat-EVE"
                                     />
                                   </FormGroup>
                                 </td>
@@ -711,8 +779,8 @@ const FindAPartner = () => {
                                     <Field
                                       className="form-check-input"
                                       type="checkbox"
-                                      id="sun-EVE"
-                                      name="sun-EVE"
+                                      id="Sun-EVE"
+                                      name="Sun-EVE"
                                     />
                                   </FormGroup>
                                 </td>
@@ -878,10 +946,11 @@ const FindAPartner = () => {
               )}
             </Formik>
           </Col>
-          {displaySearchResults ? 
-          <PartnerSearchResultsTable partnerMatches={partnerMatches}   />
-          : null 
-          }
+          {console.log('Partner Matches: ', matchingPartners)}
+          {displaySearchResults ? (
+
+            <PartnerSearchResultsTable matchingPartners={matchingPartners} updateMatchingPartners={updateMatchingPartners} />
+          ) : null}
         </Row>
       </Container>
     </>

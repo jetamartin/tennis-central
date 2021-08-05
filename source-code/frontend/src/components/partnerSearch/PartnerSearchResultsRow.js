@@ -5,7 +5,7 @@ import "./PartnerSearchResultsTable.css";
 import PartnerAvailDays from "./PartnerAvailDays";
 import { daysInWeek } from "date-fns";
 
-const PartnerSearchResultsRow = ({partnerMatch, removePartner}) => {
+const PartnerSearchResultsRow = ({partnerMatch, removePartnerSearchResult}) => {
 
   const {id, date, fullName, my_ntrp_rating, gender, match_availability, status} = partnerMatch;
     
@@ -53,7 +53,7 @@ const PartnerSearchResultsRow = ({partnerMatch, removePartner}) => {
         </Link>
       </div>
       <div  className="icon-spacing" data-id={id}>
-        <i className="bi bi-trash icon-danger icon-spacing" onClick={removePartner}></i>
+        <i className="bi bi-trash icon-danger icon-spacing" onClick={removePartnerSearchResult}></i>
       </div>
     </td>
   </tr>

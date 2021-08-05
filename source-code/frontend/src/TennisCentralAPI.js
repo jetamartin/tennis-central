@@ -64,7 +64,7 @@ class TennisCentralAPI {
   static async getUserProfile(userId) {
     // debugger
     let res = await this.request(`users/${userId}`);
-    return res; 
+    return res;
   }
 
   static async registerUser(newUserInfo) {
@@ -79,7 +79,12 @@ class TennisCentralAPI {
 
   static async updateUserRecord(userRecord, userId) {
     let res = await this.request(`users/${userId}`, userRecord, "patch");
-    return res; 
+    return res;
+  }
+
+  static async getAllUsers() {
+    let res = await this.request(`users`);
+    return res;
   }
 
   // static async request1(endpoint, data = {}, method = "get", token="") {

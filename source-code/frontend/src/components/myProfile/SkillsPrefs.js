@@ -78,7 +78,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
     console.log("Form Values: ", values);
     values.opponent_ntrp_rating_range = transformNtrpValues(values);
     try {
-      // debugger;
+      debugger;
       await updateUserRecord(values, userInfo.userId);
       setSubmitting(false);
     } catch (error) {
@@ -155,12 +155,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                       step=".5"
                     />
                     <div className="ntrp-num">
-                      { (values.my_ntrp_rating !== "" && values.my_ntrp_rating !== null) ?
-                      // { !isNil(values.my_ntrp_rating) ?
-                        JSON.stringify(parseFloat(values.my_ntrp_rating, 10))
-                        : ""
-                      }
-                      {/* {JSON.stringify(values.my_ntrp_rating)} */}
+                      {values.my_ntrp_rating}
                     </div>
                   </FormGroup>
                 </fieldset>

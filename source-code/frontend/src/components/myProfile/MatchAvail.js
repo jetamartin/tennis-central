@@ -141,7 +141,7 @@ const MatchAvail = ({ updateUserRecord }) => {
               errors,
             }) => (
               <Form className="mx-auto">
-                {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
+                <pre>{JSON.stringify(values, null, 4)}</pre>
                 <Table striped bordered responsive="sm">
                   <thead>
                     <tr>
@@ -166,8 +166,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="mon-EAM"
-                            name="mon-EAM"
+                            id="Mon-eAM"
+                            name="Mon-eAM"
                           />
                         </FormGroup>
                       </td>
@@ -176,8 +176,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="tue-EAM"
-                            name="tue-EAM"
+                            id="Tue-eAM"
+                            name="Tue-eAM"
                           />
                         </FormGroup>
                       </td>
@@ -186,8 +186,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="wed-EAM"
-                            name="wed-EAM"
+                            id="Wed-eAM"
+                            name="Wed-eAM"
                           />
                         </FormGroup>
                       </td>
@@ -196,8 +196,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="thu-EAM"
-                            name="thu-EAM"
+                            id="Thu-eAM"
+                            name="Thu-eAM"
                           />
                         </FormGroup>
                       </td>
@@ -206,8 +206,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="fri-EAM"
-                            name="fri-EAM"
+                            id="Fri-eAM"
+                            name="Fri-eAM"
                           />
                         </FormGroup>
                       </td>
@@ -216,8 +216,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="sat-EAM"
-                            name="sat-EAM"
+                            id="Sat-eAM"
+                            name="Sat-eAM"
                           />
                         </FormGroup>
                       </td>
@@ -226,8 +226,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="sun-EAM"
-                            name="sun-EAM"
+                            id="Sun-eAM"
+                            name="Sun-eAM"
                           />
                         </FormGroup>
                       </td>
@@ -242,8 +242,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="mon-AM"
-                            name="mon-AM"
+                            id="Mon-AM"
+                            name="Mon-AM"
                           />
                         </FormGroup>
                       </td>
@@ -252,8 +252,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="tue-AM"
-                            name="tue-AM"
+                            id="Tue-AM"
+                            name="Tue-AM"
                           />
                         </FormGroup>
                       </td>
@@ -262,8 +262,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="wed-AM"
-                            name="wed-AM"
+                            id="Wed-AM"
+                            name="Wed-AM"
                           />
                         </FormGroup>
                       </td>
@@ -272,8 +272,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="thu-AM"
-                            name="thu-AM"
+                            id="Thu-AM"
+                            name="Thu-AM"
                           />
                         </FormGroup>
                       </td>
@@ -282,8 +282,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="fri-AM"
-                            name="fri-AM"
+                            id="Fri-AM"
+                            name="Fri-AM"
                           />
                         </FormGroup>
                       </td>
@@ -292,8 +292,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="sat-AM"
-                            name="sat-AM"
+                            id="Sat-AM"
+                            name="Sat-AM"
                           />
                         </FormGroup>
                       </td>
@@ -302,8 +302,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="sun-AM"
-                            name="sun-AM"
+                            id="Sun-AM"
+                            name="Sun-AM"
                           />
                         </FormGroup>
                       </td>
@@ -318,8 +318,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="mon-PM"
-                            name="mon-PM"
+                            id="Mon-PM"
+                            name="Mon-PM"
                           />
                         </FormGroup>
                       </td>
@@ -328,8 +328,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="tue-PM"
-                            name="tue-PM"
+                            id="Tue-PM"
+                            name="Tue-PM"
                           />
                         </FormGroup>
                       </td>
@@ -338,8 +338,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="wed-PM"
-                            name="wed-PM"
+                            id="Wed-PM"
+                            name="Wed-PM"
                           />
                         </FormGroup>
                       </td>
@@ -348,8 +348,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="thu-PM"
-                            name="thu-PM"
+                            id="Thu-PM"
+                            name="Thu-PM"
                           />
                         </FormGroup>
                       </td>
@@ -358,8 +358,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="fri-PM"
-                            name="fri-PM"
+                            id="Fri-PM"
+                            name="Fri-PM"
                           />
                         </FormGroup>
                       </td>
@@ -368,8 +368,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="sat-PM"
-                            name="sat-PM"
+                            id="Sat-PM"
+                            name="Sat-PM"
                           />
                         </FormGroup>
                       </td>
@@ -378,8 +378,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="sun-PM"
-                            name="sun-PM"
+                            id="Sun-PM"
+                            name="Sun-PM"
                           />
                         </FormGroup>
                       </td>
@@ -394,8 +394,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="mon-EVE"
-                            name="mon-EVE"
+                            id="Mon-EVE"
+                            name="Mon-EVE"
                           />
                         </FormGroup>
                       </td>
@@ -404,8 +404,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="tue-EVE"
-                            name="tue-EVE"
+                            id="Tue-EVE"
+                            name="Tue-EVE"
                           />
                         </FormGroup>
                       </td>
@@ -414,8 +414,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="wed-EVE"
-                            name="wed-EVE"
+                            id="Wed-EVE"
+                            name="Wed-EVE"
                           />
                         </FormGroup>
                       </td>
@@ -424,8 +424,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="thu-EVE"
-                            name="thu-EVE"
+                            id="Thu-EVE"
+                            name="Thu-EVE"
                           />
                         </FormGroup>
                       </td>
@@ -434,8 +434,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="fri-EVE"
-                            name="fri-EVE"
+                            id="Fri-EVE"
+                            name="Fri-EVE"
                           />
                         </FormGroup>
                       </td>
@@ -444,8 +444,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="sat-EVE"
-                            name="sat-EVE"
+                            id="Sat-EVE"
+                            name="Sat-EVE"
                           />
                         </FormGroup>
                       </td>
@@ -454,8 +454,8 @@ const MatchAvail = ({ updateUserRecord }) => {
                           <Field
                             className="form-check-input"
                             type="checkbox"
-                            id="sun-EVE"
-                            name="sun-EVE"
+                            id="Sun-EVE"
+                            name="Sun-EVE"
                           />
                         </FormGroup>
                       </td>

@@ -6,9 +6,9 @@ import { Container, Col, Row, Table } from "react-bootstrap";
 import PartnerSearchResultsRow from "./PartnerSearchResultsRow";
 import "./PartnerSearchResultsTable.css";
 
-const PartnerSearchResultsTable = ({ partnerMatches }) => {
+const PartnerSearchResultsTable = ({ matchingPartners, updateMatchingPartners }) => {
 
-  const [matchingPartners, setMatchingPartners] = useState([]);
+  // const [matchingPartners, setMatchingPartners] = useState([]);
   const [isSearchLoading, setIsSearchLoading] = useState(true);
 
 // Removes array element at indexValue and returns resulting array
@@ -18,25 +18,25 @@ function arrayRemove(arr, indexValue) {
   });
 }
   // Removes the partner from partner search results when the user clicks the trashcan icon
-  const removePartner = (e) => {
+  const removePartnerSearchResult = (e) => {
     debugger;
 
     // Get the id of the partner search result element to be deleted
     const partnerId = e.target.parentElement.dataset.id;
 
     // Using the id find the index of the array item to be removed
-    const partnerArryIndex = partnerMatches.findIndex(partner => partner.id === partnerId);
+    const partnerArryIndex = matchingPartners.findIndex(partner => partner.id === +partnerId);
 
     // Remove the selected partner record for deletion from original matched partners list 
-    const newPartnerMatches = arrayRemove(partnerMatches, partnerArryIndex);
+    const newPartnerMatches = arrayRemove(matchingPartners, partnerArryIndex);
 
     // Update the MatchingPartners list less the removed partner..this should trigger a re-render of the 
-    setMatchingPartners(newPartnerMatches);
+    updateMatchingPartners(newPartnerMatches);
   };
 
   // const searchPartners = async () => {
   //   debugger;
-  //   const partnerSearchResults = partnerMatches;
+  //   const partnerSearchResults = matchingPartners;
   //   setMatchingPartners(partnerSearchResults);
   //   setIsSearchLoading(false);
   // };
@@ -60,11 +60,11 @@ function arrayRemove(arr, indexValue) {
                 </tr>
               </thead>
               <tbody>
-                {partnerMatches.map((partnerMatch) => (
+                {matchingPartners.map((matchingPartner) => (
                   <PartnerSearchResultsRow
-                    key={partnerMatch.id}
-                    partnerMatch={partnerMatch}
-                    removePartner={removePartner}
+                    key={matchingPartner.id}
+                    partnerMatch={matchingPartner}
+                    removePartnerSearchResult={removePartnerSearchResult}
                   />
                 ))}
               </tbody>
