@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { FormGroup, FormLabel, FormControl} from "react-bootstrap";
+import { FormGroup, FormLabel, FormControl } from "react-bootstrap";
 
 import { Container, Col, Row } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import * as Yup from "yup";
 import TextError from "../TextError";
-import ErrorMsg from '../ErrorMsg';
-import UserContext from '../UserContext';
+import ErrorMsg from "../ErrorMsg";
+import UserContext from "../UserContext";
 import TennisCentralAPI from "../../TennisCentralAPI";
 
 import DatePicker from "react-datepicker";
@@ -18,29 +18,33 @@ import setMinutes from "date-fns/setMinutes";
 
 import "./MyProfileForms.css";
 
-const AboutMe = ({updateUserRecord}) => {
-  const [ profileData, setProfileData ] = useState({});
-  const [ startDate, setStartDate ] = useState()
-  const [ updateAboutMeErrorFormMsg, setUpdateAboutMeErrorFormMsg] = useState([]);
-  const [ isLoading, setIsLoading ] = useState(true)
+const AboutMe = ({ updateUserRecord }) => {
+  const [profileData, setProfileData] = useState({});
+  const [startDate, setStartDate] = useState();
+  const [updateAboutMeErrorFormMsg, setUpdateAboutMeErrorFormMsg] = useState(
+    []
+  );
+  const [isLoading, setIsLoading] = useState(true);
   const userInfo = useContext(UserContext);
 
   useEffect(() => {
     const loadFormData = async () => {
       try {
         // debugger;
-        let profileData = await TennisCentralAPI.getUserProfile(userInfo.userId);
+        let profileData = await TennisCentralAPI.getUserProfile(
+          userInfo.userId
+        );
         setProfileData(profileData.user);
-        setIsLoading(false)
+        setIsLoading(false);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-     }
-    loadFormData()
-  }, [userInfo])
+    };
+    loadFormData();
+  }, [userInfo]);
 
   const initialValues = profileData;
- 
+
   const validationSchema = Yup.object({
     firstName: Yup.string().required("Required"),
     lastName: Yup.string().required("Required"),
@@ -49,25 +53,22 @@ const AboutMe = ({updateUserRecord}) => {
     gender: Yup.string().required("Select a gender"),
   });
 
-
-  
-  const onSubmit = async (values, {setSubmitting, setFieldValue}) => {
+  const onSubmit = async (values, { setSubmitting, setFieldValue, errors }) => {
     console.log("Form Data", values);
     values.birthday = startDate;
     try {
-      await updateUserRecord(values, userInfo.userId)
-      setSubmitting(false)
-      
+      await updateUserRecord(values, userInfo.userId);
+      setSubmitting(false);
     } catch (error) {
       console.log(error);
       if (Array.isArray(error)) {
-        setUpdateAboutMeErrorFormMsg(error)
+        setUpdateAboutMeErrorFormMsg(error);
       }
     }
   };
   if (isLoading) {
     return <p className="">Loading &hellip;</p>;
-  } 
+  }
   return (
     <Container fluid className="pb-5 ml-1">
       <Row>
@@ -93,188 +94,210 @@ const AboutMe = ({updateUserRecord}) => {
             validationSchema={validationSchema}
             onSubmit={onSubmit}
           >
-            {({ values, handleSubmit, isSubmitting, setFieldValue, handleChange, touched, errors }) => (
-              <Container>
-                <Form className="mx-auto mb-5">
-                  <pre>{JSON.stringify(values, null, 4)}</pre>
-                  <fieldset>
-                    <legend>Contact</legend>
-                    <Row>
-                      <Col>
-                        <FormGroup>
-                          <FormLabel htmlFor="firstName">First Name</FormLabel>
-                          <Field
-                            className="form-control"
-                            id="firstName"
-                            name="firstName"
-                            placeholder="Jane"
-                          />
-                          <ErrorMessage
-                            name="firstName"
-                            component={TextError}
-                          />
-                        </FormGroup>
-                      </Col>
+            {({
+              values,
+              handleSubmit,
+              isSubmitting,
+              setFieldValue,
+              handleChange,
+              touched,
+              errors,
+            }) => {
+              console.log(errors )
 
-                      <Col>
-                        <FormGroup>
-                          <FormLabel htmlFor="lastName">Last Name</FormLabel>
-                          <Field
-                            className="form-control"
-                            id="lastName"
-                            name="lastName"
-                            placeholder="Doe"
-                          />
-                          <ErrorMessage name="lastName" component={TextError} />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <FormGroup>
-                          <FormLabel htmlFor="email">Email</FormLabel>
-                          <Field
-                            className="form-control"
-                            type="email"
-                            id="email"
-                            name="email"
-                            placeholder="jDoe@email.com"
-                          />
-                          <ErrorMessage name="email" component={TextError} />
-                        </FormGroup>
-                      </Col>
+              return (
+                <Container>
+                  <Form className="mx-auto mb-5">
+                    <pre>{JSON.stringify(values, null, 4)}</pre>
+                    <fieldset>
+                      <legend>Contact</legend>
+                      <Row>
+                        <Col>
+                          <FormGroup>
+                            <FormLabel htmlFor="firstName">
+                              First Name
+                            </FormLabel>
+                            <Field
+                              className="form-control"
+                              id="firstName"
+                              name="firstName"
+                              placeholder="Jane"
+                            />
+                            <ErrorMessage
+                              name="firstName"
+                              component={TextError}
+                            />
+                          </FormGroup>
+                        </Col>
 
-                      <Col>
-                        <FormGroup>
-                          <FormLabel htmlFor="telNum">Telephone#</FormLabel>
-                          <Field
-                            className="form-control"
-                            id="telNum"
-                            type="text"
-                            name="telNum"
-                            placeholder="818-222-4531"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                  </fieldset>
+                        <Col>
+                          <FormGroup>
+                            <FormLabel htmlFor="lastName">Last Name</FormLabel>
+                            <Field
+                              className="form-control"
+                              id="lastName"
+                              name="lastName"
+                              placeholder="Doe"
+                            />
+                            <ErrorMessage
+                              name="lastName"
+                              component={TextError}
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <FormGroup>
+                            <FormLabel htmlFor="email">Email</FormLabel>
+                            <Field
+                              className="form-control"
+                              type="email"
+                              id="email"
+                              name="email"
+                              placeholder="jDoe@email.com"
+                            />
+                            <ErrorMessage name="email" component={TextError} />
+                          </FormGroup>
+                        </Col>
 
-                  <fieldset>
-                    <legend>Location</legend>
-                    <Row>
-                      <Col>
-                        <FormGroup>
-                          <FormLabel htmlFor="streetAddress">
-                            Street Address
-                          </FormLabel>
-                          <Field
-                            className="form-control"
-                            id="streetAddress"
-                            name="streetAddress"
-                            placeholder="123 Easy Street"
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col>
-                        <FormGroup>
-                          <FormLabel htmlFor="city">City</FormLabel>
-                          <Field
-                            className="form-control"
-                            id="city"
-                            name="city"
-                            placeholder="Los Angeles"
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <FormLabel htmlFor="postalCode">Postal Code</FormLabel>
-                    <Field
-                      className="form-control"
-                      id="postalCode"
-                      name="postalCode"
-                      placeholder="92120"
-                    />
-                    <ErrorMessage name="postalCode" component={TextError} />
-                  </fieldset>
+                        <Col>
+                          <FormGroup>
+                            <FormLabel htmlFor="telNum">Telephone#</FormLabel>
+                            <Field
+                              className="form-control"
+                              id="telNum"
+                              type="text"
+                              name="telNum"
+                              placeholder="818-222-4531"
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                    </fieldset>
 
-                  <fieldset>
-                    <legend>Demographics</legend>
-                    <FormGroup>
-                    <FormLabel
-                        className="datePickerLabel"
-                        htmlFor="dateAndTime"
-                      >
-                        Birthday
-                      </FormLabel>
-                      <DatePicker
-                        // filterDate={d => {
-                        //   return new Date() > d;
-                        // }}
-                        maxDate = {new Date()}
-                        isClearable
+                    <fieldset>
+                      <legend>Location</legend>
+                      <Row>
+                        <Col>
+                          <FormGroup>
+                            <FormLabel htmlFor="streetAddress">
+                              Street Address
+                            </FormLabel>
+                            <Field
+                              className="form-control"
+                              id="streetAddress"
+                              name="streetAddress"
+                              placeholder="123 Easy Street"
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col>
+                          <FormGroup>
+                            <FormLabel htmlFor="city">City</FormLabel>
+                            <Field
+                              className="form-control"
+                              id="city"
+                              name="city"
+                              placeholder="Los Angeles"
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <FormLabel htmlFor="postalCode">Postal Code</FormLabel>
+                      <Field
                         className="form-control"
-                        selected={startDate}
-                        onChange={(date) => setStartDate(date)}
-                        showYearDropdown
-                        dateFormatCalendar="MMMM"
-                        yearDropdownItemNumber={70}
-                        scrollableYearDropdown
-                        // dateFormat="yyyy/MM/dd"
-                        dateFormat="MM/dd/yyyy"
-                        type="date"
-                        id="birthday"
-                        name="birthday"
-                        value={values.birthday}
+                        id="postalCode"
+                        name="postalCode"
+                        placeholder="92120"
                       />
-                    </FormGroup>
-                    <FormGroup className="form-group">
-                      <div className="custom-form-label">Gender</div>
-                      <FormGroup className="form-check form-check-inline">
-                        <Field
-                          className="form-check-input"
-                          type="radio"
-                          id="male"
-                          name="gender"
-                          value="Male"
-                        />
-                        <FormLabel className="form-check-label" htmlFor="male">
-                          Male
-                        </FormLabel>
-                      </FormGroup>
+                      <ErrorMessage name="postalCode" component={TextError} />
+                    </fieldset>
 
-                      <FormGroup className="form-check form-check-inline">
-                        <Field
-                          className="form-check-input"
-                          type="radio"
-                          id="female"
-                          name="gender"
-                          value="Female"
-                        />
+                    <fieldset>
+                      <legend>Demographics</legend>
+                      <FormGroup>
                         <FormLabel
-                          className="form-check-label"
-                          htmlFor="female"
+                          className="datePickerLabel"
+                          htmlFor="dateAndTime"
                         >
-                          Female
+                          Birthday
                         </FormLabel>
+                        <DatePicker
+                          // filterDate={d => {
+                          //   return new Date() > d;
+                          // }}
+                          maxDate={new Date()}
+                          isClearable
+                          className="form-control"
+                          selected={startDate}
+                          onChange={(date) => setStartDate(date)}
+                          showYearDropdown
+                          dateFormatCalendar="MMMM"
+                          yearDropdownItemNumber={70}
+                          scrollableYearDropdown
+                          // dateFormat="yyyy/MM/dd"
+                          dateFormat="MM/dd/yyyy"
+                          type="date"
+                          id="birthday"
+                          name="birthday"
+                          value={values.birthday}
+                        />
                       </FormGroup>
-                      <div>
-                        <ErrorMessage name="gender" component={TextError} />
-                      </div>
-                    </FormGroup>
-                  </fieldset>
-                  {updateAboutMeErrorFormMsg.length !== 0 ? 
-                    updateAboutMeErrorFormMsg.map(errorMsg => <ErrorMsg errorMsg={errorMsg} />)
-                    : null }
+                      <FormGroup className="form-group">
+                        <div className="custom-form-label">Gender</div>
+                        <FormGroup className="form-check form-check-inline">
+                          <Field
+                            className="form-check-input"
+                            type="radio"
+                            id="male"
+                            name="gender"
+                            value="Male"
+                          />
+                          <FormLabel
+                            className="form-check-label"
+                            htmlFor="male"
+                          >
+                            Male
+                          </FormLabel>
+                        </FormGroup>
 
-                  <Button
-                    type="submit"
-                    className="btn btn-primary btn-lg btn-block mt-3"
-                  >
-                    Submit
-                  </Button>
-                </Form>
-              </Container>
-            )}
+                        <FormGroup className="form-check form-check-inline">
+                          <Field
+                            className="form-check-input"
+                            type="radio"
+                            id="female"
+                            name="gender"
+                            value="Female"
+                          />
+                          <FormLabel
+                            className="form-check-label"
+                            htmlFor="female"
+                          >
+                            Female
+                          </FormLabel>
+                        </FormGroup>
+                        <div>
+                          <ErrorMessage name="gender" component={TextError} />
+                        </div>
+                      </FormGroup>
+                    </fieldset>
+                    {updateAboutMeErrorFormMsg.length !== 0
+                      ? updateAboutMeErrorFormMsg.map((errorMsg) => (
+                          <ErrorMsg errorMsg={errorMsg} />
+                        ))
+                      : null}
+
+                    <Button
+                      type="submit"
+                      className="btn btn-primary btn-lg btn-block mt-3"
+                    >
+                      Submit
+                    </Button>
+                  </Form>
+                </Container>
+              );
+            }}
           </Formik>
         </Col>
       </Row>

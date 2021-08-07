@@ -4,16 +4,14 @@ import { Container, Col, Row, Table } from "react-bootstrap";
 import "./PartnerSearchResultsTable.css";
 import PartnerAvailDays from "./PartnerAvailDays";
 import { daysInWeek } from "date-fns";
+import UserContext from "../UserContext";
+import TennisCentralAPI from "../../TennisCentralAPI";
 
-const PartnerSearchResultsRow = ({partnerMatch, removePartnerSearchResult}) => {
+const PartnerSearchResultsRow = ({partnerMatch, removePartnerSearchResult, updatePartnerStatus}) => {
 
   const {id, date, fullName, my_ntrp_rating, gender, match_availability, status} = partnerMatch;
-    
-  // const deleteSearchResultItem = (e) => {
-  //   debugger
-  //    // "e.target.parentElement.parentElement.parentElement.dataset.partneruserid"
-  //   console.log('Delete Search Result Item');
-  // }
+  const userInfo = useContext(UserContext);   
+
 
   const createDate = () => {
     const date = new Date();
@@ -28,12 +26,30 @@ const PartnerSearchResultsRow = ({partnerMatch, removePartnerSearchResult}) => {
     return avail
   }
   const transformAvail = transformAvailability(match_availability);
+
+  const addPartner = async (e) => {
+    try {
+      debugger;
+      const partnerId = e.target.parentElement.dataset.id; 
+      await TennisCentralAPI.addPartner(userInfo.userId, partnerId)
+      updatePartnerStatus(partnerId);   
+    } catch (error) {
+      console.log("Add Partner error", error)
+    }
+
+
+    debugger;
+  }
     
   return (
     <>
     <tr data-id={id}>
     <td>{createDate()}</td>
-    <td>{fullName}</td>
+    {status === "Current" ?
+      <td><Link to="/partners">{fullName}</Link></td>
+    : <td>{fullName}</td>
+    }
+  
     <td>{my_ntrp_rating}</td>
     <td>{gender}</td>
     <td className="partner-avail1">
@@ -44,17 +60,19 @@ const PartnerSearchResultsRow = ({partnerMatch, removePartnerSearchResult}) => {
       </div>
     </td>
 
-    <td>New</td>
+    <td>{status}</td>
     <td className="icon-group icon-norm">
       <div  className="icon-spacing" data-id={id}>
         <Link to="/messages">
           <i className="bi bi-envelope"></i>
         </Link>
       </div>
-      <div  className="icon-spacing" data-id={id}>
-        <Link to="/partners">
-          <i className="bi bi-person-plus icon-spacing"></i>
-        </Link>
+      <div  className="icon-spacing" data-id={id} >
+        {status === "Current" ? 
+          <i className="bi bi-person-plus icon-spacing inactive" ></i>
+        : 
+        <i className="bi bi-person-plus icon-spacing active"  onClick={addPartner} ></i>
+        }
       </div>
       <div  className="icon-spacing" data-id={id}>
         <i className="bi bi-trash icon-danger icon-spacing" onClick={removePartnerSearchResult}></i>

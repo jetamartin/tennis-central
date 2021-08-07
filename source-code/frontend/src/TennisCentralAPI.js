@@ -87,6 +87,16 @@ class TennisCentralAPI {
     return res;
   }
 
+  static async addPartner(userId, partnerId) {
+    let res = await this.request(`users/${userId}/partners`, {"partnerId": +partnerId}, "post" )
+    return res;     
+  }
+
+  static async getPartner(userId, partnerId) {
+    let res = await this.request(`users/${userId}/partners/${partnerId}`);
+    return res;
+  }
+
   // static async request1(endpoint, data = {}, method = "get", token="") {
   //   const url = `${BASE_URL}/${endpoint}`;
   //   let headers = {}

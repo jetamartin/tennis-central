@@ -20,6 +20,7 @@ import { propTypes } from "react-bootstrap/esm/Image";
 import TennisCentralAPI from "../../TennisCentralAPI";
 import UserContext from "../UserContext";
 import PartnerSearchResultsTable from "./PartnerSearchResultsTable";
+import { map } from "lodash";
 
 const FindAPartner = () => {
   const [startDate, setStartDate] = useState(
@@ -31,40 +32,10 @@ const FindAPartner = () => {
   const [displaySearchResults, setDisplaySearchResults] = useState(false);
   const [matchingPartners, setMatchingPartners] = useState([]);
   const userInfo = useContext(UserContext);
-  
-
-  // const partnerMatches = [
-  //   {
-  //     id: "1",
-  //     date: "08/03/2021",
-  //     fullName: "Jason Davis",
-  //     my_ntrp_rating: "4.5",
-  //     gender: "male",
-  //     match_availability: {
-  //       Mon: ["eAM", "PM", "EVE"],
-  //       Tue: ["PM", "EVE"],
-  //       Sat: ["AM", "PM", "EVE"],
-  //       Sun: ["AM", "PM"],
-  //     },
-  //     status: "New",
-  //   },
-  //   {
-  //     id: "2",
-  //     date: "08/03/2021",
-  //     fullName: "Rich Bronson",
-  //     my_ntrp_rating: "4.5",
-  //     gender: "male",
-  //     match_availability: {
-  //       Sat: ["AM", "PM", "EVE"],
-  //       Sun: ["AM", "PM"],
-  //     },
-  //     status: "New",
-  //   },
-  // ];
 
   const initialValues = profileData;
 
-  // Some problem with validation rule
+  // Some problem with validation rule -- need to fix
   const validationSchema = Yup.object({
     // partnerMatchType: Yup.string().required("Select a partner match type"),
     // partnerGender: Yup.string().required("Please select a gender type"),
@@ -118,8 +89,8 @@ const FindAPartner = () => {
     return checkboxValuesObj;
   };
 
+
   const transformNtrpRatingRange = (ntrpRatingRange) => {
-    debugger;
     let ntrpValues = {};
     if (ntrpRatingRange) {
       ntrpValues = {
@@ -149,74 +120,212 @@ const FindAPartner = () => {
     );
   };
 
-  const fallsWithinRange = (currUserNtrpRating, opponentNtrpRating, ntrpRange) => {
-    const withinRangeCriteria = .5;
-    const highNtrpRange = ntrpRange.high + 5
+  /**
+   * Determines if a player's NTRP rating satisfies the user's NTRP criteria.  
+   * @param {*} currUserNtrpRating - users self NTRP rating
+   * @param {*} opponentNtrpRating - players (opponents) self NTRP rating
+   * @param {*} ntrpRange - users opponent_NTRP_Rating range (i.e., acceptable NTRP rating range of opponent)
+   * @returns True or False
+   */
+  const fallsWithinRange = (
+    currUserNtrpRating,
+    opponentNtrpRating,
+    ntrpRange
+  ) => {
+    const withinRangeCriteria = 0.5;
+    const highNtrpRange = ntrpRange.high + 5;
 
-    // if no ntrpRange provided then we check to see if user ntrp rating is within an acceptable range of opponents ntrp range 
+    // if no ntrpRange provided then we check to see if user ntrp rating is within an acceptable range of opponents ntrp range
     if (!ntrpRange) {
-      if (Math.abs(currUserNtrpRating - opponentNtrpRating) <= withinRangeCriteria ) return true
-    }  else {  // user provided a ntrp range for their opponent..check to see if opponents ntrp rating falls within range
-      return inRange(opponentNtrpRating, ntrpRange.low, highNtrpRange); 
+      if (
+        Math.abs(currUserNtrpRating - opponentNtrpRating) <= withinRangeCriteria
+      )
+        return true;
+    } else {
+      // user provided a ntrp range for their opponent..check to see if opponents ntrp rating falls within range
+      return inRange(opponentNtrpRating, ntrpRange.low, highNtrpRange);
     }
-  }
+  };
 
+  /**
+   * Applies the ntrpRating search criteria  to determine if a player is a potential partner
+   * 
+   * @param {*} currUser - curent users record (including all specified search criteria)
+   * @param {*} potentialPartner - list of all users that could be a partner
+   * @returns 
+   */
   const ntrpRatingCompatible = (currUser, potentialPartner) => {
-    const matchCriteria = .5
+    const matchCriteria = 0.5;
     let match = false;
     /* Compatibility rules: NOTE these rules below are currently single sided (validation done from currUser's perspective)
       1 - if user didn't provide their rating OR potential partner didn't provide their rating then MATCH = FALSE;
       2 - if user didn't provide an opponent rating range and potential partner didn't provide a opponent rating range
           AND if users & partners rating within .5 NTRP points then MATCH = TRUE; 
       3 - if user did provide a rating range AND potential partner's rating falls within the range then MATCH = TRUE;
-    */ 
+    */
     // Rule #1
-    if (isNil(currUser.my_ntrp_rating) || isNil(currUser.my_ntrp_rating )) return false;
+    if (isNil(currUser.my_ntrp_rating) || isNil(currUser.my_ntrp_rating))
+      return false;
 
     // Rule #2
-    if (isNil(currUser.opponent_ntrp_rating_range) && isNil(potentialPartner.opponent_ntrp_rating_range)) {
-      return fallsWithinRange(currUser.my_ntrp_rating, potentialPartner.my_ntrp_rating, null);
+    if (
+      isNil(currUser.opponent_ntrp_rating_range) &&
+      isNil(potentialPartner.opponent_ntrp_rating_range)
+    ) {
+      return fallsWithinRange(
+        currUser.my_ntrp_rating,
+        potentialPartner.my_ntrp_rating,
+        null
+      );
     }
-
-    if (currUser.opponent_ntrp_rating_range && fallsWithinRange(currUser.my_ntrp_rating, potentialPartner.my_ntrp_rating, currUser.opponent_ntrp_rating_range)) {
+    // Rule #3
+    if (
+      currUser.opponent_ntrp_rating_range &&
+      fallsWithinRange(
+        currUser.my_ntrp_rating,
+        potentialPartner.my_ntrp_rating,
+        currUser.opponent_ntrp_rating_range
+      )
+    ) {
       return true;
-    } 
+    }
     return false;
-  }
+  };
 
+  /**
+   * Applies Partner Match criteria as defined by the user and retuns any players that match that criteria 
+   * NOTE: In the current implementation the only criteria being applied is the NTRP ratings so all users 
+   * will need to at minumun to have rated themselves to be considered as a potential match
+   * 
+   * @param {*} currUser - current users record (contains all profile information)
+   * @param {*} potentialPartners - array of all partners that could be partners
+   * @returns Array of players that satisfy the Partner Match rules
+   */
   const matchPartners = (currUser, potentialPartners) => {
     return potentialPartners.map((potentialPartner) => {
-      if ( ntrpRatingCompatible(currUser, potentialPartner) ) {
+      if (ntrpRatingCompatible(currUser, potentialPartner)) {
         return potentialPartner;
       }
+    });
+  };
 
-    })
-  }
+  /**
+   *  First it separates the current user from the full list of users and then calls a method "matchPartners" to 
+   *  filter out players that don't match the users search criteria. 
+   *   
+   * @param {*} users - all users in the database
+   * @returns an array of partners that match search criteria
+   */
   const idPotentialPartners = (users) => {
-    const potentialPartners = users.filter(user => user.id !== userInfo.userId)
-    const currUser = users.filter(user => user.id === userInfo.userId )[0];
-    debugger; 
+    const potentialPartners = users.filter(
+      (user) => user.id !== userInfo.userId
+    );
+    const currUser = users.filter((user) => user.id === userInfo.userId)[0];
     return matchPartners(currUser, potentialPartners);
-  
+  };
+
+  /**
+   * Gets the users existing partners from database and returns them in an array
+   * @param {*} userId - current user's id
+   * @param {*} potentialPartners - list of partners that previous matched search criteria
+   * @returns currentPartners - array containing all of the user current partners
+   */
+  const getExistingPartners = async (userId, potentialPartners) => {
+    let currentPartners = [];
+    for (const partner of potentialPartners) {
+      try {
+        const res = await TennisCentralAPI.getPartner(
+          userInfo.userId,
+          partner.id
+        );
+        currentPartners.push(res);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    return currentPartners;
+  };
+
+ /**
+  * Sets base/initial partner status to "New" for each potential partner
+  * @param {*} partners 
+  * @returns 
+  */
+  const setInitialPartnerStatus = (partners) => {
+     partners.map((partner) => {
+       partner.status = "New";
+    });
+    return partners; 
   }
+
+ /**
+  * Sets the "status" value of each potential partner returned in search results to either "New" (not an existing partner)  
+  * or "Current" (already a existing partner)
+  * 
+  * Note: Status field is used to indicate (in the UI only) whether one of the players that matched the search criteria
+  *   is already an existing partner. The status field values are either "Current" (i.e., existing partner) or "New" (i.e.,
+  *   not currently a partner). Status is not (and cannot be) a field in the DB database. It must be "caclculated" assigned
+  *   the appropriate value based on entries in the partners associate table.  
+  * @param {*} existingPartners - list of existing partners
+  * @param {*} partners - all qualified partners (e.g., passed filter/search criteria)
+  * @returns Array of potential partners with status set to "New" or "Current"
+  */
+  const addPartnerStatus = async (existingPartners, partners) => {
+    const partnersWithInitialStatus = setInitialPartnerStatus(partners);
+    if (existingPartners.length > 0) {
+      existingPartners.map((existingPartner) => {
+        const arrayIndex = partnersWithInitialStatus.findIndex(
+          (partnerWithInitalStatus) => {
+            return partnerWithInitalStatus.id === existingPartner.partner.partnerId
+          }
+        );
+        if (arrayIndex !== -1) {
+          partnersWithInitialStatus[arrayIndex].status = "Current";
+        }
+      });
+    }
+    return partnersWithInitialStatus
+  };
 
   const updateMatchingPartners = (partners) => {
-    setMatchingPartners(partners); 
-  }
+    setDisplaySearchResults(false);
+    setMatchingPartners(partners);
+    setDisplaySearchResults(true);
+  };
 
+  /**
+   * Gets the list of all potential partners, applies the user's partner search criteria and returns
+   *  a list of qualified partners and displays them in the search results;
+   * 
+   * @param {*} values 
+   * @param {*} param1 
+   */
   const onSubmit = async (values, { setSubmitting }) => {
+    
     values.dateAndTime = startDate;
     values.match_availability = buildMatchAvailObject(values);
 
     // Retrieve all users from DB
     const allUsers = await TennisCentralAPI.getAllUsers();
 
-    // Determine which users are potential partner matches and set them 
-    setMatchingPartners(idPotentialPartners(allUsers.users));
+    // Get players that meet the users partner search filter criteria
+    let partners = idPotentialPartners(allUsers.users);
 
-    // Set state variable to display results table with results
-    setDisplaySearchResults(true);
+    // Get the list of the users current partners
+    const existingPartners = await getExistingPartners(userInfo.userId, partners);
+
+    // Set the Partner status ("New" or "Current") for each of the partners that match the search criteria
+    const partnersWithStatusAdded = addPartnerStatus(
+      existingPartners,
+      partners
+    );
     
+    // Set matchingPartners state value to force a refresh
+    setMatchingPartners(partners);
+
+    // Now that partner match list has been created display search results
+    setDisplaySearchResults(true);
+
     setSubmitting(false);
   };
 
@@ -946,10 +1055,12 @@ const FindAPartner = () => {
               )}
             </Formik>
           </Col>
-          {console.log('Partner Matches: ', matchingPartners)}
+          {console.log("Partner Matches: ", matchingPartners)}
           {displaySearchResults ? (
-
-            <PartnerSearchResultsTable matchingPartners={matchingPartners} updateMatchingPartners={updateMatchingPartners} />
+            <PartnerSearchResultsTable
+              matchingPartners={matchingPartners}
+              updateMatchingPartners={updateMatchingPartners}
+            />
           ) : null}
         </Row>
       </Container>

@@ -14,18 +14,27 @@ td {
   padding-bottom: 0;
 }
 
-.icon-norm {
+/* .icon-norm {
   color: #007bff;
-}
+} */
 
 .icon-danger {
   color: red;
   cursor: pointer;
 }
 
+.inactive {
+  color: lightgrey;
+}
+.active {
+  color: #007bff;
+  cursor: pointer;
+}
+
 .icon-spacing {
   padding-bottom: 0.5rem;
 }
+
 .time-slots {
   padding-right: 5px;
 }
