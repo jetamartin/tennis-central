@@ -50,9 +50,6 @@ const User = sequelize.define(
       get() {
         return `${this.firstName} ${this.lastName}`;
       },
-      set(value) {
-        throw new Error('Do not try to set the `fullName` value!');
-      }
     },
     // Address information below (street_address, city, postal_code) could be separate table
     streetAddress: {

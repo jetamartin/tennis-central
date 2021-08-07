@@ -10,12 +10,12 @@ const ExpressError = require("../ExpressError");
   patch /partners/:id (update)
   delete /partners/:id (delete)
  */
-// router.get("", async (req, res) => {
+debugger;
 router.get("/users/:userId/partners", async (req, res, next) => {
   try {
     const userId = +req.params.userId;
-    const partners = await Partner.findAll( { where: { playerId: userId}});
-    res.json({partners});
+    const partners = await Partner.findAll({ where: { playerId: userId } });
+    res.json({ partners });
   } catch (error) {
     return next(error);
   }
@@ -28,12 +28,11 @@ router.post("/users/:userId/partners", async (req, res, next) => {
     const partnerBody = req.body;
     partnerBody.playerId = playerId;
     const partner = await Partner.create(partnerBody);
-    return res.status(201).json({partner});
+    return res.status(201).json({ partner });
   } catch (error) {
     return next(error);
   }
 });
-
 
 // router.get("/:id", async (req, res, next) => {
 router.get("/users/:userId/partners/:id", async (req, res, next) => {
@@ -41,13 +40,12 @@ router.get("/users/:userId/partners/:id", async (req, res, next) => {
     const playerId = +req.params.userId;
     const partner = await Partner.findOne({ where: { id: req.params.id } });
     if (!partner) throw new ExpressError(404, "User not found");
-    return res.json({partner});
+    return res.json({ partner });
   } catch (error) {
     console.log(error);
     return next(error);
   }
 });
-
 
 // router.patch("/:id", async (req, res, next) => {
 router.patch("/users/:userId/partners/:id", async (req, res, next) => {
@@ -57,14 +55,14 @@ router.patch("/users/:userId/partners/:id", async (req, res, next) => {
     partnerBody.playerId = playerId;
     const result = await Partner.update(partnerBody, {
       where: { id: req.params.id },
-      returning: true
+      returning: true,
     });
-    if (result[0]=== 0) throw new ExpressError(404, "Partner not found");
-      const partner = result[1][0].get();
-      res.status(200).json({ partner });
-   } catch (error) {
-    console.log(error)
-    return next(error)
+    if (result[0] === 0) throw new ExpressError(404, "Partner not found");
+    const partner = result[1][0].get();
+    res.status(200).json({ partner });
+  } catch (error) {
+    console.log(error);
+    return next(error);
   }
 });
 
@@ -78,7 +76,7 @@ router.delete("/users/:userId/partners/:id", async (req, res, next) => {
       returning: true,
     });
     if (result === 0) throw new ExpressError(404, "Partner not found");
-    return res.status(200).json({deleted: requestedId});
+    return res.status(200).json({ deleted: requestedId });
   } catch (error) {
     console.log(error);
     return next(error);

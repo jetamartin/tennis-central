@@ -13,6 +13,7 @@ const Partner = sequelize.define(
      // SQL Query syntax for accessin gemail: SELECT contact ->> 'email' AS email  from public."Partners";
       type: DataTypes.JSONB
     },
+
   }
 );
 
