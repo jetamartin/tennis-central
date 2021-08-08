@@ -29,16 +29,12 @@ const PartnerSearchResultsRow = ({partnerMatch, removePartnerSearchResult, updat
 
   const addPartner = async (e) => {
     try {
-      debugger;
       const partnerId = e.target.parentElement.dataset.id; 
       await TennisCentralAPI.addPartner(userInfo.userId, partnerId)
       updatePartnerStatus(partnerId);   
     } catch (error) {
       console.log("Add Partner error", error)
     }
-
-
-    debugger;
   }
     
   return (

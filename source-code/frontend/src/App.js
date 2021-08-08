@@ -10,7 +10,7 @@ import SkillsPrefs from "./components/myProfile/SkillsPrefs";
 import MatchAvail from "./components/myProfile/MatchAvail";
 import PartnerSearchForm from "./components/partnerSearch/PartnerSearchForm";
 import Messages from "./components/Messages";
-import Partners from "./components/Partners";
+import PartnerList from "./components/PartnerList";
 import NotFound from "./components/NotFound";
 import TennisCentralAPI from "./TennisCentralAPI";
 import isNil from "lodash/isNil";
@@ -97,8 +97,8 @@ const App = () => {
           <Route exact path="/Messages">
             <Messages />
           </Route>
-          <Route exact path="/Partners">
-            <Partners />
+          <Route exact path="/PartnerList">
+            <PartnerList />
           </Route>
           <Route exact path="/Find-A-Partner">
             <PartnerSearchForm />

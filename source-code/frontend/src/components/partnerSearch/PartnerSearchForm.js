@@ -20,7 +20,6 @@ import { propTypes } from "react-bootstrap/esm/Image";
 import TennisCentralAPI from "../../TennisCentralAPI";
 import UserContext from "../UserContext";
 import PartnerSearchResultsTable from "./PartnerSearchResultsTable";
-import { map } from "lodash";
 
 const FindAPartner = () => {
   const [startDate, setStartDate] = useState(

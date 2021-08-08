@@ -25,7 +25,7 @@ const NavBar = ({ userInfo, logoutUser }) => {
         {isLoggedIn ? (
           <Nav className="ml-auto">
             <Nav.Link href="Find-A-Partner">Find-a-partner</Nav.Link>
-            <Nav.Link href="Partners">Partners</Nav.Link>
+            <Nav.Link href="PartnerList">Partners</Nav.Link>
             <Nav.Link href="Messages">Messages</Nav.Link>
             <NavDropdown title="MyProfile" id="basic-nav-dropdown">
               <NavDropdown.Item href="AboutMe">About Me</NavDropdown.Item>
