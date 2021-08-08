@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { Partner, User } = require("../models");
+const { Partner } = require("../models");
 const ExpressError = require("../ExpressError");
-
+debugger;
 /* 
   get /partners  (read)
   post /partners (create)
@@ -10,12 +10,27 @@ const ExpressError = require("../ExpressError");
   patch /partners/:id (update)
   delete /partners/:id (delete)
  */
-debugger;
+// debugger;
 router.get("/users/:userId/partners", async (req, res, next) => {
   try {
     const userId = +req.params.userId;
-    const partners = await Partner.findAll({ where: { playerId: userId } });
-    res.json({ partners });
+    const partners = await Partner.findAll({
+      where: { playerId: userId },
+      // include: [{
+      //   model: db.models.User,
+      // }]
+    });
+    // let partnerModels = [];
+    // for (const partner of res) {
+    //   partnerModels.push(await partner.getPartner());
+    // }
+    // let partners = [];
+    // debugger;
+    // partnerModels.map((partner) => {
+    //   partners.push(partner.dataValues);
+    // });
+    debugger;
+    return res.status(200).json({ partners });
   } catch (error) {
     return next(error);
   }
