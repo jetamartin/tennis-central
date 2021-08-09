@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Partner } = require("../models");
+const { User } = require("../models");
 const ExpressError = require("../ExpressError");
 debugger;
 /* 
@@ -13,24 +14,18 @@ debugger;
 // debugger;
 router.get("/users/:userId/partners", async (req, res, next) => {
   try {
-    const userId = +req.params.userId;
-    const partners = await Partner.findAll({
-      where: { playerId: userId },
-      // include: [{
-      //   model: db.models.User,
-      // }]
-    });
-    // let partnerModels = [];
-    // for (const partner of res) {
-    //   partnerModels.push(await partner.getPartner());
-    // }
-    // let partners = [];
-    // debugger;
-    // partnerModels.map((partner) => {
-    //   partners.push(partner.dataValues);
-    // });
     debugger;
-    return res.status(200).json({ partners });
+    const userId = +req.params.userId;
+    let partners = await Partner.findAll({
+      include: [{ model: User, as: "partner" }],
+      where: { playerId: userId },
+    });
+
+    if (partners === null) {
+      partners = [];
+    }
+
+    return res.status(200).json(partners);
   } catch (error) {
     return next(error);
   }
