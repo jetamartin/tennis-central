@@ -21,7 +21,7 @@ const PartnerList = () => {
         debugger;
         let partnerList = await TennisCentralAPI.getPartners(userId);
         debugger;
-        setPartners(partnerList.partners);
+        setPartners(partnerList);
         setIsLoading(false);
       } catch (error) {
         console.log(error)
@@ -36,7 +36,7 @@ const PartnerList = () => {
   return (
     <Container className="PartnerList">
       <Row>
-        <Col sm={8}>
+        <Col sm={8} className ="mx-auto">
           {partners.map(partner => (<PartnerCard key={partner.id} partner={partner} />))}
         </Col>
       </Row>
