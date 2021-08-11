@@ -14,14 +14,13 @@ const ExpressError = require("../ExpressError");
 router.get("", async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: { exclude: ['createdAt', 'password', 'telNum', 'email'] }
+      attributes: { exclude: ["createdAt", "password", "telNum", "email"] },
     });
-    res.json({users});
+    res.json({ users });
   } catch (error) {
     console.log(error);
   }
 });
-
 
 // Sample code to generate error messages from validation errors
 // if (error.name === "SequelizeValidationError") {
@@ -31,14 +30,13 @@ router.get("", async (req, res) => {
 //     },
 //   });
 
-
 router.get("/:id", async (req, res, next) => {
   try {
     // debugger;
     const requestedId = req.params.id;
     const user = await User.findOne({ where: { id: requestedId } });
     if (!user) throw new ExpressError(404, "User not found");
-    return res.json({user});
+    return res.json({ user });
   } catch (error) {
     return next(error);
   }
@@ -54,8 +52,8 @@ router.patch("/:id", async (req, res, next) => {
       returning: true,
     });
     if (result[0] === 0) throw new ExpressError(404, "User not found");
-    const user  = result[1][0].get();
-    return res.status(200).json({user});
+    const user = result[1][0].get();
+    return res.status(200).json({ user });
   } catch (error) {
     console.log(error);
     return next(error);
@@ -71,7 +69,7 @@ router.delete("/:id", async (req, res, next) => {
     });
     console.log("Result ======>", result);
     if (result === 0) throw new ExpressError(404, "User not found");
-    return res.status(200).json({deleted: requestedId});
+    return res.status(200).json({ deleted: requestedId });
   } catch (error) {
     console.log(error);
     return next(error);

@@ -113,11 +113,12 @@ const User = sequelize.define(
     },
     match_type: {
       type: DataTypes.ARRAY(DataTypes.STRING),
+      defaultValue: [],
     },
     opponent_ntrp_rating_range: {
       // {ntrp_range: {low: "4.5", high: "5.5" }
       type: DataTypes.JSONB,
-      defaultValue: {}
+      defaultValue: {},
       // allowNull: false
     },
     max_travel_distance: {
@@ -133,7 +134,11 @@ const User = sequelize.define(
       defaultValue: {},
     },
     session_type: {
-      type: DataTypes.STRING(30),
+      type: DataTypes.ENUM(
+        "Matches/Sets only",
+        "Rallying/drills only",
+        "Either Match or Rallying"
+      ),
     },
   },
   {

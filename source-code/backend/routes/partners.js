@@ -3,7 +3,6 @@ const router = express.Router();
 const { Partner } = require("../models");
 const { User } = require("../models");
 const ExpressError = require("../ExpressError");
-debugger;
 /* 
   get /partners  (read)
   post /partners (create)
@@ -11,10 +10,8 @@ debugger;
   patch /partners/:id (update)
   delete /partners/:id (delete)
  */
-// debugger;
 router.get("/users/:userId/partners", async (req, res, next) => {
   try {
-    debugger;
     const userId = +req.params.userId;
     let partners = await Partner.findAll({
       include: [{ model: User, as: "partner" }],
@@ -48,7 +45,10 @@ router.post("/users/:userId/partners", async (req, res, next) => {
 router.get("/users/:userId/partners/:id", async (req, res, next) => {
   try {
     const playerId = +req.params.userId;
-    const partner = await Partner.findOne({ where: { id: req.params.id } });
+    const partnerId = +req.params.id;
+    // const partner = await Partner.findOne({ where: { id: req.params.id } });
+    const partner = await Partner.findOne({ where: { partnerId: partnerId } });
+
     if (!partner) throw new ExpressError(404, "User not found");
     return res.json({ partner });
   } catch (error) {
@@ -61,10 +61,11 @@ router.get("/users/:userId/partners/:id", async (req, res, next) => {
 router.patch("/users/:userId/partners/:id", async (req, res, next) => {
   try {
     const playerId = +req.params.userId;
+    const partnerId = +req.params.id;
     const partnerBody = req.body;
-    partnerBody.playerId = playerId;
+    // partnerBody.playerId = playerId;
     const result = await Partner.update(partnerBody, {
-      where: { id: req.params.id },
+      where: { id: partnerId },
       returning: true,
     });
     if (result[0] === 0) throw new ExpressError(404, "Partner not found");
