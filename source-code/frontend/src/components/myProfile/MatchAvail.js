@@ -141,7 +141,7 @@ const MatchAvail = ({ updateUserRecord }) => {
               errors,
             }) => (
               <Form className="mx-auto">
-                <pre>{JSON.stringify(values, null, 4)}</pre>
+                {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
                 <Table striped bordered responsive="sm">
                   <thead>
                     <tr>

@@ -102,6 +102,16 @@ class TennisCentralAPI {
     return res;
   }
 
+  static async updatePartnerTable(partnerRecord, userId, partnerId) {
+    let res = await this.request(`users/${userId}/partners/${partnerId}`, partnerRecord, "patch");
+    return res; 
+  }
+
+  static async deletePartner(userId, partnerId) {
+    let res = await this.request(`users/${userId}/partners/${partnerId}`, {}, "delete");
+    return res; 
+  }
+
   // static async request1(endpoint, data = {}, method = "get", token="") {
   //   const url = `${BASE_URL}/${endpoint}`;
   //   let headers = {}

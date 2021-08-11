@@ -31,7 +31,7 @@ const PartnerSearchResultsTable = ({
 
   /**
    * Removes the partner from partner search results when the user clicks the trashcan icon
-   * @param {*} e
+   * @param {*} e - click event 
    */
   const removePartnerSearchResult = (e) => {
     // Get the id of the partner search result element to be deleted

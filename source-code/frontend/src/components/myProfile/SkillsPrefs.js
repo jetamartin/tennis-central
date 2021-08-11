@@ -49,7 +49,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
 
   const transformNtrpRatingRange = (ntrpRatingRange) => {
     let ntrpValues = {};
-    if (! isNil(ntrpRatingRange)) {
+    if (!isNil(ntrpRatingRange)) {
       ntrpValues = {
         minNtrp: ntrpRatingRange.low,
         maxNtrp: ntrpRatingRange.high,
@@ -70,7 +70,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
       ),
   });
   const transformNtrpValues = (values) => {
-    if(isNil(values.minNtrp)) return {};
+    if (isNil(values.minNtrp)) return {};
     return { low: values.minNtrp, high: values.maxNtrp };
   };
 
@@ -103,7 +103,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
             </p>
             <p className="font-weight-bold">Skills & Preferences</p>
             <p>
-              <Link exact to="/SkillsPrefs">
+              <Link exact to="/MatchAvail">
                 Match Availability
               </Link>
             </p>
@@ -126,7 +126,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
               errors,
             }) => (
               <Form className="mx-auto">
-                <pre>{JSON.stringify(values, null, 4)}</pre>
+                {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
                 <fieldset>
                   <legend>Your skill level</legend>
                   <FormGroup>
@@ -154,9 +154,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                       max="7.0"
                       step=".5"
                     />
-                    <div className="ntrp-num">
-                      {values.my_ntrp_rating}
-                    </div>
+                    <div className="ntrp-num">{values.my_ntrp_rating}</div>
                   </FormGroup>
                 </fieldset>
 
@@ -212,7 +210,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                         className="form-check-input"
                         type="radio"
                         name="session_type"
-                        value="matches"
+                        value="Matches/Sets only"
                       />
                       <FormLabel className="form-check-label">
                         Match/Set Play Only
@@ -224,7 +222,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                         className="form-check-input"
                         type="radio"
                         name="session_type"
-                        value="practice"
+                        value="Rallying/drills only"
                       />
                       <FormLabel className="form-check-label">
                         Rallying/Drills Only
@@ -236,7 +234,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                         className="form-check-input"
                         type="radio"
                         name="session_type"
-                        value="either"
+                        value="Either Match or Rallying"
                       />
                       <FormLabel className="form-check-label">Either</FormLabel>
                     </FormGroup>

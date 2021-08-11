@@ -7,7 +7,7 @@ const PartnerAvailDays = ({ availability }) => {
       <span className="avail-times">{availability.day}</span>
       <span className="separator">-</span>
       {availability.times.map((timeSlot, index) => (
-        <PartnerAvailHours key={index} timeSlot={timeSlot} />
+        <PartnerAvailHours key={index} index={index} timeSlot={timeSlot} length={availability.times.length} />
       ))}
     </div>
   );

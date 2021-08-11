@@ -35,9 +35,9 @@ td {
   padding-bottom: 0.5rem;
 }
 
-.time-slots {
+/* .time-slots {
   padding-right: 5px;
-}
+} */
 
 span.avail-times::first-letter {
   text-transform: uppercase;

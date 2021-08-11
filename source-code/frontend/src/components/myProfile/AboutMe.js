@@ -30,7 +30,6 @@ const AboutMe = ({ updateUserRecord }) => {
   useEffect(() => {
     const loadFormData = async () => {
       try {
-        // debugger;
         let profileData = await TennisCentralAPI.getUserProfile(
           userInfo.userId
         );
@@ -108,7 +107,7 @@ const AboutMe = ({ updateUserRecord }) => {
               return (
                 <Container>
                   <Form className="mx-auto mb-5">
-                    <pre>{JSON.stringify(values, null, 4)}</pre>
+                    {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
                     <fieldset>
                       <legend>Contact</legend>
                       <Row>

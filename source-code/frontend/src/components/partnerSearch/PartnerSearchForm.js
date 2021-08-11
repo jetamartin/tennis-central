@@ -71,7 +71,11 @@ const FindAPartner = () => {
       return obj;
     }, {});
   };
-
+  /**
+   * 
+   * @param {*} matchAvailability - 
+   * @returns 
+   */
   const transformBuildMatchAvailObject = (matchAvailability) => {
     if (isNil(matchAvailability)) {
       return {};
@@ -85,6 +89,7 @@ const FindAPartner = () => {
         checkboxValuesObj[dateTime] = true;
       });
     });
+
     return checkboxValuesObj;
   };
 
@@ -271,10 +276,13 @@ const FindAPartner = () => {
   */
   const addPartnerStatus = async (existingPartners, partners) => {
     const partnersWithInitialStatus = setInitialPartnerStatus(partners);
+    // debugger;
     if (existingPartners.length > 0) {
       existingPartners.map((existingPartner) => {
+        // debugger;
         const arrayIndex = partnersWithInitialStatus.findIndex(
           (partnerWithInitalStatus) => {
+            // debugger;
             return partnerWithInitalStatus.id === existingPartner.partner.partnerId
           }
         );

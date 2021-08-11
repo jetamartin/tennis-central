@@ -31,6 +31,7 @@ const PartnerSearchResultsRow = ({partnerMatch, removePartnerSearchResult, updat
     try {
       const partnerId = e.target.parentElement.dataset.id; 
       await TennisCentralAPI.addPartner(userInfo.userId, partnerId)
+      // debugger;
       updatePartnerStatus(partnerId);   
     } catch (error) {
       console.log("Add Partner error", error)
@@ -58,11 +59,7 @@ const PartnerSearchResultsRow = ({partnerMatch, removePartnerSearchResult, updat
 
     <td>{status}</td>
     <td className="icon-group icon-norm">
-      <div  className="icon-spacing" data-id={id}>
-        <Link to="/messages">
-          <i className="bi bi-envelope"></i>
-        </Link>
-      </div>
+
       <div  className="icon-spacing" data-id={id} >
         {status === "Current" ? 
           <i className="bi bi-person-plus icon-spacing inactive" ></i>
@@ -71,7 +68,12 @@ const PartnerSearchResultsRow = ({partnerMatch, removePartnerSearchResult, updat
         }
       </div>
       <div  className="icon-spacing" data-id={id}>
-        <i className="bi bi-trash icon-danger icon-spacing" onClick={removePartnerSearchResult}></i>
+        <Link to="/messages">
+          <i className="bi bi-envelope"></i>
+        </Link>
+      </div>
+      <div  className="icon-spacing" data-id={id}>
+        <i className="bi bi-person-x icon-danger icon-spacing" onClick={removePartnerSearchResult}></i>
       </div>
     </td>
   </tr>
