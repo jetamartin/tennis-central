@@ -20,6 +20,7 @@ import { propTypes } from "react-bootstrap/esm/Image";
 import TennisCentralAPI from "../../TennisCentralAPI";
 import UserContext from "../UserContext";
 import PartnerSearchResultsTable from "./PartnerSearchResultsTable";
+import { set } from "lodash";
 
 const FindAPartner = () => {
   const [startDate, setStartDate] = useState(
@@ -29,6 +30,7 @@ const FindAPartner = () => {
   const [isLoading, setIsLoading] = useState(false);
   // const [generalMatchPlay, setGeneralMatchPlay] = useState(false);
   const [displaySearchResults, setDisplaySearchResults] = useState(false);
+  const [displayNoSearchResultsMsg, setDisplayNoSearchResultsMsg] = useState(false)
   const [matchingPartners, setMatchingPartners] = useState([]);
   const userInfo = useContext(UserContext);
 
@@ -137,7 +139,7 @@ const FindAPartner = () => {
     ntrpRange
   ) => {
     const withinRangeCriteria = 0.5;
-    const highNtrpRange = ntrpRange.high + 5;
+    const highNtrpRange = ntrpRange.high + withinRangeCriteria;
 
     // if no ntrpRange provided then we check to see if user ntrp rating is within an acceptable range of opponents ntrp range
     if (!ntrpRange) {
@@ -147,7 +149,7 @@ const FindAPartner = () => {
         return true;
     } else {
       // user provided a ntrp range for their opponent..check to see if opponents ntrp rating falls within range
-      return inRange(opponentNtrpRating, ntrpRange.low, highNtrpRange);
+      return inRange(opponentNtrpRating, ntrpRange.low, ntrpRange.high);
     }
   };
 
@@ -168,7 +170,7 @@ const FindAPartner = () => {
       3 - if user did provide a rating range AND potential partner's rating falls within the range then MATCH = TRUE;
     */
     // Rule #1
-    if (isNil(currUser.my_ntrp_rating) || isNil(currUser.my_ntrp_rating))
+    if (isNil(currUser.my_ntrp_rating) || isNil(potentialPartner.my_ntrp_rating))
       return false;
 
     // Rule #2
@@ -205,12 +207,23 @@ const FindAPartner = () => {
    * @param {*} potentialPartners - array of all partners that could be partners
    * @returns Array of players that satisfy the Partner Match rules
    */
+  // const matchPartners = (currUser, potentialPartners) => {
+  //   return potentialPartners.map((potentialPartner) => {
+  //     if (ntrpRatingCompatible(currUser, potentialPartner)) {
+  //       return potentialPartner;
+  //     }
+  //   });
+  // };
+
   const matchPartners = (currUser, potentialPartners) => {
-    return potentialPartners.map((potentialPartner) => {
+    const matches = []; 
+    potentialPartners.map((potentialPartner) => {
       if (ntrpRatingCompatible(currUser, potentialPartner)) {
-        return potentialPartner;
+        return matches.push(potentialPartner);
       }
     });
+    // debugger;
+    return matches;
   };
 
   /**
@@ -314,19 +327,28 @@ const FindAPartner = () => {
 
     // Retrieve all users from DB
     const allUsers = await TennisCentralAPI.getAllUsers();
+    // debugger;
 
     // Get players that meet the users partner search filter criteria
     let partners = idPotentialPartners(allUsers.users);
+    debugger;
+    if (partners.length > 0) {
+      // Get the list of the users current partners
+      const existingPartners = await getExistingPartners(userInfo.userId, partners);
 
-    // Get the list of the users current partners
-    const existingPartners = await getExistingPartners(userInfo.userId, partners);
+      // Set the Partner status ("New" or "Current") for each of the partners that match the search criteria
+      const partnersWithStatusAdded = addPartnerStatus(
+        existingPartners,
+        partners
+      );
+      setDisplayNoSearchResultsMsg(false)
+    } else {
+      debugger
+      setDisplayNoSearchResultsMsg(true)
+    }
 
-    // Set the Partner status ("New" or "Current") for each of the partners that match the search criteria
-    const partnersWithStatusAdded = addPartnerStatus(
-      existingPartners,
-      partners
-    );
     
+    setIsLoading(false);
     // Set matchingPartners state value to force a refresh
     setMatchingPartners(partners);
 
@@ -342,7 +364,7 @@ const FindAPartner = () => {
   return (
     <>
       <Container className="h-100">
-        <Row className="h-100 justify-content-center align-items-center">
+        <Row className="justify-content-center align-items-center mt-4">
           <Col sm={10} className="mx-auto form-border">
             <h1>Find-A-Partner</h1>
             <hr></hr>
@@ -922,7 +944,7 @@ const FindAPartner = () => {
                                 className="form-check-input"
                                 type="checkbox"
                                 name="match_type"
-                                value="singles"
+                                value="Singles"
                               />
                               <FormLabel className="form-check-label">
                                 Singles
@@ -934,7 +956,7 @@ const FindAPartner = () => {
                                 className="form-check-input"
                                 type="checkbox"
                                 name="match_type"
-                                value="doubles"
+                                value="Doubles"
                               />
                               <FormLabel className="form-check-label">
                                 Doubles
@@ -946,7 +968,7 @@ const FindAPartner = () => {
                                 className="form-check-input"
                                 type="checkbox"
                                 name="match_type"
-                                value="mixed"
+                                value="Mixed"
                               />
                               <FormLabel className="form-check-label">
                                 Mixed
@@ -1063,12 +1085,24 @@ const FindAPartner = () => {
             </Formik>
           </Col>
           {console.log("Partner Matches: ", matchingPartners)}
-          {displaySearchResults ? (
+          {console.log(matchingPartners)}
+ 
+          {(displaySearchResults && matchingPartners.length > 0) ?
             <PartnerSearchResultsTable
               matchingPartners={matchingPartners}
               updateMatchingPartners={updateMatchingPartners}
             />
-          ) : null}
+          : null }
+
+          {displayNoSearchResultsMsg ? 
+            <div className="mt-4">
+            <h5 className="text-danger">Sorry no matches found with current settings.</h5>
+            </div>
+          : 
+          null
+          }
+ 
+
         </Row>
       </Container>
     </>

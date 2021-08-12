@@ -34,7 +34,6 @@ const SkillsPrefs = ({ updateUserRecord }) => {
         let opponentNtrpRatingRange = transformNtrpRatingRange(
           profileInfo.user.opponent_ntrp_rating_range
         );
-        debugger;
         // if (isNil(profileInfo.user.my_ntrp_rating) ) profileInfo.user.my_ntrp_rating = "";
         setProfileData(
           Object.assign(profileInfo.user, opponentNtrpRatingRange)
@@ -79,7 +78,6 @@ const SkillsPrefs = ({ updateUserRecord }) => {
     console.log("Form Values: ", values);
     values.opponent_ntrp_rating_range = transformNtrpValues(values);
     try {
-      debugger;
       await updateUserRecord(values, userInfo.userId);
       setSubmitting(false);
     } catch (error) {

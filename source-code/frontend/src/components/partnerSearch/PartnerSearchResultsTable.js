@@ -12,7 +12,7 @@ const PartnerSearchResultsTable = ({
   updateMatchingPartners,
 }) => {
   // const [matchingPartners, setMatchingPartners] = useState([]);
-  const [isSearchLoading, setIsSearchLoading] = useState(true);
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
 
   // Removes array element at indexValue and returns resulting array
   function arrayRemove(arr, indexValue) {
@@ -48,12 +48,14 @@ const PartnerSearchResultsTable = ({
     // Update the MatchingPartners list less the removed partner..this should trigger a re-render of the
     updateMatchingPartners(newPartnerMatches);
   };
-
-  if (isSearchLoading)
+  debugger;
+  if (isSearchLoading) {
+    return <p className=""> Loading &hellip;</p>
+  } 
     return (
       <Container>
-        <Row className="h-100 justify-content-center align-items-center">
-          <Col sm={10} className="mx-auto form-border">
+        <Row className="justify-content-center align-items-center">
+          <Col sm={10} className="mx-auto form-border mt-4 mb-4">
             <h3>Search Results</h3>
             <Table responsive="sm">
               <thead>
@@ -85,5 +87,6 @@ const PartnerSearchResultsTable = ({
       </Container>
     );
 };
+
 
 export default PartnerSearchResultsTable;
