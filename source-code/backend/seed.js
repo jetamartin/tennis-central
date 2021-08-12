@@ -1,3 +1,4 @@
+// const { DATEONLY } = require("sequelize/types");
 const { User, Message, Partner } = require("./models");
 
 async function seedData() {
@@ -10,6 +11,7 @@ async function seedData() {
     firstName: "Jason",
     lastName: "Davis",
     gender: "Male",
+    birthday: new Date(1975, 9, 17), 
     match_availability: {
       Mon: ["eAM", "PM", "EVE"],
       Tue: ["PM", "EVE"],
@@ -35,6 +37,7 @@ async function seedData() {
     firstName: "Rich",
     lastName: "Bronson",
     gender: "Male",
+    birthday: new Date(1978, 2, 29), 
     match_availability: {
       Sat: ["AM", "PM", "EVE"],
       Sun: ["AM", "PM"],
@@ -58,6 +61,8 @@ async function seedData() {
     firstName: "Jet",
     lastName: "Martin",
     gender: "Male",
+    birthday: new Date(1967, 9, 11), 
+
     match_availability: {
       Sat: ["AM", "PM", "EVE"],
       Sun: ["AM", "PM"],
