@@ -438,7 +438,7 @@ const FindAPartner = () => {
                                 className="form-check-input"
                                 type="checkbox"
                                 name="match_type"
-                                value="singles"
+                                value="Singles"
                               />
                               <FormLabel className="form-check-label">
                                 Singles
@@ -450,7 +450,7 @@ const FindAPartner = () => {
                                 className="form-check-input"
                                 type="checkbox"
                                 name="match_type"
-                                value="doubles"
+                                value="Doubles"
                               />
                               <FormLabel className="form-check-label">
                                 Doubles
@@ -462,7 +462,7 @@ const FindAPartner = () => {
                                 className="form-check-input"
                                 type="checkbox"
                                 name="match_type"
-                                value="mixed"
+                                value="Mixed"
                               />
                               <FormLabel className="form-check-label">
                                 Mixed

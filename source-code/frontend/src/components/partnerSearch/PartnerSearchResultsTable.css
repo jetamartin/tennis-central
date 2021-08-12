@@ -24,7 +24,7 @@ td {
 }
 
 .inactive {
-  color: lightgrey;
+  color: grey;
 }
 .active {
   color: #007bff;
@@ -60,4 +60,25 @@ span.avail-times::first-letter {
   display: flex;
   justify-content: center;
   text-align: left;
+}
+
+.table td,
+.table th {
+  border-top: none;
+}
+
+.action-row {
+  border-bottom: 1px solid #dee2e6;
+  border-left: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+}
+
+.data-row {
+  border-top: 1px solid #dee2e6;
+  border-left: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+}
+
+.btn-sm { 
+  font-size: .75rem;
 }

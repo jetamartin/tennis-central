@@ -30,10 +30,11 @@ const SkillsPrefs = ({ updateUserRecord }) => {
         let profileInfo = await TennisCentralAPI.getUserProfile(
           userInfo.userId
         );
+
         let opponentNtrpRatingRange = transformNtrpRatingRange(
           profileInfo.user.opponent_ntrp_rating_range
         );
-        // debugger
+        debugger;
         // if (isNil(profileInfo.user.my_ntrp_rating) ) profileInfo.user.my_ntrp_rating = "";
         setProfileData(
           Object.assign(profileInfo.user, opponentNtrpRatingRange)
@@ -169,7 +170,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                         className="form-check-input"
                         type="checkbox"
                         name="match_type"
-                        value="singles"
+                        value="Singles"
                       />
                       <FormLabel className="form-check-label">
                         Singles
@@ -181,7 +182,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                         className="form-check-input"
                         type="checkbox"
                         name="match_type"
-                        value="doubles"
+                        value="Doubles"
                       />
                       <FormLabel className="form-check-label">
                         Doubles
@@ -193,7 +194,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                         className="form-check-input"
                         type="checkbox"
                         name="match_type"
-                        value="mixed"
+                        value="Mixed"
                       />
                       <FormLabel className="form-check-label">Mixed</FormLabel>
                     </FormGroup>

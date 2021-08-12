@@ -96,7 +96,7 @@ const PartnerCard = ({ partner, deletePartner }) => {
             {my_ntrp_rating}
           </span>
         </div>
-        <hr></hr>
+        {/* <hr></hr> */}
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -225,7 +225,7 @@ const PartnerCard = ({ partner, deletePartner }) => {
 
               <Link to="/messages">
                 <button
-                  className="btn btn-outline-primary partner-btn"
+                  className="btn btn-outline-primary btn-sm partner-btn"
                   data-id={id}
                 >
                   <i className="bi bi-envelope partner-card-icon"></i>
@@ -236,7 +236,7 @@ const PartnerCard = ({ partner, deletePartner }) => {
           <Col className="d-flex justify-content-around">
             <div>
               <button
-                className="btn btn-outline-danger partner-btn"
+                className="btn btn-outline-danger btn-sm partner-btn"
                 data-id={id}
                 onClick={removePartner}
               >

@@ -55,7 +55,7 @@ const PartnerSearchResultsTable = ({
         <Row className="h-100 justify-content-center align-items-center">
           <Col sm={10} className="mx-auto form-border">
             <h3>Search Results</h3>
-            <Table striped responsive="sm">
+            <Table responsive="sm">
               <thead>
                 <tr>
                   <th scope="col">Date</th>
@@ -64,11 +64,12 @@ const PartnerSearchResultsTable = ({
                   <th scope="col">Gender</th>
                   <th scope="col">Availability</th>
                   <th scope="col">Status</th>
-                  <th scope="col">Actions</th>
+                  {/* <th scope="col">Actions</th> */}
                 </tr>
               </thead>
               <tbody>
                 {matchingPartners.map((matchingPartner) => (
+
                   <PartnerSearchResultsRow
                     key={matchingPartner.id}
                     partnerMatch={matchingPartner}
@@ -76,6 +77,7 @@ const PartnerSearchResultsTable = ({
                     updatePartnerStatus={updatePartnerStatus}
                   />
                 ))}
+
               </tbody>
             </Table>
           </Col>
