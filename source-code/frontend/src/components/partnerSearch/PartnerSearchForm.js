@@ -28,7 +28,6 @@ const FindAPartner = () => {
   );
   const [profileData, setProfileData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  // const [generalMatchPlay, setGeneralMatchPlay] = useState(false);
   const [displaySearchResults, setDisplaySearchResults] = useState(false);
   const [displayNoSearchResultsMsg, setDisplayNoSearchResultsMsg] = useState(false)
   const [matchingPartners, setMatchingPartners] = useState([]);
@@ -264,28 +263,28 @@ const FindAPartner = () => {
   };
 
  /**
-  * Sets base/initial partner status to "New" for each potential partner
+  * Sets base/initial partner status to "Potential" for each potential partner
   * @param {*} partners 
   * @returns 
   */
   const setInitialPartnerStatus = (partners) => {
      partners.map((partner) => {
-       partner.status = "New";
+       partner.status = "Potential";
     });
     return partners; 
   }
 
  /**
-  * Sets the "status" value of each potential partner returned in search results to either "New" (not an existing partner)  
+  * Sets the "status" value of each potential partner returned in search results to either "Potential" (not an existing partner)  
   * or "Current" (already a existing partner)
   * 
   * Note: Status field is used to indicate (in the UI only) whether one of the players that matched the search criteria
-  *   is already an existing partner. The status field values are either "Current" (i.e., existing partner) or "New" (i.e.,
+  *   is already an existing partner. The status field values are either "Current" (i.e., existing partner) or "Potential" (i.e.,
   *   not currently a partner). Status is not (and cannot be) a field in the DB database. It must be "caclculated" assigned
   *   the appropriate value based on entries in the partners associate table.  
   * @param {*} existingPartners - list of existing partners
   * @param {*} partners - all qualified partners (e.g., passed filter/search criteria)
-  * @returns Array of potential partners with status set to "New" or "Current"
+  * @returns Array of potential partners with status set to "Potential" or "Current"
   */
   const addPartnerStatus = async (existingPartners, partners) => {
     const partnersWithInitialStatus = setInitialPartnerStatus(partners);
@@ -336,7 +335,7 @@ const FindAPartner = () => {
       // Get the list of the users current partners
       const existingPartners = await getExistingPartners(userInfo.userId, partners);
 
-      // Set the Partner status ("New" or "Current") for each of the partners that match the search criteria
+      // Set the Partner status ("Potential" or "Current") for each of the partners that match the search criteria
       const partnersWithStatusAdded = addPartnerStatus(
         existingPartners,
         partners

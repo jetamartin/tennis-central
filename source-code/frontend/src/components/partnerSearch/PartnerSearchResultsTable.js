@@ -71,7 +71,6 @@ const PartnerSearchResultsTable = ({
               </thead>
               <tbody>
                 {matchingPartners.map((matchingPartner) => (
-
                   <PartnerSearchResultsRow
                     key={matchingPartner.id}
                     partnerMatch={matchingPartner}
@@ -79,7 +78,6 @@ const PartnerSearchResultsTable = ({
                     updatePartnerStatus={updatePartnerStatus}
                   />
                 ))}
-
               </tbody>
             </Table>
           </Col>

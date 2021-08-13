@@ -22,6 +22,8 @@ const PartnerSearchResultsRow = ({
     status,
     email,
   } = partnerMatch;
+
+  const currentPartner = "Current";
   const userInfo = useContext(UserContext);
 
   const createDate = () => {
@@ -53,7 +55,7 @@ const PartnerSearchResultsRow = ({
     <>
       <tr data-id={id} className="data-row">
         <td>{createDate()}</td>
-        {status === "Current" ? (
+        {status === currentPartner ? (
           <td>
             <Link to="/partnerList">{fullName}</Link>
           </td>
@@ -76,12 +78,11 @@ const PartnerSearchResultsRow = ({
         <td colspan="6">
           <div className="d-flex justify-content-between">
             <div className="icon-spacing" data-id={id}>
-            {status === "Current" ? (
+            {status === currentPartner ? (
               <button
                 className="btn btn-outline-secondary btn-sm partner-btn inactive"
                 disabled
                 data-id={id}
-                
               >
                 <i className="bi bi-person-plus icon-spacing inactive"></i> Add
                 </button>
@@ -94,14 +95,6 @@ const PartnerSearchResultsRow = ({
                   <i className="bi bi-person-plus icon-spacing "></i> Add
               </button>
                 )}
-              {/* {status === "Current" ? (
-                <i className="bi bi-person-plus icon-spacing inactive"></i>
-              ) : (
-                <i
-                  className="bi bi-person-plus icon-spacing active"
-                  onClick={addPartner}
-                ></i>
-              )} */}
             </div>
             <div className="icon-spacing" data-id={id}>
                 <a
@@ -123,10 +116,6 @@ const PartnerSearchResultsRow = ({
                 <i className="bi bi-person-x partner-card-icon"></i>
                 Hide
               </button>
-              {/* <i
-                className="bi bi-person-x icon-danger icon-spacing"
-                onClick={removePartnerSearchResult}
-              ></i> */}
             </div>
           </div>
         </td>
