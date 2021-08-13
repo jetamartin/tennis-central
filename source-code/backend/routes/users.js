@@ -14,7 +14,7 @@ const ExpressError = require("../ExpressError");
 router.get("", async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: { exclude: ["createdAt", "password", "telNum", "email"] },
+      attributes: { exclude: ["createdAt", "password", "telNum"] },
     });
     res.json({ users });
   } catch (error) {
