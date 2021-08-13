@@ -1,0 +1,107 @@
+.image-box {
+  /* Here's the trick */
+  box-shadow: inset 0 0 0 100vw rgba(0,0,0,0.7);
+
+  /* Basic background styles */
+  background: url('homePageBackground.jpg') center center;
+  background-size: cover;
+
+  /* Here's the same styles we applied to our content-div earlier */
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Add a transition, just for fun */
+  transition: box-shadow .3s ease-out;
+}
+.image-box:hover {
+    box-shadow: inset 0 0 0 100vw rgba(0,0,0,0.4);
+}
+
+/* For demo only */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+h1 {
+  font-size: 40px;
+}
+
+.header-spacing {
+  margin-bottom: 4rem;
+}
+
+.subheader {
+  font-size: 1.25rem;
+  font-style: italic;
+
+}
+.value-prop-header {
+  font-size: 1.25rem;
+  letter-spacing: .15rem;
+}
+.value-prop-spacing {
+  margin-bottom: 2rem;
+}
+.lead {
+  margin-bottom: 3rem;
+}
+
+.bottom-spacing {
+  margin-bottom: 2rem;
+} 
+.top-spacing {
+  margin-top: 2rem;
+}
+.letter-spacing {
+  letter-spacing: .15rem
+}
+
+.smaller-letters {
+  font-size: .9rem;
+}
+.smaller-letter-spacing {
+  letter-spacing: .1rem
+}
+
+.bullet-margin {
+  margin-bottom : .2rem;
+}
+
+.boldIt {
+  font-weight: bold;
+}
+
+.btn-outline-primary:hover {
+  color: #fff;
+  background-color: yellowgreen;
+  border-color: yellowgreen;
+}
+
+.btn-outline-primary {
+  color: greenyellow;
+  border-color: greenyellow;
+}
+
+.btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active, .show>.btn-outline-primary.dropdown-toggle {
+  color: #fff;
+  background-color: greenyellow;
+  border-color: darkgreen;
+}
+
+.btn-outline-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgb(154, 205, 50 / 50%);
+}
+
+
+.btn.focus, .btn:focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgb(154, 205, 50 / 25%);
+} 
+
+.green-yellow {
+  color: greenyellow;
+}

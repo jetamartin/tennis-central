@@ -45,7 +45,7 @@ const Login = ({loginUser}) => {
   
   return  (
 
-  <Container className="h-100" >
+  <Container className="mt-4" >
     <Row className="h-100 justify-content-center align-items-center">
       <Col sm={8} className="mx-auto form-border" >
         <h1>Login</h1>

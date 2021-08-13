@@ -71,7 +71,7 @@ const AboutMe = ({ updateUserRecord }) => {
   return (
     <Container fluid className="pb-5 ml-1">
       <Row>
-        <Col sm={4} className="pt-5 bg-light">
+        <Col sm={2} className="pt-5 bg-light">
           <div className="mt-3">
             <p className="font-weight-bold">About Me</p>
             <p>
@@ -86,7 +86,7 @@ const AboutMe = ({ updateUserRecord }) => {
             </p>
           </div>
         </Col>
-        <Col sm={8} className="pt-5">
+        <Col sm={10} className="pt-5">
           <h3 className="form-header">About Me</h3>
           <Formik
             initialValues={initialValues}

@@ -58,6 +58,7 @@ const App = () => {
   const loginUser = async (userCredentials) => {
     console.log('App.js loginUser: ', userCredentials)
     let results = await TennisCentralAPI.loginUser(userCredentials)
+    debugger;
     setUserInfo(results.userinfo);
     localStorage.setItem('userInfo', JSON.stringify(results.userinfo));
     return results; 

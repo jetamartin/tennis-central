@@ -59,8 +59,8 @@ const Join = ({registerUser}) => {
   };
   return (
     <Container fluid className="h-100">
-      <Row className="h-100 justify-content-center align-items-center mt-4 mb-4">
-        <Col sm={6} className="mx-auto form-border">
+      <Row className="justify-content-center align-items-center mt-4 mb-4">
+        <Col sm={6} className="mx-auto form-border mb-4">
           <h1>Join</h1>
           <p className="disclaimer">
             All information provided is private and will not be shared!
