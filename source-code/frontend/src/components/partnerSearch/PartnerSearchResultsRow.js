@@ -20,6 +20,7 @@ const PartnerSearchResultsRow = ({
     gender,
     match_availability,
     status,
+    email,
   } = partnerMatch;
   const userInfo = useContext(UserContext);
 
@@ -103,16 +104,15 @@ const PartnerSearchResultsRow = ({
               )} */}
             </div>
             <div className="icon-spacing" data-id={id}>
-              <Link to="/messages">
-                <button
+                <a
+                  href={`mailto:${email}`}
+                  target='_blank'
                   className="btn btn-outline-primary partner-btn btn-sm"
                   data-id={id}
                 >
                   <i className="bi bi-envelope partner-card-icon"></i>
                   Message
-                </button>
-                {/* <i className="bi bi-envelope"></i> */}
-              </Link>
+                </a>
             </div>
             <div className="icon-spacing" data-id={id}>
               <button
@@ -130,13 +130,6 @@ const PartnerSearchResultsRow = ({
             </div>
           </div>
         </td>
-        {/* <td colspan="2">
-          <div className="icon-spacing" data-id={id}>
-            <Link to="/messages">
-              <i className="bi bi-envelope"></i>
-            </Link>
-          </div>
-        </td> */}
       </tr>
     </>
   );

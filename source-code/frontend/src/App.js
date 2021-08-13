@@ -54,11 +54,9 @@ const App = () => {
     return results;
    }
 
-  // Edit later
   const loginUser = async (userCredentials) => {
     console.log('App.js loginUser: ', userCredentials)
     let results = await TennisCentralAPI.loginUser(userCredentials)
-    debugger;
     setUserInfo(results.userinfo);
     localStorage.setItem('userInfo', JSON.stringify(results.userinfo));
     return results; 
@@ -95,9 +93,9 @@ const App = () => {
           <Route exact path="/MatchAvail">
             <MatchAvail updateUserRecord={updateUserRecord} />
           </Route>
-          <Route exact path="/Messages">
+          {/* <Route exact path="/Messages">
             <Messages />
-          </Route>
+          </Route> */}
           <Route exact path="/PartnerList">
             <PartnerList />
           </Route>

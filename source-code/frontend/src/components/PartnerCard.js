@@ -27,6 +27,7 @@ const PartnerCard = ({ partner, deletePartner }) => {
     opponent_gender,
     max_travel_distance,
     match_type,
+    email,
   } = partner.partner;
 
   const initialValues = contact;
@@ -222,16 +223,15 @@ const PartnerCard = ({ partner, deletePartner }) => {
         </fieldset>
         <Row>
           <Col className="d-flex justify-content-around">
-
-              <Link to="/messages">
-                <button
+                <a
+                  href={`mailto:${email}`}
+                  target='_blank'
                   className="btn btn-outline-primary btn-sm partner-btn"
                   data-id={id}
                 >
                   <i className="bi bi-envelope partner-card-icon"></i>
                   Message
-                </button>
-              </Link>
+                </a>
           </Col>
           <Col className="d-flex justify-content-around">
             <div>

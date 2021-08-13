@@ -15,6 +15,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
+import moment from "moment";
 
 import "./MyProfileForms.css";
 
@@ -33,6 +34,7 @@ const AboutMe = ({ updateUserRecord }) => {
         let profileData = await TennisCentralAPI.getUserProfile(
           userInfo.userId
         );
+        debugger;
         setProfileData(profileData.user);
         setIsLoading(false);
       } catch (error) {
@@ -41,8 +43,9 @@ const AboutMe = ({ updateUserRecord }) => {
     };
     loadFormData();
   }, [userInfo]);
+  console.log(profileData.birthday);
 
-  const initialValues = profileData;
+  const initialValues = { ...profileData, birthday: moment(profileData.birthday).format("MM/DD/YYYY") }
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required("Required"),

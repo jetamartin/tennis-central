@@ -4,8 +4,8 @@ import isNil from "lodash/isNil";
 import { useHistory } from "react-router-dom";
 
 const NavBar = ({ userInfo, logoutUser }) => {
-  console.log('NAVBAR ===>', userInfo);
-  
+  console.log("NAVBAR ===>", userInfo);
+
   const history = useHistory();
 
   // Lodash isNil checks whether an object's value is null or u
@@ -14,7 +14,6 @@ const NavBar = ({ userInfo, logoutUser }) => {
   const logoutClicked = (e) => {
     logoutUser();
     history.push("/");
-  
   };
 
   return (
@@ -26,7 +25,7 @@ const NavBar = ({ userInfo, logoutUser }) => {
           <Nav className="ml-auto">
             <Nav.Link href="Find-A-Partner">Find-a-partner</Nav.Link>
             <Nav.Link href="PartnerList">Partners</Nav.Link>
-            <Nav.Link href="Messages">Messages</Nav.Link>
+            {/* <Nav.Link href="Messages">Messages</Nav.Link> */}
             <NavDropdown title="MyProfile" id="basic-nav-dropdown">
               <NavDropdown.Item href="AboutMe">About Me</NavDropdown.Item>
               <NavDropdown.Item href="SkillsPrefs">
