@@ -14,7 +14,7 @@ const Home = () => {
         <div className="text-center lead ">
           <div className="header-spacing">
             <h1 className="green-yellow">Welcome to Tennis-Central</h1>
-            <p className="subheader font-weight-light smaller-letters"> A friendly place to connect with other Tennis Players</p>
+            <p className="subheader font-weight-light smaller-letters"> A friendly place to find and connect with other Tennis Players</p>
           </div>
 
           <p className="text-center value-prop-header green-yellow">
@@ -32,10 +32,10 @@ const Home = () => {
           <p className="bottom-spacing">Come join us today and start playing more matches</p>
 
           <Link to="join">
-            <Button className="mr-4" variant="outline-primary">Join</Button>
+            <Button className="mr-4 green-yellow-btn" variant="outline-primary">Join</Button>
           </Link>
           <Link to="login">
-            <Button className="ml-4" variant="outline-primary">Login</Button>
+            <Button className="ml-4 green-yellow-btn" variant="outline-primary">Login</Button>
           </Link>
         </div>
 
