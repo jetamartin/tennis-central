@@ -150,6 +150,7 @@ User.authenticate = async function (username, password) {
   const user = await User.findOne({
     where: { username: username },
   });
+  debugger;
   if (user) {
     if (user.password === password) {
       delete user.password;

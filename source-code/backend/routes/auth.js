@@ -30,7 +30,7 @@ router.post("/login", async (req, res, next) => {
     // const token = createToken(user);
     const token = 123;
     return res.json({
-      userinfo: { token, userId: user.id, username: user.username },
+      userinfo: { token, userId: user.id, username: user.username, firstName: user.firstName },
     });
   } catch (err) {
     return next(err);
