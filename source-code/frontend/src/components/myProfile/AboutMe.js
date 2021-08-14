@@ -7,9 +7,10 @@ import { Container, Col, Row } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import * as Yup from "yup";
 import TextError from "../TextError";
-import ErrorMsg from "../ErrorMsg";
+// import ErrorMsg from "../ErrorMsg";
 import UserContext from "../UserContext";
 import TennisCentralAPI from "../../TennisCentralAPI";
+import SubmitFormApiMsgs from "../SubmitFormApiMsgs";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -22,9 +23,15 @@ import "./MyProfileForms.css";
 const AboutMe = ({ updateUserRecord }) => {
   const [profileData, setProfileData] = useState({});
   const [startDate, setStartDate] = useState();
-  const [updateAboutMeErrorFormMsg, setUpdateAboutMeErrorFormMsg] = useState(
-    []
-  );
+
+  // State & vars associated with displaying and hiding API Error & Success Msgs arrising from submission of form
+  const [dataSubmitted, setDataSubmitted] = useState(false);
+  const [submitFormApiErrorMsg, setSubmitFormApiErrorMsg] = useState([]);
+  const [submitFormApiSuccessMsg, setSubmitFormApiSuccessMsg] = useState({
+    message: "",
+  });
+  const success = "Data was successfully updated";
+
   const [isLoading, setIsLoading] = useState(true);
   const userInfo = useContext(UserContext);
 
@@ -43,9 +50,20 @@ const AboutMe = ({ updateUserRecord }) => {
     };
     loadFormData();
   }, [userInfo]);
-  console.log(profileData.birthday);
 
-  const initialValues = { ...profileData, birthday: moment(profileData.birthday).format("MM/DD/YYYY") }
+  // Starts a timer to remove success message after some interval
+  useEffect(() => {
+    // Only need to set timer to automatically remove success msg submission was a success if not don't set timer
+    if (submitFormApiErrorMsg.length === 0) {
+      setTimeout(() => setSubmitFormApiSuccessMsg({ message: "" }), 3000);
+    }
+  }, [dataSubmitted]);
+
+ 
+  const initialValues = {
+    ...profileData,
+    birthday: moment(profileData.birthday).format("MM/DD/YYYY"),
+  };
 
   const validationSchema = Yup.object({
     firstName: Yup.string().required("Required"),
@@ -56,17 +74,30 @@ const AboutMe = ({ updateUserRecord }) => {
   });
 
   const onSubmit = async (values, { setSubmitting, setFieldValue, errors }) => {
-    console.log("Form Data", values);
     values.birthday = startDate;
+    debugger;
+    const throwError = false;
     try {
+      // Clear out any prior api error messages on submission of the form so they don't persist
+      setSubmitFormApiErrorMsg([]);
+      setDataSubmitted(true);
       await updateUserRecord(values, userInfo.userId);
+      if (throwError) {
+        throw ["Update Failed"];
+      }
       setSubmitting(false);
+
+      // Set submitFormApiSuccessMsg to trigger useEffect to trigger timer on success msg
+      setSubmitFormApiSuccessMsg({ message: success });
+
     } catch (error) {
       console.log(error);
       if (Array.isArray(error)) {
-        setUpdateAboutMeErrorFormMsg(error);
+        setSubmitFormApiErrorMsg(error);
       }
     }
+    // Need to reset dataSubmitted state regardless of whether submission was successful or not
+    setDataSubmitted(false);
   };
   if (isLoading) {
     return <p className="">Loading &hellip;</p>;
@@ -105,9 +136,7 @@ const AboutMe = ({ updateUserRecord }) => {
               touched,
               errors,
             }) => {
-              console.log(errors )
-
-              return (
+               return (
                 <Container>
                   <Form className="mx-auto mb-5">
                     {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
@@ -284,12 +313,7 @@ const AboutMe = ({ updateUserRecord }) => {
                         </div>
                       </FormGroup>
                     </fieldset>
-                    {updateAboutMeErrorFormMsg.length !== 0
-                      ? updateAboutMeErrorFormMsg.map((errorMsg) => (
-                          <ErrorMsg errorMsg={errorMsg} />
-                        ))
-                      : null}
-
+                    <SubmitFormApiMsgs submitFormApiErrorMsg={submitFormApiErrorMsg} submitFormApiSuccessMsg={submitFormApiSuccessMsg} />
                     <Button
                       type="submit"
                       className="btn btn-primary btn-lg btn-block mt-3"

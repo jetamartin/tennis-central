@@ -17,12 +17,30 @@ import ErrorMsg from "../ErrorMsg";
 import TennisCentralAPI from "../../TennisCentralAPI";
 import isNil from "lodash/isNil";
 
+import SubmitFormApiMsgs from "../SubmitFormApiMsgs";
+
 const SkillsPrefs = ({ updateUserRecord }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [profileData, setProfileData] = useState({});
   const userInfo = useContext(UserContext);
   const [updateSkillsPrefFormErrorMsg, setUpdateSkillsPrefFormErrorMsg] =
     useState([]);
+
+  // State & vars associated with displaying and hiding API Error & Success Msgs arrising from submission of form
+  const [dataSubmitted, setDataSubmitted] = useState(false);
+  const [submitFormApiErrorMsg, setSubmitFormApiErrorMsg] = useState([]);
+  const [submitFormApiSuccessMsg, setSubmitFormApiSuccessMsg] = useState({
+    message: "",
+  });
+  const success = "Data was successfully updated";
+
+  // Starts a timer to remove success message after some interval
+  useEffect(() => {
+    // Only need to set timer to automatically remove success msg submission was a success if not don't set timer
+    if (submitFormApiErrorMsg.length === 0) {
+      setTimeout(() => setSubmitFormApiSuccessMsg({ message: "" }), 3000);
+    }
+  }, [dataSubmitted]);
 
   useEffect(() => {
     const loadFormData = async () => {
@@ -75,17 +93,33 @@ const SkillsPrefs = ({ updateUserRecord }) => {
   };
 
   const onSubmit = async (values, { setSubmitting, setFieldValue }) => {
+    debugger;
+    const throwError = false;
+
     console.log("Form Values: ", values);
+
     values.opponent_ntrp_rating_range = transformNtrpValues(values);
     try {
+      // Clear out any prior api error messages on submission of the form so they don't persist
+      setSubmitFormApiErrorMsg([]);
+      setDataSubmitted(true);
       await updateUserRecord(values, userInfo.userId);
+
+      if (throwError) {
+        throw ["Update Failed"];
+      }
       setSubmitting(false);
+
+      // Set submitFormApiSuccessMsg to trigger useEffect to trigger timer on success msg
+      setSubmitFormApiSuccessMsg({ message: success });
     } catch (error) {
       console.log(error);
       if (Array.isArray(error)) {
-        setUpdateSkillsPrefFormErrorMsg(error);
+        setSubmitFormApiErrorMsg(error);
       }
     }
+    // Need to reset dataSubmitted state regardless of whether submission was successful or not
+    setDataSubmitted(false);
   };
   if (isLoading) {
     return <p className="">Loading &hellip;</p>;
@@ -347,6 +381,10 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                   </FormGroup>
                   <ErrorMessage name="travelDistance" component={TextError} />
                 </fieldset>
+                <SubmitFormApiMsgs
+                  submitFormApiErrorMsg={submitFormApiErrorMsg}
+                  submitFormApiSuccessMsg={submitFormApiSuccessMsg}
+                />
                 <Button
                   type="submit"
                   // className="btn btn-primary mt-3 float-right"

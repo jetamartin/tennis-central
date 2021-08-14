@@ -28,3 +28,11 @@ fieldset {
     padding-bottom: 1rem;
     border-radius: 5px;
 }
+
+.success-msg {
+  padding: .5rem 0; 
+  background-color: lightgreen;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+}

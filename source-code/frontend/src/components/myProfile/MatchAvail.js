@@ -11,12 +11,30 @@ import * as Yup from "yup";
 import UserContext from "../UserContext";
 import TennisCentralAPI from "../../TennisCentralAPI";
 
+import SubmitFormApiMsgs from "../SubmitFormApiMsgs";
+
 const MatchAvail = ({ updateUserRecord }) => {
   const [profileData, setProfileData] = useState({});
-  const [updateMatchAvailFormErrorMsg, setUpdateMatchAvailFormErrorMsg] =
-    useState([]);
+  // const [updateMatchAvailFormErrorMsg, setUpdateMatchAvailFormErrorMsg] =
+  //   useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const userInfo = useContext(UserContext);
+
+  // State & vars associated with displaying and hiding API Error & Success Msgs arrising from submission of form
+  const [dataSubmitted, setDataSubmitted] = useState(false);
+  const [submitFormApiErrorMsg, setSubmitFormApiErrorMsg] = useState([]);
+  const [submitFormApiSuccessMsg, setSubmitFormApiSuccessMsg] = useState({
+    message: "",
+  });
+  const success = "Data was successfully updated";
+  
+  // Starts a timer to remove success message after some interval
+  useEffect(() => {
+    // Only need to set timer to automatically remove success msg submission was a success if not don't set timer
+    if (submitFormApiErrorMsg.length === 0) {
+      setTimeout(() => setSubmitFormApiSuccessMsg({ message: "" }), 3000);
+    }
+  }, [dataSubmitted]);
 
   useEffect(() => {
     const loadFormData = async () => {
@@ -92,15 +110,27 @@ const MatchAvail = ({ updateUserRecord }) => {
   const onSubmit = async (values, { setSubmitting, setFieldValue }) => {
     values.match_availability = buildMatchAvailObject(values);
     console.log(values.match_availability);
+    debugger;
+    const throwError = false;
     try {
+      // Clear out any prior api error messages on submission of the form so they don't persist
+      setSubmitFormApiErrorMsg([]);
+      setDataSubmitted(true);
       await updateUserRecord(values, userInfo.userId);
+      if (throwError) {
+        throw ["Update Failed"];
+      }
       setSubmitting(false);
+      // Set submitFormApiSuccessMsg to trigger useEffect to trigger timer on success msg
+      setSubmitFormApiSuccessMsg({ message: success });
     } catch (error) {
       console.log(error);
       if (Array.isArray(error)) {
-        setUpdateMatchAvailFormErrorMsg(error);
+        setSubmitFormApiErrorMsg(error);
       }
     }
+    // Need to reset dataSubmitted state regardless of whether submission was successful or not
+    setDataSubmitted(false);
   };
 
   if (isLoading) {
@@ -462,6 +492,7 @@ const MatchAvail = ({ updateUserRecord }) => {
                     </tr>
                   </tbody>
                 </Table>
+                <SubmitFormApiMsgs submitFormApiErrorMsg={submitFormApiErrorMsg} submitFormApiSuccessMsg={submitFormApiSuccessMsg} />
                 {/* <ErrorMessage name="availabilityTable" component={TextError} /> */}
 
                 <Button

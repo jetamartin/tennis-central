@@ -12,6 +12,8 @@ import TennisCentralAPI from "../TennisCentralAPI";
 import UserContext from "./UserContext";
 import { set } from "lodash";
 
+
+
 const PartnerCard = ({ partner, deletePartner }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [partnerData, setPartnerData] = useState("");

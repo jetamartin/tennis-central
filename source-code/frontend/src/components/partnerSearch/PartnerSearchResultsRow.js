@@ -23,7 +23,7 @@ const PartnerSearchResultsRow = ({
     email,
   } = partnerMatch;
 
-  const currentPartner = "Current";
+  const existingPartner = "Existing";
   const userInfo = useContext(UserContext);
 
   const createDate = () => {
@@ -55,7 +55,7 @@ const PartnerSearchResultsRow = ({
     <>
       <tr data-id={id} className="data-row">
         <td>{createDate()}</td>
-        {status === currentPartner ? (
+        {status === existingPartner ? (
           <td>
             <Link to="/partnerList">{fullName}</Link>
           </td>
@@ -78,7 +78,7 @@ const PartnerSearchResultsRow = ({
         <td colspan="6">
           <div className="d-flex justify-content-between">
             <div className="icon-spacing" data-id={id}>
-            {status === currentPartner ? (
+            {status === existingPartner ? (
               <button
                 className="btn btn-outline-secondary btn-sm partner-btn inactive"
                 disabled
