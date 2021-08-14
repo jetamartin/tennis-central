@@ -11,7 +11,9 @@ const SubmitFormApiMsgs = ({submitFormApiErrorMsg, submitFormApiSuccessMsg }) =>
         : null}
       {submitFormApiSuccessMsg.message !== "" ? (
         <div className="success-msg">{submitFormApiSuccessMsg.message}</div>
-      ) : null}
+      ) :
+        null
+      }
     </>
   );
 };

@@ -41,7 +41,6 @@ const AboutMe = ({ updateUserRecord }) => {
         let profileData = await TennisCentralAPI.getUserProfile(
           userInfo.userId
         );
-        debugger;
         setProfileData(profileData.user);
         setIsLoading(false);
       } catch (error) {

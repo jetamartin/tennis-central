@@ -25,7 +25,7 @@ const PartnerSearchResultsTable = ({
     const partnerArryIndex = matchingPartners.findIndex(
       (partner) => partner.id === +partnerId
     );
-    matchingPartners[partnerArryIndex].status = "Current";
+    matchingPartners[partnerArryIndex].status = "Existing";
     updateMatchingPartners(matchingPartners);
   };
 
@@ -48,7 +48,6 @@ const PartnerSearchResultsTable = ({
     // Update the MatchingPartners list less the removed partner..this should trigger a re-render of the
     updateMatchingPartners(newPartnerMatches);
   };
-  debugger;
   if (isSearchLoading) {
     return <p className=""> Loading &hellip;</p>
   } 
