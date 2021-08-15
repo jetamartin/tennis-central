@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { FormGroup, FormLabel, FormControl, FormCheck } from "react-bootstrap";
@@ -33,6 +33,13 @@ const FindAPartner = () => {
   const [displayNoSearchResultsMsg, setDisplayNoSearchResultsMsg] =
     useState(false);
   const [matchingPartners, setMatchingPartners] = useState([]);
+  const [partnerSearchType, setPartnerSearchType] = useState();
+  const [fromProfile, setFromProfile] = useState(false);
+  const load = fromProfile;
+  console.log("FromProfile value: ", fromProfile)
+  let inputCheckbox = '';
+
+
 
   // State for managing display or messages returned from API calls
   const [submitFormApiErrorMsg, setSubmitFormApiErrorMsg] = useState([]);
@@ -40,9 +47,10 @@ const FindAPartner = () => {
   const [submitFormApiSuccessMsg, setSubmitFormApiSuccessMsg] = useState("");
 
   const userInfo = useContext(UserContext);
+  const loadValuesFromProfile = useRef(null);
 
-  const initialValues = profileData;
-
+  const initialValues = { ...profileData, partnerMatchType: partnerSearchType };
+  console.log("partnerSearchType", partnerSearchType);
   // Some problem with validation rule -- need to fix
   const validationSchema = Yup.object({
     // partnerMatchType: Yup.string().required("Select a partner match type"),
@@ -58,6 +66,34 @@ const FindAPartner = () => {
     //     "Max NTRP rating must be higer than Min NTRP"
     //   ),
   });
+
+  useEffect(() => {
+    const loadFormOptions = async () => {
+      const searchType = localStorage.getItem("searchType") || "";
+      const loadOptions = localStorage.getItem("loadOptions") || false;
+      console.log("LoadOptions: ", loadOptions)
+
+      setPartnerSearchType(searchType);
+      setFromProfile(loadOptions);
+      if (loadOptions) {
+        debugger;
+        loadValuesFromProfile.current?.click();
+
+      }
+      debugger;
+    };
+    loadFormOptions();
+  }, []);
+
+  useEffect(() => {
+    // Test line below
+    const load = true;
+    const saveFormOptions = async () => {
+      localStorage.setItem("searchType", partnerSearchType);
+      localStorage.setItem("loadOptions", load);
+    };
+    saveFormOptions();
+  }, [partnerSearchType, fromProfile]);
 
   const buildMatchAvailObject = (values) => {
     const keysArray = Object.keys(values);
@@ -114,22 +150,41 @@ const FindAPartner = () => {
   };
 
   const loadfromProfile = async (e, value, setFieldValue) => {
-    let data = await TennisCentralAPI.getUserProfile(userInfo.userId);
-    let profileInfo = transformBuildMatchAvailObject(
-      data.user.match_availability
-    );
-    let opponentNtrpRatingRange = transformNtrpRatingRange(
-      data.user.opponent_ntrp_rating_range
-    );
-    setProfileData(
-      Object.assign(
-        data.user,
-        profileInfo,
-        opponentNtrpRatingRange,
-        { partnerMatchType: "generalTime" },
-        { loadProfileData: true }
-      )
-    );
+    try {
+      // Clear out any prior api error messages on submission of the form so they don't persist
+      setSubmitFormApiErrorMsg([]);
+
+      setFromProfile(true);
+      // Test Code
+      const throwError = false;
+      debugger;
+      if (throwError) {
+        throw ["Failure to load data from User Profile"]
+      }
+
+      let data = await TennisCentralAPI.getUserProfile(userInfo.userId);
+      let profileInfo = transformBuildMatchAvailObject(
+        data.user.match_availability
+      );
+      let opponentNtrpRatingRange = transformNtrpRatingRange(
+        data.user.opponent_ntrp_rating_range
+      );
+      setProfileData(
+        Object.assign(
+          data.user,
+          profileInfo,
+          opponentNtrpRatingRange,
+          { partnerMatchType: "generalTime" },
+          { loadProfileData: true }
+          // { loadProfileData: fromProfile }
+        )
+      );
+    } catch (error) {
+      console.log(error)
+      if (Array.isArray(error)) {
+        setSubmitFormApiErrorMsg(error);
+      }
+    }
   };
 
   /**
@@ -393,10 +448,19 @@ const FindAPartner = () => {
               onSubmit={onSubmit}
               enableReinitialize
             >
-              {({ values, isSubmitting, handleChange, setFieldValue }) => {
-                // const handleChange = (e) => {
-                //   console.log("Hello change");
-                // };
+              {({
+                values,
+                isSubmitting,
+                onChange,
+                setFieldValue,
+                field,
+                form,
+              }) => {
+                const handleSearchType = (e) => {
+                  const searchType = e.target.value;
+                  setFieldValue("partnerMatchType", searchType);
+                  setPartnerSearchType(searchType);
+                };
                 return (
                   <Form className="mx-auto">
                     {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
@@ -411,6 +475,9 @@ const FindAPartner = () => {
                               id="specificTime"
                               name="partnerMatchType"
                               value="specificTime"
+                              onChange={(e) => {
+                                handleSearchType(e);
+                              }}
                             />
                             <FormLabel
                               className="form-check-label"
@@ -421,15 +488,15 @@ const FindAPartner = () => {
                           </FormGroup>
                           <FormGroup className="form-check form-check-inline">
                             <Field
+                              {...field}
                               className="form-check-input"
                               type="radio"
                               id="generalTime"
                               name="partnerMatchType"
                               value="generalTime"
-                              onChange={handleChange}
+                              // onChange={handleChange}
                               onChange={(e) => {
-                                handleChange(e);
-                                // setGeneralMatchPlayValue(e);
+                                handleSearchType(e);
                               }}
                             />
                             <FormLabel
@@ -445,8 +512,8 @@ const FindAPartner = () => {
                           />
                         </FormGroup>
                       </fieldset>
-
-                      {values.partnerMatchType === "specificTime" ? (
+                      {/* {values.partnerMatchType === "specificTime" ? ( */}
+                      {partnerSearchType === "specificTime" ? (
                         <fieldset>
                           <legend>Specific Date and Time Search</legend>
                           <FormGroup>
@@ -622,17 +689,20 @@ const FindAPartner = () => {
                         </fieldset>
                       ) : null}
                       {/* {(!isLoading) ?  */}
-                      {values.partnerMatchType === "generalTime" ? (
+                      {/* {values.partnerMatchType === "generalTime" ? ( */}
+                      {partnerSearchType === "generalTime" ? (
                         <fieldset>
                           <legend>General Match Availability</legend>
                           <FormGroup className="form-check form-check-inline">
                             <Field
+
+                              ref={loadValuesFromProfile}
                               className="form-check-input"
                               type="checkbox"
                               id="loadProfileData"
                               name="loadProfileData"
                               onChange={(e) => {
-                                handleChange(e);
+                                // handleChange(e);
                                 loadfromProfile(
                                   e,
                                   "generalTime",

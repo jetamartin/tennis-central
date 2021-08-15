@@ -13,7 +13,6 @@ import Messages from "./components/Messages";
 import PartnerList from "./components/PartnerList";
 import NotFound from "./components/NotFound";
 import TennisCentralAPI from "./TennisCentralAPI";
-import isNil from "lodash/isNil";
 import UserContext from "./components/UserContext";
 
 import "./App.css";

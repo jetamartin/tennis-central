@@ -11,33 +11,22 @@ import PartnerMatchType from "./PartnerMatchType";
 import TennisCentralAPI from "../TennisCentralAPI";
 import UserContext from "./UserContext";
 import { set } from "lodash";
-import SubmitFormApiMsgs from "./SubmitFormApiMsgs";
 
-const PartnerCard = ({ partner, deletePartner }) => {
+
+const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [partnerData, setPartnerData] = useState("");
   const { id, contact } = partner;
 
   const [profileData, setProfileData] = useState({});
   const [startDate, setStartDate] = useState();
-  //-------------------------------
+
   // State & vars associated with displaying and hiding API Error & Success Msgs arrising from submission of form
   // const [dataSubmitted, setDataSubmitted] = useState(false);
   // const [submitFormApiErrorMsg, setSubmitFormApiErrorMsg] = useState([]);
   // const [submitFormApiSuccessMsg, setSubmitFormApiSuccessMsg] = useState({
   //   message: "",
   // });
-  // const success = "Data was successfully updated";
-
-  // Starts a timer to remove success message after some interval
-  // useEffect(() => {
-  //   // Only need to set timer to automatically remove success msg submission was a success if not don't set timer
-  //   if (submitFormApiErrorMsg.length === 0) {
-  //     setTimeout(() => setSubmitFormApiSuccessMsg({ message: "" }), 3000);
-  //   }
-  // }, [dataSubmitted]);
-
-  //----------------------------------------------
 
   // debugger;
   const {
@@ -70,25 +59,7 @@ const PartnerCard = ({ partner, deletePartner }) => {
   const handleSubmit = async (e, { values }) => {
     const contactObj = constructContactObject(values);
     const partnerId = e.target.dataset.id;
-    try {
-      //---------------------------------------------
-      // setSubmitFormApiErrorMsg([]);
-      // setDataSubmitted(true);
-      //----------------------------------------------
-      await TennisCentralAPI.updatePartnerTable(contactObj, userId, partnerId);
-      // setSubmitting(false);
-      //----------------------------------------------
-      // Set submitFormApiSuccessMsg to trigger useEffect to trigger timer on success msg
-      // setSubmitFormApiSuccessMsg({ message: success });
-      //----------------------------------------------
-
-    } catch (error) {
-      console.log(error);
-    }
-    //----------------------------------------------
-    // Need to reset dataSubmitted state regardless of whether submission was successful or not
-    // setDataSubmitted(false);
-    //----------------------------------------------
+    await updatePartnerContact (contactObj, userId, partnerId);
 
   };
 
@@ -198,12 +169,7 @@ const PartnerCard = ({ partner, deletePartner }) => {
                       />
                     </Col>
                   </FormGroup>
-                  {/* // ----------------------------------- */}
-                  {/* <SubmitFormApiMsgs
-                    submitFormApiErrorMsg={submitFormApiErrorMsg}
-                    submitFormApiSuccessMsg={submitFormApiSuccessMsg}
-                  /> */}
-                  {/* // ----------------------------------- */}
+
                   <Button
                     type="submit"
                     className="float-right"

@@ -17,7 +17,7 @@ const NavBar = ({ userInfo, logoutUser }) => {
   };
 
   return (
-    <Navbar bg="primary" variant="dark" expand="lg">
+    <Navbar sticky="top" bg="primary" variant="dark" expand="lg">
       <Navbar.Brand href="/">TennisCentral</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
