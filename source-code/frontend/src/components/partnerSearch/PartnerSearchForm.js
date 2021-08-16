@@ -74,10 +74,10 @@ const FindAPartner = () => {
       setPartnerSearchType(searchType);
       setFromProfile(loadOptions);
       if (loadOptions) {
-        debugger;
+        // debugger;
         loadValuesFromProfile.current?.click();
       }
-      debugger;
+      // debugger;
     };
     loadFormOptions();
   }, []);
@@ -154,7 +154,7 @@ const FindAPartner = () => {
       setFromProfile(true);
       // Test Code
       const throwError = false;
-      debugger;
+      // debugger;
       if (throwError) {
         throw ["Failure to load data from User Profile"];
       }
@@ -196,8 +196,11 @@ const FindAPartner = () => {
     opponentNtrpRating,
     ntrpRange
   ) => {
+    // if user doesn't specify an ntrp range then match algorithm will look for opponents 
+    // whose ntrp rating falls within a specificed range criteria +/- of users ntrp rating
     const withinRangeCriteria = 0.5;
-    const buffer = .1; 
+    // The inRange functions
+    const buffer = 0.1;
     const highNtrpRange = ntrpRange.high + withinRangeCriteria;
 
     // if no ntrpRange provided then we check to see if user ntrp rating is within an acceptable range of opponents ntrp range
@@ -208,7 +211,11 @@ const FindAPartner = () => {
         return true;
     } else {
       // user provided a ntrp range for their opponent..check to see if opponents ntrp rating falls within range
-      return inRange(opponentNtrpRating, ntrpRange.low - buffer, ntrpRange.high + buffer);
+      return inRange(
+        opponentNtrpRating,
+        ntrpRange.low,
+        ntrpRange.high + buffer
+      );
     }
   };
 
@@ -224,8 +231,9 @@ const FindAPartner = () => {
     let match = false;
     debugger;
     /* Compatibility rules: NOTE these rules below are currently single sided (validation done from currUser's perspective)
-      1 - if user didn't provide their rating OR potential partner didn't provide their rating then MATCH = FALSE;
-      2 - if user didn't provide an opponent rating range and potential partner didn't provide a opponent rating range
+      1 - if potential partner didn't provide their rating then MATCH = FALSE;
+      2 - if user didn't provide an opponent rating range then check to see if players ntrp range fall within match criteria range
+          (e.g., with in .5 ntrp points from each other)
           AND if users & partners rating within .5 NTRP points then MATCH = TRUE; 
       3 - if user did provide a rating range AND potential partner's rating falls within the range then MATCH = TRUE;
     */
@@ -233,12 +241,11 @@ const FindAPartner = () => {
     if (isNil(potentialPartner.my_ntrp_rating)) return false;
 
     // Rule #2
-    if (currUser.opponent_ntrp_rating_range) 
-    {
+    if (currUser.opponent_ntrp_rating_range) {
       return fallsWithinRange(
-        currUser.my_ntrp_rating = null,
+        (currUser.my_ntrp_rating),
         potentialPartner.my_ntrp_rating,
-        currUser.opponent_ntrp_rating_range,
+        currUser.opponent_ntrp_rating_range
       );
     }
     // Rule #3
@@ -291,6 +298,7 @@ const FindAPartner = () => {
    * @returns an array of partners that match search criteria
    */
   const idPotentialPartners = (users) => {
+    // debugger;
     const potentialPartners = users.filter(
       (user) => user.id !== userInfo.userId
     );
@@ -312,7 +320,10 @@ const FindAPartner = () => {
           userInfo.userId,
           partner.id
         );
-        currentPartners.push(res);
+        // Only add if the partner record is for this specific user
+        if (res.partner.playerId === userId) {
+          currentPartners.push(res);
+        }
       } catch (error) {
         console.log(error);
       }
