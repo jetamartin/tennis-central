@@ -10,7 +10,7 @@ router.post("/register", async (req, res, next) => {
     return res
       .status(201)
       .json({
-        userinfo: { token, userId: newUser.id, username: newUser.username },
+        userinfo: { token, userId: newUser.id, username: newUser.username, firstName: newUser.firstName },
       });
   } catch (error) {
     return next(error);
