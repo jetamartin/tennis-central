@@ -1,12 +1,23 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./Home.css";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import UserContext from "./UserContext";
 
 const Home = () => {
+  const [isLoading, setIsLoading ] = useState(true)
+
+  useEffect (() => {
+    if (userInfo?.token) {
+      setIsLoading(false);
+    }
+
+  }, []);
+
   const userInfo = useContext(UserContext);
   console.log(userInfo);
+  debugger;
+
   return (
     <>
       <div className="image-box">

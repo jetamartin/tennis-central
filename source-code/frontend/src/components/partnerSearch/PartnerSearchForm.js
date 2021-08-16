@@ -36,10 +36,8 @@ const FindAPartner = () => {
   const [partnerSearchType, setPartnerSearchType] = useState();
   const [fromProfile, setFromProfile] = useState(false);
   const load = fromProfile;
-  console.log("FromProfile value: ", fromProfile)
-  let inputCheckbox = '';
-
-
+  console.log("FromProfile value: ", fromProfile);
+  let inputCheckbox = "";
 
   // State for managing display or messages returned from API calls
   const [submitFormApiErrorMsg, setSubmitFormApiErrorMsg] = useState([]);
@@ -71,14 +69,13 @@ const FindAPartner = () => {
     const loadFormOptions = async () => {
       const searchType = localStorage.getItem("searchType") || "";
       const loadOptions = localStorage.getItem("loadOptions") || false;
-      console.log("LoadOptions: ", loadOptions)
+      console.log("LoadOptions: ", loadOptions);
 
       setPartnerSearchType(searchType);
       setFromProfile(loadOptions);
       if (loadOptions) {
         debugger;
         loadValuesFromProfile.current?.click();
-
       }
       debugger;
     };
@@ -159,7 +156,7 @@ const FindAPartner = () => {
       const throwError = false;
       debugger;
       if (throwError) {
-        throw ["Failure to load data from User Profile"]
+        throw ["Failure to load data from User Profile"];
       }
 
       let data = await TennisCentralAPI.getUserProfile(userInfo.userId);
@@ -180,7 +177,7 @@ const FindAPartner = () => {
         )
       );
     } catch (error) {
-      console.log(error)
+      console.log(error);
       if (Array.isArray(error)) {
         setSubmitFormApiErrorMsg(error);
       }
@@ -200,17 +197,18 @@ const FindAPartner = () => {
     ntrpRange
   ) => {
     const withinRangeCriteria = 0.5;
+    const buffer = .1; 
     const highNtrpRange = ntrpRange.high + withinRangeCriteria;
 
     // if no ntrpRange provided then we check to see if user ntrp rating is within an acceptable range of opponents ntrp range
-    if (!ntrpRange) {
+    if (!ntrpRange && currUserNtrpRating) {
       if (
         Math.abs(currUserNtrpRating - opponentNtrpRating) <= withinRangeCriteria
       )
         return true;
     } else {
       // user provided a ntrp range for their opponent..check to see if opponents ntrp rating falls within range
-      return inRange(opponentNtrpRating, ntrpRange.low, ntrpRange.high);
+      return inRange(opponentNtrpRating, ntrpRange.low - buffer, ntrpRange.high + buffer);
     }
   };
 
@@ -224,6 +222,7 @@ const FindAPartner = () => {
   const ntrpRatingCompatible = (currUser, potentialPartner) => {
     const matchCriteria = 0.5;
     let match = false;
+    debugger;
     /* Compatibility rules: NOTE these rules below are currently single sided (validation done from currUser's perspective)
       1 - if user didn't provide their rating OR potential partner didn't provide their rating then MATCH = FALSE;
       2 - if user didn't provide an opponent rating range and potential partner didn't provide a opponent rating range
@@ -231,21 +230,15 @@ const FindAPartner = () => {
       3 - if user did provide a rating range AND potential partner's rating falls within the range then MATCH = TRUE;
     */
     // Rule #1
-    if (
-      isNil(currUser.my_ntrp_rating) ||
-      isNil(potentialPartner.my_ntrp_rating)
-    )
-      return false;
+    if (isNil(potentialPartner.my_ntrp_rating)) return false;
 
     // Rule #2
-    if (
-      isNil(currUser.opponent_ntrp_rating_range) &&
-      isNil(potentialPartner.opponent_ntrp_rating_range)
-    ) {
+    if (currUser.opponent_ntrp_rating_range) 
+    {
       return fallsWithinRange(
-        currUser.my_ntrp_rating,
+        currUser.my_ntrp_rating = null,
         potentialPartner.my_ntrp_rating,
-        null
+        currUser.opponent_ntrp_rating_range,
       );
     }
     // Rule #3
@@ -695,7 +688,6 @@ const FindAPartner = () => {
                           <legend>General Match Availability</legend>
                           <FormGroup className="form-check form-check-inline">
                             <Field
-
                               ref={loadValuesFromProfile}
                               className="form-check-input"
                               type="checkbox"
