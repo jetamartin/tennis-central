@@ -38,12 +38,21 @@ const AboutMe = ({ updateUserRecord }) => {
   useEffect(() => {
     const loadFormData = async () => {
       try {
-        let profileData = await TennisCentralAPI.getUserProfile(
-          userInfo.userId
-        );
-        setProfileData(profileData.user);
-        setIsLoading(false);
+        setSubmitFormApiErrorMsg([]);
+        if (userInfo?.token) {
+          let profileData = await TennisCentralAPI.getUserProfile(
+            userInfo?.userId,
+            userInfo?.token
+          );
+          setProfileData(profileData.user);
+          setIsLoading(false);
+        }
       } catch (error) {
+        debugger;
+        if (Array.isArray(error)) {
+          setSubmitFormApiErrorMsg(error);
+          setIsLoading(false)
+        }
         console.log(error);
       }
     };
@@ -58,7 +67,6 @@ const AboutMe = ({ updateUserRecord }) => {
     }
   }, [dataSubmitted]);
 
- 
   const initialValues = {
     ...profileData,
     birthday: moment(profileData.birthday).format("MM/DD/YYYY"),
@@ -80,16 +88,19 @@ const AboutMe = ({ updateUserRecord }) => {
       // Clear out any prior api error messages on submission of the form so they don't persist
       setSubmitFormApiErrorMsg([]);
       setDataSubmitted(true);
-      await updateUserRecord(values, userInfo.userId);
-      if (throwError) {
-        throw ["Update Failed"];
+      if (userInfo.token) {
+        await updateUserRecord(values, userInfo.userId, userInfo?.token);
+        if (throwError) {
+          throw ["Update Failed"];
+        }
+        setSubmitting(false);
+  
+        // Set submitFormApiSuccessMsg to trigger useEffect to trigger timer on success msg
+        setSubmitFormApiSuccessMsg({ message: success });
       }
-      setSubmitting(false);
-
-      // Set submitFormApiSuccessMsg to trigger useEffect to trigger timer on success msg
-      setSubmitFormApiSuccessMsg({ message: success });
 
     } catch (error) {
+      debugger
       console.log(error);
       if (Array.isArray(error)) {
         setSubmitFormApiErrorMsg(error);
@@ -100,6 +111,15 @@ const AboutMe = ({ updateUserRecord }) => {
   };
   if (isLoading) {
     return <p className="">Loading &hellip;</p>;
+  }
+  if (submitFormApiErrorMsg.length !== 0) { 
+    debugger;
+   return (     
+    <SubmitFormApiMsgs
+     submitFormApiErrorMsg={submitFormApiErrorMsg}
+     submitFormApiSuccessMsg={submitFormApiSuccessMsg}
+   />
+   )
   }
   return (
     <Container fluid className="pb-5 ml-1">
@@ -135,7 +155,7 @@ const AboutMe = ({ updateUserRecord }) => {
               touched,
               errors,
             }) => {
-               return (
+              return (
                 <Container>
                   <Form className="mx-auto mb-5">
                     {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
@@ -312,7 +332,10 @@ const AboutMe = ({ updateUserRecord }) => {
                         </div>
                       </FormGroup>
                     </fieldset>
-                    <SubmitFormApiMsgs submitFormApiErrorMsg={submitFormApiErrorMsg} submitFormApiSuccessMsg={submitFormApiSuccessMsg} />
+                    <SubmitFormApiMsgs
+                      submitFormApiErrorMsg={submitFormApiErrorMsg}
+                      submitFormApiSuccessMsg={submitFormApiSuccessMsg}
+                    />
                     <Button
                       type="submit"
                       className="btn btn-primary btn-lg btn-block mt-3"

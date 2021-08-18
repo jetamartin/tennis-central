@@ -59,9 +59,14 @@ const App = () => {
     return results;
   };
 
-  const updateUserRecord = async (userRecord, userId) => {
+  const updateUserRecord = async (userRecord, userId, token) => {
     console.log("App.js userRecord: ", userRecord);
-    let results = await TennisCentralAPI.updateUserRecord(userRecord, userId);
+    debugger;
+    let results = await TennisCentralAPI.updateUserProfile(
+      userRecord,
+      userId,
+      token
+    );
     return results;
   };
 

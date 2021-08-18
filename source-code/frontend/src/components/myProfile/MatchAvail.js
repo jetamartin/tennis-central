@@ -38,15 +38,22 @@ const MatchAvail = ({ updateUserRecord }) => {
 
   useEffect(() => {
     const loadFormData = async () => {
+      setSubmitFormApiErrorMsg([])
       try {
-        let data = await TennisCentralAPI.getUserProfile(userInfo.userId);
-        let profileData = transformBuildMatchAvailObject(
-          data.user.match_availability
-        );
-        setProfileData(profileData);
-        setIsLoading(false);
+        if (userInfo.token) {
+          let data = await TennisCentralAPI.getUserProfile(userInfo?.userId, userInfo?.token);
+          let profileData = transformBuildMatchAvailObject(
+            data.user.match_availability
+          );
+          setProfileData(profileData);
+          setIsLoading(false);
+        }
       } catch (error) {
         console.log(error);
+        if (Array.isArray(error)) {
+          setSubmitFormApiErrorMsg(error);
+        }
+        setIsLoading(false)
       }
     };
     loadFormData();
@@ -116,7 +123,7 @@ const MatchAvail = ({ updateUserRecord }) => {
       // Clear out any prior api error messages on submission of the form so they don't persist
       setSubmitFormApiErrorMsg([]);
       setDataSubmitted(true);
-      await updateUserRecord(values, userInfo.userId);
+      await updateUserRecord(values, userInfo?.userId, userInfo?.token);
       if (throwError) {
         throw ["Update Failed"];
       }
@@ -136,6 +143,15 @@ const MatchAvail = ({ updateUserRecord }) => {
   if (isLoading) {
     return <p className="">Loading &hellip;</p>;
   }
+  if (submitFormApiErrorMsg.length !== 0) {
+    debugger
+    return (     
+     <SubmitFormApiMsgs
+      submitFormApiErrorMsg={submitFormApiErrorMsg}
+      submitFormApiSuccessMsg={submitFormApiSuccessMsg}
+    />
+    )
+   }
   return (
     <Container fluid className="pb-5 ml-1">
       <Row>

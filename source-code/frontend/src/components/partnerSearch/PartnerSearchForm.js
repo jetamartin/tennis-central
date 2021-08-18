@@ -159,23 +159,27 @@ const FindAPartner = () => {
         throw ["Failure to load data from User Profile"];
       }
 
-      let data = await TennisCentralAPI.getUserProfile(userInfo.userId);
-      let profileInfo = transformBuildMatchAvailObject(
-        data.user.match_availability
-      );
-      let opponentNtrpRatingRange = transformNtrpRatingRange(
-        data.user.opponent_ntrp_rating_range
-      );
-      setProfileData(
-        Object.assign(
-          data.user,
-          profileInfo,
-          opponentNtrpRatingRange,
-          { partnerMatchType: "generalTime" },
-          { loadProfileData: true }
-          // { loadProfileData: fromProfile }
-        )
-      );
+      if (userInfo?.token ) {
+        let data = await TennisCentralAPI.getUserProfile(userInfo.userId, userInfo.token);
+        let profileInfo = transformBuildMatchAvailObject(
+          data.user.match_availability
+        );
+        let opponentNtrpRatingRange = transformNtrpRatingRange(
+          data.user.opponent_ntrp_rating_range
+        );
+        setProfileData(
+          Object.assign(
+            data.user,
+            profileInfo,
+            opponentNtrpRatingRange,
+            { partnerMatchType: "generalTime" },
+            { loadProfileData: true }
+            // { loadProfileData: fromProfile }
+          )
+        );
+
+      }
+
     } catch (error) {
       console.log(error);
       if (Array.isArray(error)) {
@@ -318,7 +322,8 @@ const FindAPartner = () => {
       try {
         const res = await TennisCentralAPI.getPartner(
           userInfo.userId,
-          partner.id
+          partner.id, 
+          userInfo.token
         );
         // Only add if the partner record is for this specific user
         if (res.partner.playerId === userId) {
@@ -398,7 +403,7 @@ const FindAPartner = () => {
       setSubmitFormApiErrorMsg([]);
 
       // Retrieve all users from DB
-      const allUsers = await TennisCentralAPI.getAllUsers();
+      const allUsers = await TennisCentralAPI.getAllUsers(userInfo.token);
 
       // Get players that meet the users partner search filter criteria
       let partners = idPotentialPartners(allUsers.users);
@@ -444,7 +449,7 @@ const FindAPartner = () => {
       <Container className="h-100 PartnerSearchForm">
         <Row className="justify-content-center align-items-center mt-4">
           <Col sm={10} className="mx-auto form-border">
-            <h1>Find-A-Partner</h1>
+            <h3 className="text-center">Find-A-Partner</h3>
             <hr></hr>
             <Formik
               initialValues={initialValues}

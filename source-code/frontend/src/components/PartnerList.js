@@ -66,7 +66,7 @@ const PartnerList = () => {
             throw ["Failure to load partners"];
           }
 
-          let partnerList = await TennisCentralAPI.getPartners(userId);
+          let partnerList = await TennisCentralAPI.getPartners(userId, userInfo.token);
 
           setPartners(partnerList);
           setIsLoading(false);
@@ -97,8 +97,8 @@ const PartnerList = () => {
 
       console.log(`Delete Partner with id of ${partnerId}`);
 
-      await TennisCentralAPI.deletePartner(userId, partnerId);
-      const partnerList = await TennisCentralAPI.getPartners(userId);
+      await TennisCentralAPI.deletePartner(userId, partnerId, userInfo?.token);
+      const partnerList = await TennisCentralAPI.getPartners(userId, userInfo?.token);
       setPartners(partnerList);
       setIsLoading(false);
     } catch (error) {
@@ -125,7 +125,7 @@ const PartnerList = () => {
         throw ["Failure to save data"];
       }
       //----------------------------------------------
-      await TennisCentralAPI.updatePartnerTable(contactObj, userId, partnerId);
+      await TennisCentralAPI.updatePartnerTable(contactObj, userId, partnerId, userInfo?.token);
 
       //----------------------------------------------
       // Set submitFormApiSuccessMsg to trigger useEffect to trigger timer on success msg
@@ -158,6 +158,8 @@ const PartnerList = () => {
     <Container className="PartnerList">
       <Row>
         <Col sm={10} className="mx-auto">
+          <h1 className="text-center mt-3">Partner's List</h1>
+          <hr></hr>
           {(submitFormApiErrorMsg > 0 || submitFormApiSuccessMsg > 0) ?
             <SubmitFormApiMsgs
               submitFormApiErrorMsg={submitFormApiErrorMsg}
@@ -176,12 +178,13 @@ const PartnerList = () => {
                 partner={partner}
                 deletePartner={deletePartner}
                 updatePartnerContact={updatePartnerContact}
-                // submitFormApiErrorMsg={submitFormApiErrorMsg}
-                // submitFormApiSuccessMsg={submitFormApiSuccessMsg}
               />
             ))
           ) : (
-            <NoPartnersToLoad />
+            <div>
+              <NoPartnersToLoad />
+            </div>
+
           )}
         </Col>
       </Row>

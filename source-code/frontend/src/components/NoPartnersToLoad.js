@@ -5,8 +5,8 @@ const NoPartnersToLoad = ({ submitFormApiErrorMsg, submitFormApiSuccessMsg}) => 
   debugger
   return (
     <>
-      <div>
-        <p>You haven't added any partners yet.</p>
+      <div className="text-center">
+        <p>Currently you have no players on your Partner's List.</p>
         <p>To add a partner go to Find-A-Partner and search for one</p>
       </div>
       {/* {submitFormApiErrorMsg.length > 0 ? (

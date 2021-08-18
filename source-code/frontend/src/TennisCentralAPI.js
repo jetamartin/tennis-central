@@ -22,7 +22,7 @@ class TennisCentralAPI {
     const url = `${BASE_URL}/${endpoint}`;
     const headers = { Authorization: `Bearer ${TennisCentralAPI.token}` };
     const params = method === "get" ? data : {};
-
+    debugger;
     try {
       return (await axios({ url, method, data, params, headers })).data;
     } catch (err) {
@@ -61,9 +61,10 @@ class TennisCentralAPI {
   //   return res.jobs;
   // }
 
-  static async getUserProfile(userId) {
-    // debugger
+  static async getUserProfile(userId, userToken) {
+    TennisCentralAPI.token = userToken;
     let res = await this.request(`users/${userId}`);
+    debugger;
     return res;
   }
 
@@ -73,43 +74,81 @@ class TennisCentralAPI {
   }
 
   static async loginUser(userCredentials) {
+    debugger;
     let res = await this.request(`auth/login`, userCredentials, "post");
     return res;
   }
 
-  static async updateUserRecord(userRecord, userId) {
-    let res = await this.request(`users/${userId}`, userRecord, "patch");
+  static async updateUserProfile(userRecord, userId, userToken) {
+    TennisCentralAPI.token = userToken;
+    debugger;
+    let res = await this.request(
+      `users/${userId}`,
+      userRecord,
+      "patch",
+      TennisCentralAPI.token
+    );
+    debugger;
     return res;
   }
 
-  static async getAllUsers() {
+  static async getAllUsers(userToken) {
+    TennisCentralAPI.token = userToken;
     let res = await this.request(`users`);
     return res;
   }
 
-  static async addPartner(userId, partnerId) {
-    let res = await this.request(`users/${userId}/partners`, {"partnerId": +partnerId}, "post" )
-    return res;     
-  }
+  // static async addPartner(userId, partnerId, userToken) {
+  //   debugger
+  //   TennisCentralAPI.token = userToken;
+  //   let res = await this.request(
+  //     `users/${userId}/partners`,
+  //     { partnerId: +partnerId },
+  //     "post"
+  //   );
+  //   return res;
+  // }
 
-  static async getPartner(userId, partnerId) {
+  static async addPartner(userId, partnerId, userToken) {
+    debugger;
+    TennisCentralAPI.token = userToken;
+    let res = await this.request(
+      `users/${userId}/partners/${partnerId}`,
+      {},
+      "post"
+    );
+    return res;
+  }
+  static async getPartner(userId, partnerId, userToken) {
+    TennisCentralAPI.token = userToken;
     let res = await this.request(`users/${userId}/partners/${partnerId}`);
     return res;
   }
 
-  static async getPartners(userId) {
+  static async getPartners(userId, userToken) {
+    TennisCentralAPI.token = userToken;
     let res = await this.request(`users/${userId}/partners`);
     return res;
   }
 
-  static async updatePartnerTable(partnerRecord, userId, partnerId) {
-    let res = await this.request(`users/${userId}/partners/${partnerId}`, partnerRecord, "patch");
-    return res; 
+  static async updatePartnerTable(partnerRecord, userId, partnerId, userToken) {
+    TennisCentralAPI.token = userToken;
+    let res = await this.request(
+      `users/${userId}/partners/${partnerId}`,
+      partnerRecord,
+      "patch"
+    );
+    return res;
   }
 
-  static async deletePartner(userId, partnerId) {
-    let res = await this.request(`users/${userId}/partners/${partnerId}`, {}, "delete");
-    return res; 
+  static async deletePartner(userId, partnerId, userToken) {
+    TennisCentralAPI.token = userToken;
+    let res = await this.request(
+      `users/${userId}/partners/${partnerId}`,
+      {},
+      "delete"
+    );
+    return res;
   }
 
   // static async request1(endpoint, data = {}, method = "get", token="") {
@@ -149,9 +188,10 @@ class TennisCentralAPI {
 }
 
 // for now, put token ("testuser" / "password" on class)
-TennisCentralAPI.token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
-  "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
-  "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
+// TennisCentralAPI.token = token;
+// TennisCentralAPI.token =
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
+//   "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
+//   "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
 
 export default TennisCentralAPI;
