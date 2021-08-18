@@ -2,6 +2,10 @@ const { Sequelize, DataTypes, ENUM } = require("sequelize");
 const { sequelize } = require("../db");
 const ExpressError = require("../ExpressError");
 
+const bcrypt = require("bcrypt");
+const { BCRYPT_WORK_FACTOR } = require("../config.js")
+
+
 // Model Definition
 const User = sequelize.define(
   "User",
@@ -17,7 +21,7 @@ const User = sequelize.define(
       // },
     },
     password: {
-      type: DataTypes.STRING(25),
+      type: DataTypes.STRING(100),
       // allowNull: false,
       // validate: {
       //   notEmpty: true,
@@ -152,7 +156,8 @@ User.authenticate = async function (username, password) {
   });
   debugger;
   if (user) {
-    if (user.password === password) {
+    const isValid = await bcrypt.compare(password, user.password)
+    if (isValid) {
       delete user.password;
       return user;
     }
@@ -178,6 +183,9 @@ User.register = async function (userRegInfo) {
       "Registration failed. User name already taken please select another one and re-submit"
     );
   }
+  const hashedPassword = await bcrypt.hash(userRegInfo.password, BCRYPT_WORK_FACTOR);
+  userRegInfo.password = hashedPassword;
+
   const user = await User.create(userRegInfo);
   return user;
 };

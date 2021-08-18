@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const { User } = require("../models/User");
+const { createToken } = require("../helpers/tokens");
 const ExpressError = require("../ExpressError");
 
 router.post("/register", async (req, res, next) => {
   try {
+    debugger;
     const newUser = await User.register(req.body);
-    const token = "123";
+    const token = createToken(newUser);
     return res
       .status(201)
       .json({
@@ -27,8 +29,7 @@ router.post("/login", async (req, res, next) => {
 
     const { username, password } = req.body;
     const user = await User.authenticate(username, password);
-    // const token = createToken(user);
-    const token = 123;
+    const token = createToken(user);
     return res.json({
       userinfo: { token, userId: user.id, username: user.username, firstName: user.firstName },
     });

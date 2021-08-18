@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { User } = require("../models/User");
 const ExpressError = require("../ExpressError");
+const { ensureCorrectUserOrAdmin } = require("../middleware/auth");
 
 /* 
   get /users  (read)
@@ -30,25 +31,26 @@ router.get("", async (req, res) => {
 //     },
 //   });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:userId", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
-    // debugger;
-    const requestedId = req.params.id;
-    const user = await User.findOne({ where: { id: requestedId } });
+    debugger;
+    const userId = req.params.userId;
+    const user = await User.findOne({ where: { id: userId } });
     if (!user) throw new ExpressError(404, "User not found");
     return res.json({ user });
   } catch (error) {
+    debugger
     return next(error);
   }
 });
 
-router.patch("/:id", async (req, res, next) => {
+router.patch("/:userId", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
     // debugger;
     // First check to see if requested record exist in db
-    const requestedId = req.params.id;
+    const userId = req.params.userId;
     const result = await User.update(req.body, {
-      where: { id: requestedId },
+      where: { id: userId },
       returning: true,
     });
     if (result[0] === 0) throw new ExpressError(404, "User not found");
@@ -60,16 +62,16 @@ router.patch("/:id", async (req, res, next) => {
   }
 });
 
-router.delete("/:id", async (req, res, next) => {
+router.delete("/:userId", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
-    const requestedId = req.params.id;
+    const userId = req.params.id;
     const result = await User.destroy({
-      where: { id: requestedId },
+      where: { id: userId },
       returning: true,
     });
     console.log("Result ======>", result);
     if (result === 0) throw new ExpressError(404, "User not found");
-    return res.status(200).json({ deleted: requestedId });
+    return res.status(200).json({ deleted: userId });
   } catch (error) {
     console.log(error);
     return next(error);

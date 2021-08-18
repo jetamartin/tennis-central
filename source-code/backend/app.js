@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+
+const { authenticateJWT } = require("./middleware/auth");
 const { router: authRouter } = require("./routes/auth");
 const { router: usersRouter } = require("./routes/users");
 const { router: messagesRouter } = require("./routes/messages");
@@ -14,6 +16,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.get('/favicon..ico', (req, res) => res.sendStatus(204));
+app.use(authenticateJWT);
+
 app.use("/auth", authRouter); 
 app.use("/users", usersRouter);
 // app.use("/users/:userId/messages", messagesRouter);

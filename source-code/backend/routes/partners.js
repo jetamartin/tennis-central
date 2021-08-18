@@ -3,6 +3,8 @@ const router = express.Router();
 const { Partner } = require("../models");
 const { User } = require("../models");
 const ExpressError = require("../ExpressError");
+const { ensureCorrectUserOrAdmin } = require("../middleware/auth");
+
 /* 
   get /partners  (read)
   post /partners (create)
@@ -10,7 +12,7 @@ const ExpressError = require("../ExpressError");
   patch /partners/:id (update)
   delete /partners/:id (delete)
  */
-router.get("/users/:userId/partners", async (req, res, next) => {
+router.get("/users/:userId/partners", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
     const userId = +req.params.userId;
     let partners = await Partner.findAll({
@@ -28,21 +30,38 @@ router.get("/users/:userId/partners", async (req, res, next) => {
   }
 });
 
+// ************** Previous route ********************
 // router.post("", async (req, res) => {
-router.post("/users/:userId/partners", async (req, res, next) => {
+// router.post("/users/:userId/partners/", ensureCorrectUserOrAdmin, async (req, res, next) => {
+//   try {
+//     debugger
+//     const playerId = +req.params.userId;
+//     const partnerBody = req.body;
+//     partnerBody.playerId = playerId;
+//     const partner = await Partner.create(partnerBody);
+//     return res.status(201).json({ partner });
+//   } catch (error) {
+//     return next(error);
+//   }
+// });
+
+router.post("/users/:userId/partners/:partnerId", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
+    debugger
     const playerId = +req.params.userId;
-    const partnerBody = req.body;
-    partnerBody.playerId = playerId;
-    const partner = await Partner.create(partnerBody);
+    const partnerId = +req.params.partnerId;
+    const partner = await Partner.create({
+      partnerId, playerId
+    })
+
     return res.status(201).json({ partner });
   } catch (error) {
-    return next(error);
+    return next(error)
   }
-});
+})
 
 // router.get("/:id", async (req, res, next) => {
-router.get("/users/:userId/partners/:id", async (req, res, next) => {
+router.get("/users/:userId/partners/:id", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
     const playerId = +req.params.userId;
     const partnerId = +req.params.id;
@@ -58,7 +77,7 @@ router.get("/users/:userId/partners/:id", async (req, res, next) => {
 });
 
 // router.patch("/:id", async (req, res, next) => {
-router.patch("/users/:userId/partners/:id", async (req, res, next) => {
+router.patch("/users/:userId/partners/:id", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
     const playerId = +req.params.userId;
     const partnerId = +req.params.id;
@@ -78,10 +97,10 @@ router.patch("/users/:userId/partners/:id", async (req, res, next) => {
 });
 
 // router.delete("/:id", async (req, res, next) => {
-router.delete("/users/:userId/partners/:id", async (req, res, next) => {
+router.delete("/users/:userId/partners/:id", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
     const playerId = +req.params.userId;
-    const requestedId = req.params.id;
+    const requestedId = +req.params.id;
     const result = await Partner.destroy({
       where: { id: requestedId },
       returning: true,
