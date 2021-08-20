@@ -3,9 +3,7 @@ import { Container, Col, Row, Table } from "react-bootstrap";
 
 import UserContext from "./UserContext";
 import TennisCentralAPI from "../TennisCentralAPI";
-import isNil from "lodash/isNil";
 import PartnerCard from "./PartnerCard";
-import { isEmpty, set } from "lodash";
 
 import NoPartnersToLoad from "./NoPartnersToLoad";
 import SubmitFormApiMsgs from "./SubmitFormApiMsgs";
@@ -27,10 +25,20 @@ const PartnerList = () => {
     message: "",
   });
 
+  const setSuccessMsgTimer = () => {
+    setTimeout(() => setSubmitFormApiSuccessMsg({ message: "" }), 2000);
+  };
+
+  // If success message was generated then this will start timer to remove it after x time
   useEffect(() => {
+    console.log(
+      "****Setting Timer useEffect() - dateSubmitted: ",
+      dataSubmitted
+    );
     // Only need to set timer to automatically remove success msg submission was a success if not don't set timer
-    if (submitFormApiErrorMsg.length === 0) {
-      setTimeout(() => setSubmitFormApiSuccessMsg({ message: "" }), 3000);
+    // if (submitFormApiErrorMsg.length === 0) {
+    if (submitFormApiSuccessMsg.message !== "") {
+      setTimeout(() => setSubmitFormApiSuccessMsg({ message: "" }), 2000);
     }
   }, [dataSubmitted]);
 
@@ -38,7 +46,6 @@ const PartnerList = () => {
 
   const userInfo = useContext(UserContext);
   const userId = userInfo.userId;
-  console.log(userInfo);
 
   function isObjectEmpty(value) {
     return (
@@ -49,37 +56,40 @@ const PartnerList = () => {
 
   useEffect(() => {
     if (!isObjectEmpty(userInfo)) {
-          // Only need to set timer to automatically remove success msg submission was a success if not don't set timer
-      if (submitFormApiErrorMsg.length === 0) {
-        setTimeout(() => setSubmitFormApiSuccessMsg({ message: "" }), 3000);
-      }
+      console.log("****GetPartner useEffect() - userInfo: ", userInfo);
       const getPartners = async () => {
         try {
+          setDataSubmitted(false);
           debugger;
-          setLoadFormApiErrorMsg([]);
-          // setSubmitFormApiErrorMsg([]);
-          setDataSubmitted(true);
+          if (submitFormApiErrorMsg.length > 0) {
+            setLoadFormApiErrorMsg([]);
+          }
 
+          // ****** Code to simulate API errors
           const throwError = false;
           debugger;
           if (throwError) {
             throw ["Failure to load partners"];
           }
 
-          let partnerList = await TennisCentralAPI.getPartners(userId, userInfo.token);
-
+          let partnerList = await TennisCentralAPI.getPartners(
+            userId,
+            userInfo.token
+          );
           setPartners(partnerList);
           setIsLoading(false);
+          // setDataSubmitted(true)
         } catch (error) {
-          console.log(error);
+          // console.log(error);
           if (Array.isArray(error)) {
             debugger;
             setLoadFormApiErrorMsg(error);
             // setSubmitFormApiErrorMsg(error);
           }
         }
-        // setDataSubmitted(false);
+        setDataSubmitted(false);
       };
+
       getPartners();
     }
   }, [userInfo]);
@@ -87,7 +97,6 @@ const PartnerList = () => {
   const deletePartner = async (partnerId) => {
     try {
       setSubmitFormApiErrorMsg([]);
-      setDataSubmitted(true);
 
       const throwError = false;
       debugger;
@@ -95,45 +104,65 @@ const PartnerList = () => {
         throw ["Server Error Could not delete partner"];
       }
 
-      console.log(`Delete Partner with id of ${partnerId}`);
+      // console.log(`Delete Partner with id of ${partnerId}`);
 
       await TennisCentralAPI.deletePartner(userId, partnerId, userInfo?.token);
-      const partnerList = await TennisCentralAPI.getPartners(userId, userInfo?.token);
+      const partnerList = await TennisCentralAPI.getPartners(
+        userId,
+        userInfo?.token
+      );
+
       setPartners(partnerList);
+      setSubmitFormApiSuccessMsg({ message: success });
+      setDataSubmitted(true);
+
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       if (Array.isArray(error)) {
         debugger;
         setSubmitFormApiErrorMsg(error);
       }
+      // setDataSubmitted(false);
     }
     // Need to reset dataSubmitted state regardless of whether submission was successful or not
-    setDataSubmitted(false);
+    // setDataSubmitted(false);
   };
 
   const updatePartnerContact = async (contactObj, userId, partnerId) => {
-    console.log("Update Partner Contact");
-    try {
-      //---------------------------------------------
-      setSubmitFormApiErrorMsg([]);
-      setDataSubmitted(true);
+    console.log("****UpdatePartnerContact() - userInfo: ", userInfo);
 
+    try {
+      debugger;
+      //---------------------------------------------
+      if (submitFormApiErrorMsg.length > 0) {
+        setSubmitFormApiErrorMsg([]);
+      }
+
+      //** Instrumentation to simulate api error in debug mode by throwing error */
       const throwError = false;
       debugger;
       if (throwError) {
         throw ["Failure to save data"];
       }
       //----------------------------------------------
-      await TennisCentralAPI.updatePartnerTable(contactObj, userId, partnerId, userInfo?.token);
 
-      //----------------------------------------------
+      await TennisCentralAPI.updatePartnerTable(
+        contactObj,
+        userId,
+        partnerId,
+        userInfo?.token
+      );
+      debugger;
+      // setDataSubmitted(true);
       // Set submitFormApiSuccessMsg to trigger useEffect to trigger timer on success msg
       setSubmitFormApiSuccessMsg({ message: success });
+      setSuccessMsgTimer();
+
       debugger;
       //----------------------------------------------
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       if (Array.isArray(error)) {
         debugger;
         setSubmitFormApiErrorMsg(error);
@@ -146,6 +175,7 @@ const PartnerList = () => {
   if (isLoading) {
     return <p className="Partners-loading">Loading &hellip;</p>;
   }
+
   if (loadFormApiErrorMsg.length > 0) {
     return (
       <SubmitFormApiMsgs
@@ -153,38 +183,40 @@ const PartnerList = () => {
         submitFormApiSuccessMsg={loadFormApiSuccessMsg}
       />
     );
-  } 
+  }
+  // console.log(partners);
+  debugger;
   return (
     <Container className="PartnerList">
       <Row>
         <Col sm={10} className="mx-auto">
           <h1 className="text-center mt-3">Partner's List</h1>
           <hr></hr>
-          {(submitFormApiErrorMsg > 0 || submitFormApiSuccessMsg > 0) ?
+          {submitFormApiErrorMsg.length > 0 ||
+          submitFormApiSuccessMsg.message !== "" ? (
             <SubmitFormApiMsgs
               submitFormApiErrorMsg={submitFormApiErrorMsg}
               submitFormApiSuccessMsg={submitFormApiSuccessMsg}
             />
-          : null
-          }
-          <SubmitFormApiMsgs
-            submitFormApiErrorMsg={submitFormApiErrorMsg}
-            submitFormApiSuccessMsg={submitFormApiSuccessMsg}
-          />
+          ) : null}
+
           {partners.length > 0 ? (
-            partners.map((partner) => (
-              <PartnerCard
-                key={partner.id}
-                partner={partner}
-                deletePartner={deletePartner}
-                updatePartnerContact={updatePartnerContact}
-              />
-            ))
+            partners.map((partner) => {
+              // debugger;
+              // console.log(`${partner.id}${userInfo?.userId}`);
+              return (
+                <PartnerCard
+                  key={partner.id}
+                  partner={partner}
+                  deletePartner={deletePartner}
+                  updatePartnerContact={updatePartnerContact}
+                />
+              );
+            })
           ) : (
             <div>
-              <NoPartnersToLoad />
+              <NoPartnersToLoad partners={partners} />
             </div>
-
           )}
         </Col>
       </Row>

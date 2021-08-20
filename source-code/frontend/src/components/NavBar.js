@@ -4,7 +4,7 @@ import isNil from "lodash/isNil";
 import { useHistory } from "react-router-dom";
 
 const NavBar = ({ userInfo, logoutUser }) => {
-  console.log("NAVBAR ===>", userInfo);
+  console.log("NAVBAR: userInfo = ", userInfo);
 
   const history = useHistory();
 

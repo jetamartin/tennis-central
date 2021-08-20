@@ -38,12 +38,14 @@ const AboutMe = ({ updateUserRecord }) => {
   useEffect(() => {
     const loadFormData = async () => {
       try {
+        debugger;
         setSubmitFormApiErrorMsg([]);
         if (userInfo?.token) {
           let profileData = await TennisCentralAPI.getUserProfile(
             userInfo?.userId,
             userInfo?.token
           );
+          
           setProfileData(profileData.user);
           setIsLoading(false);
         }

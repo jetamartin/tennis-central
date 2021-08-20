@@ -10,7 +10,7 @@ import PartnerAvailDays from "./partnerSearch/PartnerAvailDays";
 import PartnerMatchType from "./PartnerMatchType";
 import TennisCentralAPI from "../TennisCentralAPI";
 import UserContext from "./UserContext";
-import { set } from "lodash";
+import { identity, set } from "lodash";
 
 
 const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
@@ -68,7 +68,7 @@ const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
       const partnerId = e.target.dataset.id;
       await deletePartner(partnerId);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -121,7 +121,7 @@ const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
             onSubmit,
             errors,
           }) => {
-            console.log(values);
+            // console.log(values);
             return (
               <Form
                 data-id={id}
@@ -193,7 +193,7 @@ const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
             <legend>Availability</legend>
             <div>
               {transformAvail.map((availability, index) => (
-                <PartnerAvailDays key={id} availability={availability} />
+                <PartnerAvailDays key={index} availability={availability} />
               ))}
             </div>
           </fieldset>
@@ -208,7 +208,7 @@ const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
               {match_type
                 ? match_type.map((matchType, index) => (
                     <PartnerMatchType
-                      key={id}
+                      key={index}
                       matchType={matchType}
                       index={index}
                       length={match_type.length}
