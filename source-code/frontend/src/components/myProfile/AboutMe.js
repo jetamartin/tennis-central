@@ -45,7 +45,11 @@ const AboutMe = ({ updateUserRecord }) => {
             userInfo?.userId,
             userInfo?.token
           );
-          
+          debugger;
+          const throwError = false; 
+          if (throwError) {
+            throw["Failure to load partners"];;
+          }
           setProfileData(profileData.user);
           setIsLoading(false);
         }
@@ -53,7 +57,7 @@ const AboutMe = ({ updateUserRecord }) => {
         debugger;
         if (Array.isArray(error)) {
           setSubmitFormApiErrorMsg(error);
-          setIsLoading(false)
+          setIsLoading(false);
         }
         console.log(error);
       }
@@ -96,13 +100,12 @@ const AboutMe = ({ updateUserRecord }) => {
           throw ["Update Failed"];
         }
         setSubmitting(false);
-  
+
         // Set submitFormApiSuccessMsg to trigger useEffect to trigger timer on success msg
         setSubmitFormApiSuccessMsg({ message: success });
       }
-
     } catch (error) {
-      debugger
+      debugger;
       console.log(error);
       if (Array.isArray(error)) {
         setSubmitFormApiErrorMsg(error);
@@ -111,18 +114,27 @@ const AboutMe = ({ updateUserRecord }) => {
     // Need to reset dataSubmitted state regardless of whether submission was successful or not
     setDataSubmitted(false);
   };
-  if (isLoading) {
+  debugger;
+  if (isLoading && submitFormApiErrorMsg.length === 0) {
     return <p className="">Loading &hellip;</p>;
+  } else if (isLoading && submitFormApiErrorMsg.length !== 0) {
+    return (
+      <SubmitFormApiMsgs
+      submitFormApiErrorMsg={submitFormApiErrorMsg}
+      submitFormApiSuccessMsg={submitFormApiSuccessMsg}
+    />
+    )
   }
-  if (submitFormApiErrorMsg.length !== 0) { 
-    debugger;
-   return (     
-    <SubmitFormApiMsgs
-     submitFormApiErrorMsg={submitFormApiErrorMsg}
-     submitFormApiSuccessMsg={submitFormApiSuccessMsg}
-   />
-   )
-  }
+  debugger;
+  // if (submitFormApiErrorMsg.length !== 0) {
+  //   debugger;
+  //   return (
+  //     <SubmitFormApiMsgs
+  //       submitFormApiErrorMsg={submitFormApiErrorMsg}
+  //       submitFormApiSuccessMsg={submitFormApiSuccessMsg}
+  //     />
+  //   );
+  // }
   return (
     <Container fluid className="pb-5 ml-1">
       <Row>

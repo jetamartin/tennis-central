@@ -8,39 +8,43 @@ import PartnerCard from "./PartnerCard";
 import NoPartnersToLoad from "./NoPartnersToLoad";
 import SubmitFormApiMsgs from "./SubmitFormApiMsgs";
 
+import toast, { Toaster } from "react-hot-toast";
+const successToast = () => toast.success("Data was successfully updated");
+const errorToast = () => toast.error("Failure updating data");
+
 const PartnerList = () => {
   const [partners, setPartners] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   // State & vars associated with displaying and hiding API Error & Success Msgs arrising from submission of form
-  const [dataSubmitted, setDataSubmitted] = useState(false);
-  const [submitFormApiErrorMsg, setSubmitFormApiErrorMsg] = useState([]);
-  const [submitFormApiSuccessMsg, setSubmitFormApiSuccessMsg] = useState({
-    message: "",
-  });
-  const success = "Data was successfully updated";
+  // const [dataSubmitted, setDataSubmitted] = useState(false);
+  // const [submitFormApiErrorMsg, setSubmitFormApiErrorMsg] = useState([]);
+  // const [submitFormApiSuccessMsg, setSubmitFormApiSuccessMsg] = useState({
+  //   message: "",
+  // });
+  // const success = "Data was successfully updated";
 
   const [loadFormApiErrorMsg, setLoadFormApiErrorMsg] = useState([]);
   const [loadFormApiSuccessMsg, setLoadFormApiSuccessMsg] = useState({
     message: "",
   });
 
-  const setSuccessMsgTimer = () => {
-    setTimeout(() => setSubmitFormApiSuccessMsg({ message: "" }), 2000);
-  };
+  // const setSuccessMsgTimer = () => {
+  //   setTimeout(() => setSubmitFormApiSuccessMsg({ message: "" }), 2000);
+  // };
 
   // If success message was generated then this will start timer to remove it after x time
-  useEffect(() => {
-    console.log(
-      "****Setting Timer useEffect() - dateSubmitted: ",
-      dataSubmitted
-    );
-    // Only need to set timer to automatically remove success msg submission was a success if not don't set timer
-    // if (submitFormApiErrorMsg.length === 0) {
-    if (submitFormApiSuccessMsg.message !== "") {
-      setTimeout(() => setSubmitFormApiSuccessMsg({ message: "" }), 2000);
-    }
-  }, [dataSubmitted]);
+  // useEffect(() => {
+  //   console.log(
+  //     "****Setting Timer useEffect() - dateSubmitted: ",
+  //     dataSubmitted
+  //   );
+  //   // Only need to set timer to automatically remove success msg submission was a success if not don't set timer
+  //   // if (submitFormApiErrorMsg.length === 0) {
+  //   if (submitFormApiSuccessMsg.message !== "") {
+  //     setTimeout(() => setSubmitFormApiSuccessMsg({ message: "" }), 2000);
+  //   }
+  // }, [dataSubmitted]);
 
   // -------------------------------------------------------------------
 
@@ -59,11 +63,11 @@ const PartnerList = () => {
       console.log("****GetPartner useEffect() - userInfo: ", userInfo);
       const getPartners = async () => {
         try {
-          setDataSubmitted(false);
+          // setDataSubmitted(false);
           debugger;
-          if (submitFormApiErrorMsg.length > 0) {
-            setLoadFormApiErrorMsg([]);
-          }
+          // if (submitFormApiErrorMsg.length > 0) {
+          //   setLoadFormApiErrorMsg([]);
+          // }
 
           // ****** Code to simulate API errors
           const throwError = false;
@@ -76,6 +80,7 @@ const PartnerList = () => {
             userId,
             userInfo.token
           );
+
           setPartners(partnerList);
           setIsLoading(false);
           // setDataSubmitted(true)
@@ -83,11 +88,12 @@ const PartnerList = () => {
           // console.log(error);
           if (Array.isArray(error)) {
             debugger;
-            setLoadFormApiErrorMsg(error);
+
+            // setLoadFormApiErrorMsg(error);
             // setSubmitFormApiErrorMsg(error);
           }
         }
-        setDataSubmitted(false);
+        // setDataSubmitted(false);
       };
 
       getPartners();
@@ -96,7 +102,7 @@ const PartnerList = () => {
 
   const deletePartner = async (partnerId) => {
     try {
-      setSubmitFormApiErrorMsg([]);
+      // setSubmitFormApiErrorMsg([]);
 
       const throwError = false;
       debugger;
@@ -113,15 +119,15 @@ const PartnerList = () => {
       );
 
       setPartners(partnerList);
-      setSubmitFormApiSuccessMsg({ message: success });
-      setDataSubmitted(true);
+      // setSubmitFormApiSuccessMsg({ message: success });
+      // setDataSubmitted(true);
 
       setIsLoading(false);
     } catch (error) {
       // console.log(error);
       if (Array.isArray(error)) {
         debugger;
-        setSubmitFormApiErrorMsg(error);
+        // setSubmitFormApiErrorMsg(error);
       }
       // setDataSubmitted(false);
     }
@@ -135,9 +141,9 @@ const PartnerList = () => {
     try {
       debugger;
       //---------------------------------------------
-      if (submitFormApiErrorMsg.length > 0) {
-        setSubmitFormApiErrorMsg([]);
-      }
+      // if (submitFormApiErrorMsg.length > 0) {
+      //   setSubmitFormApiErrorMsg([]);
+      // }
 
       //** Instrumentation to simulate api error in debug mode by throwing error */
       const throwError = false;
@@ -153,23 +159,26 @@ const PartnerList = () => {
         partnerId,
         userInfo?.token
       );
+
+      successToast();
       debugger;
       // setDataSubmitted(true);
       // Set submitFormApiSuccessMsg to trigger useEffect to trigger timer on success msg
-      setSubmitFormApiSuccessMsg({ message: success });
-      setSuccessMsgTimer();
+      // setSubmitFormApiSuccessMsg({ message: success });
+      // setSuccessMsgTimer();
 
       debugger;
       //----------------------------------------------
     } catch (error) {
       // console.log(error);
+      errorToast();
       if (Array.isArray(error)) {
         debugger;
-        setSubmitFormApiErrorMsg(error);
+        // setSubmitFormApiErrorMsg(error);
       }
     }
     // Need to reset dataSubmitted state regardless of whether submission was successful or not
-    setDataSubmitted(false);
+    // setDataSubmitted(false);
   };
 
   if (isLoading) {
@@ -192,13 +201,14 @@ const PartnerList = () => {
         <Col sm={10} className="mx-auto">
           <h1 className="text-center mt-3">Partner's List</h1>
           <hr></hr>
-          {submitFormApiErrorMsg.length > 0 ||
+          <Toaster />
+          {/* {submitFormApiErrorMsg.length > 0 ||
           submitFormApiSuccessMsg.message !== "" ? (
             <SubmitFormApiMsgs
               submitFormApiErrorMsg={submitFormApiErrorMsg}
               submitFormApiSuccessMsg={submitFormApiSuccessMsg}
             />
-          ) : null}
+          ) : null} */}
 
           {partners.length > 0 ? (
             partners.map((partner) => {
