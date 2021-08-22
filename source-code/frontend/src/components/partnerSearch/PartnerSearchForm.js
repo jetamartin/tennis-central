@@ -75,7 +75,7 @@ const FindAPartner = () => {
       setFromProfile(loadOptions);
       if (loadOptions) {
         // debugger;
-        loadValuesFromProfile.current?.click();
+        // loadValuesFromProfile.current?.click();
       }
       // debugger;
     };
@@ -148,10 +148,15 @@ const FindAPartner = () => {
 
   const loadfromProfile = async (e, value, setFieldValue) => {
     try {
+      if (e.target.checked === false ) {
+        setProfileData({})
+        return
+      }
+      
       // Clear out any prior api error messages on submission of the form so they don't persist
       setSubmitFormApiErrorMsg([]);
 
-      setFromProfile(true);
+      setFromProfile(e.target.checked);
       // Test Code
       const throwError = false;
       // debugger;
@@ -159,8 +164,11 @@ const FindAPartner = () => {
         throw ["Failure to load data from User Profile"];
       }
 
-      if (userInfo?.token ) {
-        let data = await TennisCentralAPI.getUserProfile(userInfo.userId, userInfo.token);
+      if (userInfo?.token) {
+        let data = await TennisCentralAPI.getUserProfile(
+          userInfo.userId,
+          userInfo.token
+        );
         let profileInfo = transformBuildMatchAvailObject(
           data.user.match_availability
         );
@@ -177,9 +185,7 @@ const FindAPartner = () => {
             // { loadProfileData: fromProfile }
           )
         );
-
       }
-
     } catch (error) {
       console.log(error);
       if (Array.isArray(error)) {
@@ -200,7 +206,7 @@ const FindAPartner = () => {
     opponentNtrpRating,
     ntrpRange
   ) => {
-    // if user doesn't specify an ntrp range then match algorithm will look for opponents 
+    // if user doesn't specify an ntrp range then match algorithm will look for opponents
     // whose ntrp rating falls within a specificed range criteria +/- of users ntrp rating
     const withinRangeCriteria = 0.5;
     // The inRange functions
@@ -247,7 +253,7 @@ const FindAPartner = () => {
     // Rule #2
     if (currUser.opponent_ntrp_rating_range) {
       return fallsWithinRange(
-        (currUser.my_ntrp_rating),
+        currUser.my_ntrp_rating,
         potentialPartner.my_ntrp_rating,
         currUser.opponent_ntrp_rating_range
       );
@@ -322,7 +328,7 @@ const FindAPartner = () => {
       try {
         const res = await TennisCentralAPI.getPartner(
           userInfo.userId,
-          partner.id, 
+          partner.id,
           userInfo.token
         );
         // Only add if the partner record is for this specific user

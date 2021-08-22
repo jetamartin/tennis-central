@@ -18,8 +18,13 @@ import UserContext from "./components/UserContext";
 import "./App.css";
 
 const App = () => {
+  const storageKey = "userInfo";
+  const initialState = JSON.parse(localStorage.getItem(storageKey));
+  debugger;
+
   // {userInfo: {token: token, userId: userId, username: username}}
-  const [userInfo, setUserInfo] = useState({});
+  // const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState(initialState);
 
   const history = useHistory();
 

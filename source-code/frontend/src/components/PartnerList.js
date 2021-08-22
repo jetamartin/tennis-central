@@ -14,7 +14,7 @@ const errorToast = () => toast.error("Failure updating data");
 
 const PartnerList = () => {
   const [partners, setPartners] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // State & vars associated with displaying and hiding API Error & Success Msgs arrising from submission of form
   // const [dataSubmitted, setDataSubmitted] = useState(false);
@@ -28,6 +28,8 @@ const PartnerList = () => {
   const [loadFormApiSuccessMsg, setLoadFormApiSuccessMsg] = useState({
     message: "",
   });
+
+  let partnerList;
 
   // const setSuccessMsgTimer = () => {
   //   setTimeout(() => setSubmitFormApiSuccessMsg({ message: "" }), 2000);
@@ -49,7 +51,7 @@ const PartnerList = () => {
   // -------------------------------------------------------------------
 
   const userInfo = useContext(UserContext);
-  const userId = userInfo.userId;
+  const userId = userInfo?.userId;
 
   function isObjectEmpty(value) {
     return (
@@ -59,46 +61,59 @@ const PartnerList = () => {
   }
 
   useEffect(() => {
-    if (!isObjectEmpty(userInfo)) {
-      console.log("****GetPartner useEffect() - userInfo: ", userInfo);
-      const getPartners = async () => {
-        try {
-          // setDataSubmitted(false);
-          debugger;
-          // if (submitFormApiErrorMsg.length > 0) {
-          //   setLoadFormApiErrorMsg([]);
-          // }
+    console.log("****GetPartner useEffect() - userInfo: ", userInfo);
 
-          // ****** Code to simulate API errors
-          const throwError = false;
-          debugger;
-          if (throwError) {
-            throw ["Failure to load partners"];
-          }
-
-          let partnerList = await TennisCentralAPI.getPartners(
-            userId,
-            userInfo.token
-          );
-
-          setPartners(partnerList);
-          setIsLoading(false);
-          // setDataSubmitted(true)
-        } catch (error) {
-          // console.log(error);
-          if (Array.isArray(error)) {
-            debugger;
-
-            // setLoadFormApiErrorMsg(error);
-            // setSubmitFormApiErrorMsg(error);
-          }
-        }
+    // if (!isObjectEmpty(userInfo)) {
+    const getPartners = async () => {
+      try {
         // setDataSubmitted(false);
-      };
+        debugger;
+        // if (submitFormApiErrorMsg.length > 0) {
+        //   setLoadFormApiErrorMsg([]);
+        // }
 
-      getPartners();
-    }
-  }, [userInfo]);
+        // ****** Code to simulate API errors
+        const throwError = false;
+        debugger;
+        if (throwError) {
+          throw ["Failure to load partners"];
+        }
+
+        partnerList = await TennisCentralAPI.getPartners(
+          userId,
+          userInfo?.token
+        );
+
+ 
+        // partnerList = await toast.promise(
+        //   TennisCentralAPI.getPartners(userId, userInfo?.token),
+        //   { success: "Data was saved", error: "Data could not be saved" }
+        // );
+     
+
+        debugger;
+        // toast.promise(partnerList, {
+        //   success: 'Got the data',
+        // });
+
+        setPartners(partnerList);
+        setIsLoading(false);
+        // setDataSubmitted(true)
+      } catch (error) {
+        // console.log(error);
+        if (Array.isArray(error)) {
+          debugger;
+          setIsLoading(false);
+          setLoadFormApiErrorMsg(error);
+          // setSubmitFormApiErrorMsg(error);
+        }
+      }
+      // setDataSubmitted(false);
+    };
+
+    getPartners();
+    // }
+  }, []);
 
   const deletePartner = async (partnerId) => {
     try {
@@ -112,7 +127,11 @@ const PartnerList = () => {
 
       // console.log(`Delete Partner with id of ${partnerId}`);
 
-      await TennisCentralAPI.deletePartner(userId, partnerId, userInfo?.token);
+      await toast.promise(
+        TennisCentralAPI.deletePartner(userId, partnerId, userInfo?.token),
+        { success: "Deleted from Partner's List" }
+      );
+
       const partnerList = await TennisCentralAPI.getPartners(
         userId,
         userInfo?.token
@@ -153,14 +172,28 @@ const PartnerList = () => {
       }
       //----------------------------------------------
 
-      await TennisCentralAPI.updatePartnerTable(
-        contactObj,
-        userId,
-        partnerId,
-        userInfo?.token
+      // await TennisCentralAPI.updatePartnerTable(
+      //   contactObj,
+      //   userId,
+      //   partnerId,
+      //   userInfo?.token
+      // );
+
+      await toast.promise(
+        TennisCentralAPI.updatePartnerTable(
+          contactObj,
+          userId,
+          partnerId,
+          userInfo?.token
+        ),
+        {
+          // loading: 'Data is loading...',
+          success: "Data was saved",
+          error: "Error when saving data",
+        }
       );
 
-      successToast();
+      // successToast();
       debugger;
       // setDataSubmitted(true);
       // Set submitFormApiSuccessMsg to trigger useEffect to trigger timer on success msg

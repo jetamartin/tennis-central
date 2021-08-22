@@ -32,6 +32,11 @@ const AboutMe = ({ updateUserRecord }) => {
   });
   const success = "Data was successfully updated";
 
+  const [loadFormApiErrorMsg, setLoadFormApiErrorMsg] = useState([]);
+  const [loadFormApiSuccessMsg, setLoadFormApiSuccessMsg] = useState({
+    message: "",
+  });
+
   const [isLoading, setIsLoading] = useState(true);
   const userInfo = useContext(UserContext);
 
@@ -39,31 +44,31 @@ const AboutMe = ({ updateUserRecord }) => {
     const loadFormData = async () => {
       try {
         debugger;
-        setSubmitFormApiErrorMsg([]);
-        if (userInfo?.token) {
-          let profileData = await TennisCentralAPI.getUserProfile(
-            userInfo?.userId,
-            userInfo?.token
-          );
-          debugger;
-          const throwError = false; 
-          if (throwError) {
-            throw["Failure to load partners"];;
-          }
-          setProfileData(profileData.user);
-          setIsLoading(false);
+        // setSubmitFormApiErrorMsg([]);
+        // if (userInfo?.token) {
+        let profileData = await TennisCentralAPI.getUserProfile(
+          userInfo?.userId,
+          userInfo?.token
+        );
+        debugger;
+        const throwError = false;
+        if (throwError) {
+          throw ["Failure to load partners"];
         }
+        setProfileData(profileData.user);
+        setIsLoading(false);
+        // }
       } catch (error) {
         debugger;
         if (Array.isArray(error)) {
-          setSubmitFormApiErrorMsg(error);
           setIsLoading(false);
+          setLoadFormApiErrorMsg(error);
         }
         console.log(error);
       }
     };
     loadFormData();
-  }, [userInfo]);
+  }, []);
 
   // Starts a timer to remove success message after some interval
   useEffect(() => {
@@ -109,21 +114,23 @@ const AboutMe = ({ updateUserRecord }) => {
       console.log(error);
       if (Array.isArray(error)) {
         setSubmitFormApiErrorMsg(error);
+        // setIsLoading(false);
       }
     }
     // Need to reset dataSubmitted state regardless of whether submission was successful or not
     setDataSubmitted(false);
   };
   debugger;
-  if (isLoading && submitFormApiErrorMsg.length === 0) {
+  if (isLoading) {
     return <p className="">Loading &hellip;</p>;
-  } else if (isLoading && submitFormApiErrorMsg.length !== 0) {
+  }
+  if (loadFormApiErrorMsg.length > 0) {
     return (
       <SubmitFormApiMsgs
-      submitFormApiErrorMsg={submitFormApiErrorMsg}
-      submitFormApiSuccessMsg={submitFormApiSuccessMsg}
-    />
-    )
+        submitFormApiErrorMsg={loadFormApiErrorMsg}
+        submitFormApiSuccessMsg={loadFormApiSuccessMsg}
+      />
+    );
   }
   debugger;
   // if (submitFormApiErrorMsg.length !== 0) {

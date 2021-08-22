@@ -34,6 +34,10 @@ const SkillsPrefs = ({ updateUserRecord }) => {
   });
   const success = "Data was successfully updated";
 
+  const [loadFormApiErrorMsg, setLoadFormApiErrorMsg] = useState([]);
+  const [loadFormApiSuccessMsg, setLoadFormApiSuccessMsg] = useState({
+    message: "",
+  });
   // Starts a timer to remove success message after some interval
   useEffect(() => {
     // Only need to set timer to automatically remove success msg submission was a success if not don't set timer
@@ -45,31 +49,33 @@ const SkillsPrefs = ({ updateUserRecord }) => {
   useEffect(() => {
     const loadFormData = async () => {
       try {
-
         setSubmitFormApiErrorMsg([]);
-        if (userInfo?.token) {
-          let profileInfo = await TennisCentralAPI.getUserProfile(
-            userInfo?.userId, userInfo?.token
-          );
-          let opponentNtrpRatingRange = transformNtrpRatingRange(
-            profileInfo.user.opponent_ntrp_rating_range
-          );
-          // if (isNil(profileInfo.user.my_ntrp_rating) ) profileInfo.user.my_ntrp_rating = "";
-          setProfileData(
-            Object.assign(profileInfo.user, opponentNtrpRatingRange)
-          );
-          setIsLoading(false);
-        }
+        // if (userInfo?.token) {
+        let profileInfo = await TennisCentralAPI.getUserProfile(
+          userInfo?.userId,
+          userInfo?.token
+        );
+        let opponentNtrpRatingRange = transformNtrpRatingRange(
+          profileInfo.user.opponent_ntrp_rating_range
+        );
+        // if (isNil(profileInfo.user.my_ntrp_rating) ) profileInfo.user.my_ntrp_rating = "";
+        setProfileData(
+          Object.assign(profileInfo.user, opponentNtrpRatingRange)
+        );
+        setIsLoading(false);
+        // }
       } catch (error) {
         console.log(error);
         if (Array.isArray(error)) {
-          setSubmitFormApiErrorMsg(error);
+          // setSubmitFormApiErrorMsg(error);
+          setLoadFormApiErrorMsg(error);
         }
         setIsLoading(false);
       }
     };
     loadFormData();
-  }, [userInfo]);
+    // }, [userInfo]);
+  }, []);
 
   const transformNtrpRatingRange = (ntrpRatingRange) => {
     let ntrpValues = {};
@@ -109,7 +115,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
       // Clear out any prior api error messages on submission of the form so they don't persist
       setSubmitFormApiErrorMsg([]);
       setDataSubmitted(true);
-      debugger
+      debugger;
       await updateUserRecord(values, userInfo?.userId, userInfo.token);
 
       if (throwError) {
@@ -131,15 +137,24 @@ const SkillsPrefs = ({ updateUserRecord }) => {
   if (isLoading) {
     return <p className="">Loading &hellip;</p>;
   }
-  if (submitFormApiErrorMsg.length !== 0) {
-    debugger;
-    return (     
-     <SubmitFormApiMsgs
-      submitFormApiErrorMsg={submitFormApiErrorMsg}
-      submitFormApiSuccessMsg={submitFormApiSuccessMsg}
-    />
-    )
-   }
+
+  if (loadFormApiErrorMsg.length > 0) {
+    return (
+      <SubmitFormApiMsgs
+        submitFormApiErrorMsg={loadFormApiErrorMsg}
+        submitFormApiSuccessMsg={loadFormApiSuccessMsg}
+      />
+    );
+  }
+    
+  // if (submitFormApiErrorMsg.length !== 0) {
+  //   return (
+  //     <SubmitFormApiMsgs
+  //       submitFormApiErrorMsg={submitFormApiErrorMsg}
+  //       submitFormApiSuccessMsg={submitFormApiSuccessMsg}
+  //     />
+  //   );
+  // }
   return (
     <Container fluid className="pb-5 ml-1">
       <Row>
