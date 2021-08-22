@@ -84,12 +84,10 @@ const PartnerList = () => {
           userInfo?.token
         );
 
- 
         // partnerList = await toast.promise(
         //   TennisCentralAPI.getPartners(userId, userInfo?.token),
         //   { success: "Data was saved", error: "Data could not be saved" }
         // );
-     
 
         debugger;
         // toast.promise(partnerList, {
@@ -112,6 +110,9 @@ const PartnerList = () => {
     };
 
     getPartners();
+    return () => {
+      console.log("************************unmounted");
+    };
     // }
   }, []);
 
@@ -129,7 +130,10 @@ const PartnerList = () => {
 
       await toast.promise(
         TennisCentralAPI.deletePartner(userId, partnerId, userInfo?.token),
-        { success: "Deleted from Partner's List" }
+        {
+          success: "Deleted from Partner's List",
+          error: "Delete failed, try again",
+        }
       );
 
       const partnerList = await TennisCentralAPI.getPartners(
@@ -189,10 +193,16 @@ const PartnerList = () => {
         {
           // loading: 'Data is loading...',
           success: "Data was saved",
-          error: "Error when saving data",
+          error: "Error occurred while saving data, try again",
         }
       );
 
+      // const partnerList = await TennisCentralAPI.getPartners(
+      //   userId,
+      //   userInfo?.token
+      // );
+
+      // setPartners(partnerList)
       // successToast();
       debugger;
       // setDataSubmitted(true);

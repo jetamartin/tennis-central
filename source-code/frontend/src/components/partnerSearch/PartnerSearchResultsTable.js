@@ -17,7 +17,7 @@ const PartnerSearchResultsTable = ({
   // Removes array element at indexValue and returns resulting array
   function arrayRemove(arr, indexValue) {
     return arr.filter(function (ele, index) {
-      return indexValue != index;
+      return indexValue !== index;
     });
   }
 
