@@ -1,17 +1,19 @@
 // const { DATEONLY } = require("sequelize/types");
 const { User, Message, Partner } = require("./models");
+const bcrypt = require("bcrypt");
+const { BCRYPT_WORK_FACTOR } = require("./config.js");
 
 async function seedData() {
   // create a user
   const testUser = await User.create({
     username: "jDavis",
-    password: "1234",
+    password: await bcrypt.hash("1234", BCRYPT_WORK_FACTOR),
     email: "jDavis@gmail.com",
     city: "San Diego",
     firstName: "Jason",
     lastName: "Davis",
     gender: "Male",
-    birthday: new Date(1975, 9, 17), 
+    birthday: new Date(1975, 9, 17),
     match_availability: {
       Mon: ["eAM", "PM", "EVE"],
       Tue: ["PM", "EVE"],
@@ -31,13 +33,13 @@ async function seedData() {
   // create a second user
   const testUser2 = await User.create({
     username: "rBronson",
-    password: "1234",
+    password: await bcrypt.hash("1234", BCRYPT_WORK_FACTOR),
     email: "rBronson@gmail.com",
     city: "San Diego",
     firstName: "Rich",
     lastName: "Bronson",
     gender: "Male",
-    birthday: new Date(1978, 2, 29), 
+    birthday: new Date(1978, 2, 29),
     match_availability: {
       Sat: ["AM", "PM", "EVE"],
       Sun: ["AM", "PM"],
@@ -55,13 +57,13 @@ async function seedData() {
   // create a third user
   const testUser3 = await User.create({
     username: "jMartin",
-    password: "1234",
+    password: await bcrypt.hash("1234", BCRYPT_WORK_FACTOR),
     email: "jMartin@gmail.com",
     city: "San Diego",
     firstName: "Jet",
     lastName: "Martin",
     gender: "Male",
-    birthday: new Date(1967, 9, 11), 
+    birthday: new Date(1967, 9, 11),
 
     match_availability: {
       Sat: ["AM", "PM", "EVE"],
