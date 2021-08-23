@@ -4,10 +4,7 @@ import isNil from "lodash/isNil";
 import { useHistory } from "react-router-dom";
 
 const NavBar = ({ userInfo, logoutUser }) => {
-  console.log("NAVBAR: userInfo = ", userInfo);
-
   const history = useHistory();
-
   // Lodash isNil checks whether an object's value is null or u
   const isLoggedIn = !isNil(userInfo) ? true : false;
 

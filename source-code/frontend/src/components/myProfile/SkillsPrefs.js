@@ -65,7 +65,6 @@ const SkillsPrefs = ({ updateUserRecord }) => {
         setIsLoading(false);
         // }
       } catch (error) {
-        console.log(error);
         if (Array.isArray(error)) {
           // setSubmitFormApiErrorMsg(error);
           setLoadFormApiErrorMsg(error);
@@ -105,17 +104,14 @@ const SkillsPrefs = ({ updateUserRecord }) => {
   };
 
   const onSubmit = async (values, { setSubmitting, setFieldValue }) => {
-    debugger;
     const throwError = false;
 
-    console.log("Form Values: ", values);
 
     values.opponent_ntrp_rating_range = transformNtrpValues(values);
     try {
       // Clear out any prior api error messages on submission of the form so they don't persist
       setSubmitFormApiErrorMsg([]);
       setDataSubmitted(true);
-      debugger;
       await updateUserRecord(values, userInfo?.userId, userInfo.token);
 
       if (throwError) {
@@ -126,7 +122,6 @@ const SkillsPrefs = ({ updateUserRecord }) => {
       // Set submitFormApiSuccessMsg to trigger useEffect to trigger timer on success msg
       setSubmitFormApiSuccessMsg({ message: success });
     } catch (error) {
-      console.log(error);
       if (Array.isArray(error)) {
         setSubmitFormApiErrorMsg(error);
       }
@@ -147,14 +142,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
     );
   }
     
-  // if (submitFormApiErrorMsg.length !== 0) {
-  //   return (
-  //     <SubmitFormApiMsgs
-  //       submitFormApiErrorMsg={submitFormApiErrorMsg}
-  //       submitFormApiSuccessMsg={submitFormApiSuccessMsg}
-  //     />
-  //   );
-  // }
+
   return (
     <Container fluid className="pb-5 ml-1">
       <Row>

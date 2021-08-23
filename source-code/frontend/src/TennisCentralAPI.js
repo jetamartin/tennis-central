@@ -15,18 +15,14 @@ class TennisCentralAPI {
   static token;
 
   static async request(endpoint, data = {}, method = "get") {
-    console.debug("API Call:", endpoint, data, method);
-
     //there are multiple ways to pass an authorization token, this is how you pass it in the header.
     //this has been provided to show you another way to pass the token. you are only expected to read this code for this project.
     const url = `${BASE_URL}/${endpoint}`;
     const headers = { Authorization: `Bearer ${TennisCentralAPI.token}` };
     const params = method === "get" ? data : {};
-    // debugger;
     try {
       return (await axios({ url, method, data, params, headers })).data;
     } catch (err) {
-      console.error("API Error:", err.response);
       let message = err.response.data.error.message;
       throw Array.isArray(message) ? message : [message];
     }
@@ -35,7 +31,6 @@ class TennisCentralAPI {
   static async getUserProfile(userId, userToken) {
     TennisCentralAPI.token = userToken;
     let res = await this.request(`users/${userId}`);
-    debugger;
     return res;
   }
 
@@ -45,21 +40,18 @@ class TennisCentralAPI {
   }
 
   static async loginUser(userCredentials) {
-    debugger;
     let res = await this.request(`auth/login`, userCredentials, "post");
     return res;
   }
 
   static async updateUserProfile(userRecord, userId, userToken) {
     TennisCentralAPI.token = userToken;
-    debugger;
     let res = await this.request(
       `users/${userId}`,
       userRecord,
       "patch",
       TennisCentralAPI.token
     );
-    debugger;
     return res;
   }
 
@@ -70,7 +62,6 @@ class TennisCentralAPI {
   }
 
   static async addPartner(userId, partnerId, userToken) {
-    debugger;
     TennisCentralAPI.token = userToken;
     let res = await this.request(
       `users/${userId}/partners/${partnerId}`,

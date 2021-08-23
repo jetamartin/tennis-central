@@ -20,22 +20,20 @@ import "./App.css";
 const App = () => {
   const storageKey = "userInfo";
   const initialState = JSON.parse(localStorage.getItem(storageKey));
-  debugger;
-
   // {userInfo: {token: token, userId: userId, username: username}}
   // const [userInfo, setUserInfo] = useState({});
   const [userInfo, setUserInfo] = useState(initialState);
 
   const history = useHistory();
 
-  useEffect(() => {
-    const loadFromLocalStorage = () => {
-      // Retrieve the object from storage
-      const lsUserInfo = localStorage.getItem("userInfo");
-      setUserInfo(JSON.parse(lsUserInfo));
-    };
-    loadFromLocalStorage();
-  }, []);
+  // useEffect(() => {
+  //   const loadFromLocalStorage = () => {
+  //     // Retrieve the object from storage
+  //     const lsUserInfo = localStorage.getItem("userInfo");
+  //     setUserInfo(JSON.parse(lsUserInfo));
+  //   };
+  //   loadFromLocalStorage();
+  // }, []);
 
   const updateUserInfo = (userRegInfo) => {
     setUserInfo(userRegInfo);
@@ -43,7 +41,6 @@ const App = () => {
   };
 
   const logoutUser = (e) => {
-    console.log("****logoutUser Method***");
     setUserInfo(null);
     localStorage.setItem("userInfo", null);
   };
@@ -56,17 +53,13 @@ const App = () => {
   };
 
   const loginUser = async (userCredentials) => {
-    console.log("App.js loginUser: ", userCredentials);
     let results = await TennisCentralAPI.loginUser(userCredentials);
-    debugger;
     setUserInfo(results.userinfo);
     localStorage.setItem("userInfo", JSON.stringify(results.userinfo));
     return results;
   };
 
   const updateUserRecord = async (userRecord, userId, token) => {
-    console.log("App.js userRecord: ", userRecord);
-    debugger;
     let results = await TennisCentralAPI.updateUserProfile(
       userRecord,
       userId,

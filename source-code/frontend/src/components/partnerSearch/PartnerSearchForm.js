@@ -36,7 +36,6 @@ const FindAPartner = () => {
   const [partnerSearchType, setPartnerSearchType] = useState();
   const [fromProfile, setFromProfile] = useState(false);
   const load = fromProfile;
-  console.log("FromProfile value: ", fromProfile);
   let inputCheckbox = "";
 
   // State for managing display or messages returned from API calls
@@ -48,7 +47,6 @@ const FindAPartner = () => {
   const loadValuesFromProfile = useRef(null);
 
   const initialValues = { ...profileData, partnerMatchType: partnerSearchType };
-  console.log("partnerSearchType", partnerSearchType);
   // Some problem with validation rule -- need to fix
   const validationSchema = Yup.object({
     // partnerMatchType: Yup.string().required("Select a partner match type"),
@@ -69,15 +67,9 @@ const FindAPartner = () => {
     const loadFormOptions = async () => {
       const searchType = localStorage.getItem("searchType") || "";
       const loadOptions = localStorage.getItem("loadOptions") || false;
-      console.log("LoadOptions: ", loadOptions);
 
       setPartnerSearchType(searchType);
       setFromProfile(loadOptions);
-      if (loadOptions) {
-        // debugger;
-        // loadValuesFromProfile.current?.click();
-      }
-      // debugger;
     };
     loadFormOptions();
   }, []);
@@ -152,14 +144,13 @@ const FindAPartner = () => {
         setProfileData({})
         return
       }
-      
+
       // Clear out any prior api error messages on submission of the form so they don't persist
       setSubmitFormApiErrorMsg([]);
 
       setFromProfile(e.target.checked);
       // Test Code
       const throwError = false;
-      // debugger;
       if (throwError) {
         throw ["Failure to load data from User Profile"];
       }
@@ -187,7 +178,6 @@ const FindAPartner = () => {
         );
       }
     } catch (error) {
-      console.log(error);
       if (Array.isArray(error)) {
         setSubmitFormApiErrorMsg(error);
       }
@@ -239,7 +229,6 @@ const FindAPartner = () => {
   const ntrpRatingCompatible = (currUser, potentialPartner) => {
     const matchCriteria = 0.5;
     let match = false;
-    debugger;
     /* Compatibility rules: NOTE these rules below are currently single sided (validation done from currUser's perspective)
       1 - if potential partner didn't provide their rating then MATCH = FALSE;
       2 - if user didn't provide an opponent rating range then check to see if players ntrp range fall within match criteria range
@@ -296,7 +285,6 @@ const FindAPartner = () => {
         return matches.push(potentialPartner);
       }
     });
-    // debugger;
     return matches;
   };
 
@@ -308,7 +296,6 @@ const FindAPartner = () => {
    * @returns an array of partners that match search criteria
    */
   const idPotentialPartners = (users) => {
-    // debugger;
     const potentialPartners = users.filter(
       (user) => user.id !== userInfo.userId
     );
@@ -336,7 +323,6 @@ const FindAPartner = () => {
           currentPartners.push(res);
         }
       } catch (error) {
-        console.log(error);
       }
     }
     return currentPartners;
@@ -368,13 +354,10 @@ const FindAPartner = () => {
    */
   const addPartnerStatus = async (existingPartners, partners) => {
     const partnersWithInitialStatus = setInitialPartnerStatus(partners);
-    // debugger;
     if (existingPartners.length > 0) {
       existingPartners.map((existingPartner) => {
-        // debugger;
         const arrayIndex = partnersWithInitialStatus.findIndex(
           (partnerWithInitalStatus) => {
-            // debugger;
             return (
               partnerWithInitalStatus.id === existingPartner.partner.partnerId
             );
@@ -1231,8 +1214,6 @@ const FindAPartner = () => {
               }}
             </Formik>
           </Col>
-          {console.log("Partner Matches: ", matchingPartners)}
-          {console.log(matchingPartners)}
 
           {displaySearchResults && matchingPartners.length > 0 ? (
             <PartnerSearchResultsTable

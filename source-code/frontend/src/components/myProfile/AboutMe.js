@@ -43,14 +43,12 @@ const AboutMe = ({ updateUserRecord }) => {
   useEffect(() => {
     const loadFormData = async () => {
       try {
-        debugger;
         // setSubmitFormApiErrorMsg([]);
         // if (userInfo?.token) {
         let profileData = await TennisCentralAPI.getUserProfile(
           userInfo?.userId,
           userInfo?.token
         );
-        debugger;
         const throwError = false;
         if (throwError) {
           throw ["Failure to load partners"];
@@ -59,12 +57,10 @@ const AboutMe = ({ updateUserRecord }) => {
         setIsLoading(false);
         // }
       } catch (error) {
-        debugger;
         if (Array.isArray(error)) {
           setIsLoading(false);
           setLoadFormApiErrorMsg(error);
         }
-        console.log(error);
       }
     };
     loadFormData();
@@ -93,7 +89,6 @@ const AboutMe = ({ updateUserRecord }) => {
 
   const onSubmit = async (values, { setSubmitting, setFieldValue, errors }) => {
     values.birthday = startDate;
-    debugger;
     const throwError = false;
     try {
       // Clear out any prior api error messages on submission of the form so they don't persist
@@ -110,8 +105,6 @@ const AboutMe = ({ updateUserRecord }) => {
         setSubmitFormApiSuccessMsg({ message: success });
       }
     } catch (error) {
-      debugger;
-      console.log(error);
       if (Array.isArray(error)) {
         setSubmitFormApiErrorMsg(error);
         // setIsLoading(false);
@@ -120,7 +113,6 @@ const AboutMe = ({ updateUserRecord }) => {
     // Need to reset dataSubmitted state regardless of whether submission was successful or not
     setDataSubmitted(false);
   };
-  debugger;
   if (isLoading) {
     return <p className="">Loading &hellip;</p>;
   }
@@ -132,16 +124,7 @@ const AboutMe = ({ updateUserRecord }) => {
       />
     );
   }
-  debugger;
-  // if (submitFormApiErrorMsg.length !== 0) {
-  //   debugger;
-  //   return (
-  //     <SubmitFormApiMsgs
-  //       submitFormApiErrorMsg={submitFormApiErrorMsg}
-  //       submitFormApiSuccessMsg={submitFormApiSuccessMsg}
-  //     />
-  //   );
-  // }
+
   return (
     <Container fluid className="pb-5 ml-1">
       <Row>
