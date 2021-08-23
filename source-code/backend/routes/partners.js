@@ -30,24 +30,8 @@ router.get("/users/:userId/partners", ensureCorrectUserOrAdmin, async (req, res,
   }
 });
 
-// ************** Previous route ********************
-// router.post("", async (req, res) => {
-// router.post("/users/:userId/partners/", ensureCorrectUserOrAdmin, async (req, res, next) => {
-//   try {
-//     debugger
-//     const playerId = +req.params.userId;
-//     const partnerBody = req.body;
-//     partnerBody.playerId = playerId;
-//     const partner = await Partner.create(partnerBody);
-//     return res.status(201).json({ partner });
-//   } catch (error) {
-//     return next(error);
-//   }
-// });
-
 router.post("/users/:userId/partners/:partnerId", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
-    debugger
     const playerId = +req.params.userId;
     const partnerId = +req.params.partnerId;
     const partner = await Partner.create({
@@ -71,7 +55,6 @@ router.get("/users/:userId/partners/:id", ensureCorrectUserOrAdmin, async (req, 
     if (!partner) throw new ExpressError(404, "User not found");
     return res.json({ partner });
   } catch (error) {
-    console.log(error);
     return next(error);
   }
 });
@@ -91,7 +74,6 @@ router.patch("/users/:userId/partners/:id", ensureCorrectUserOrAdmin, async (req
     const partner = result[1][0].get();
     res.status(200).json({ partner });
   } catch (error) {
-    console.log(error);
     return next(error);
   }
 });
@@ -108,7 +90,6 @@ router.delete("/users/:userId/partners/:id", ensureCorrectUserOrAdmin, async (re
     if (result === 0) throw new ExpressError(404, "Partner not found");
     return res.status(200).json({ deleted: requestedId });
   } catch (error) {
-    console.log(error);
     return next(error);
   }
 });

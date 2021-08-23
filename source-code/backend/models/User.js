@@ -154,7 +154,6 @@ User.authenticate = async function (username, password) {
   const user = await User.findOne({
     where: { username: username },
   });
-  debugger;
   if (user) {
     const isValid = await bcrypt.compare(password, user.password)
     if (isValid) {
@@ -168,7 +167,6 @@ User.authenticate = async function (username, password) {
 
 // Class Method
 User.register = async function (userRegInfo) {
-  console.log("User.register function");
   // Check to see if duplicate username exist
   // if duplicate send 'Duplicate user message' return
   // Create a JWT

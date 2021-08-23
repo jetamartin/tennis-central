@@ -19,7 +19,6 @@ router.get("", async (req, res) => {
     });
     res.json({ users });
   } catch (error) {
-    console.log(error);
   }
 });
 
@@ -33,20 +32,17 @@ router.get("", async (req, res) => {
 
 router.get("/:userId", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
-    debugger;
     const userId = req.params.userId;
     const user = await User.findOne({ where: { id: userId } });
     if (!user) throw new ExpressError(404, "User not found");
     return res.json({ user });
   } catch (error) {
-    debugger
     return next(error);
   }
 });
 
 router.patch("/:userId", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
-    // debugger;
     // First check to see if requested record exist in db
     const userId = req.params.userId;
     const result = await User.update(req.body, {
@@ -57,7 +53,6 @@ router.patch("/:userId", ensureCorrectUserOrAdmin, async (req, res, next) => {
     const user = result[1][0].get();
     return res.status(200).json({ user });
   } catch (error) {
-    console.log(error);
     return next(error);
   }
 });
@@ -69,11 +64,9 @@ router.delete("/:userId", ensureCorrectUserOrAdmin, async (req, res, next) => {
       where: { id: userId },
       returning: true,
     });
-    console.log("Result ======>", result);
     if (result === 0) throw new ExpressError(404, "User not found");
     return res.status(200).json({ deleted: userId });
   } catch (error) {
-    console.log(error);
     return next(error);
   }
 });
