@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Partner } = require("../models");
 const { User } = require("../models");
-const ExpressError = require("../ExpressError");
+const ExpressError = require("../expressError");
 const { ensureCorrectUserOrAdmin } = require("../middleware/auth");
 
 /* 

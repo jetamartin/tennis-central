@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Message } = require("../models");
-const ExpressError = require("../ExpressError");
+const ExpressError = require("../expressError");
 
 /* 
   get /messages  (read)
