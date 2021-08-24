@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes, ENUM } = require("sequelize");
 const { sequelize } = require("../db");
-const ExpressError = require("../ExpressError");
+const ExpressError = require("../expressError");
 
 const bcrypt = require("bcrypt");
 const { BCRYPT_WORK_FACTOR } = require("../config.js")

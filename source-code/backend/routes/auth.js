@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { User } = require("../models/User");
 const { createToken } = require("../helpers/tokens");
-const ExpressError = require("../ExpressError");
+const ExpressError = require("../expressError");
 
 router.post("/register", async (req, res, next) => {
   try {

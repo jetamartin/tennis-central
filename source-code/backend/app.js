@@ -10,7 +10,7 @@ const { router: partnersRouter } = require("./routes/partners");
 const { sequelize } = require("./db");
 const { seedData } = require("./seed");
 const ErrorRequest = require("./ExpressError");
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 //process.env.DATABASE_URL,
 
 app.use(express.json());
