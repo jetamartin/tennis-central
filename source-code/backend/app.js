@@ -9,17 +9,17 @@ const { router: messagesRouter } = require("./routes/messages");
 const { router: partnersRouter } = require("./routes/partners");
 const { sequelize } = require("./db");
 const { seedData } = require("./seed");
-const ErrorRequest = require("./ExpressError");
+const ErrorRequest = require("./expressError");
 const PORT = process.env.PORT || 3001;
 //process.env.DATABASE_URL,
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.get('/favicon..ico', (req, res) => res.sendStatus(204));
+app.get("/favicon..ico", (req, res) => res.sendStatus(204));
 app.use(authenticateJWT);
 
-app.use("/auth", authRouter); 
+app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 // app.use("/users/:userId/messages", messagesRouter);
 app.use("", messagesRouter);
@@ -27,16 +27,14 @@ app.use("", messagesRouter);
 // app.use("/users/:userId/partners", partnersRouter);
 app.use("", partnersRouter);
 
-
-
-app.use(( req, res, next) => {
+app.use((req, res, next) => {
   debugger;
   const error = new ErrorRequest(404, "Page not found");
-  next(error)
+  next(error);
 });
 
 app.use((error, req, res, next) => {
-  // Default status is 500: Server Internal Error 
+  // Default status is 500: Server Internal Error
   let status = error.status || 500;
   let message = error.msg;
 
@@ -46,7 +44,7 @@ app.use((error, req, res, next) => {
 });
 
 app.listen(PORT, async () => {
-// app.listen(3001, async () => {
+  // app.listen(3001, async () => {
   // console.log("Server is running on port 3001");
   try {
     // Establish connection to DB
