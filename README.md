@@ -1,21 +1,7 @@
 # Tennis-Central
-### Table of Contents
-[What is Tennis Central](#what-is-tennis-central)
-
-- [The Problem](#the-problem)
-
-- [The Solution](#the-solution)
-
-- [Key Features](#key-features)
-
-- [Getting Started](#getting-started)
-
-[Technology Behind Tennis-Central](#technology-behind-tennis-central)
- 
-- [Overview](#overview)
 
 ## What is Tennis-Central?
-   In a nut shell Tennis-Central is web based application that helps match tennis players with other players of similar skills for matches and practice sessions. 
+   In a nut shell Tennis-Central is web based application that helps match tennis players with other players of similar skills for either matches and/or practice sessions. 
 
 ### The Problem
    It can be challenging to find new tennis partners with similar skill levels, availability and interests beyond your existing circles of tennis friends/partners.
