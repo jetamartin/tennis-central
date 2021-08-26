@@ -7,9 +7,9 @@
 ### The Problem  😕
    It can be challenging to find new tennis partners with similar skill levels, availability and interests beyond your existing circles of tennis friends/partners.
 Tennis players typically show up to the court to play their match and then leave immediately after their match. So there isn't a easy and convenient way to meet other
-tennis players unless you belong to a tennis club or a tennis league (aka "social club") or you just happen to the social butterfly type. And frankly most players don't
-want to pay expensive dues to join a private tennis club or pay the fees for joining a formal tennis league and then be "fixed" to play at that leagues match times. 
-They just want to play/practice with other players of similar skill level when they want to play. 
+tennis players unless you belong to a tennis club or a tennis league (aka "social club") or you just happen to be the social butterfly type. And frankly most players don't
+want to pay expensive dues to join a private tennis club or pay the fees for joining a formal tennis league and then be limited to play at that leagues match times. 
+They just want to play/practice with other players of similar skill level when they want to play and when they have time in their schedule. 
 
 ### The Solution  ✅
    Tennis-Central is designed to address these challenges by leveraging the power of the web in combination with a web based application that is specifically targeted and designed to connect Tennis Players of similar skills, interest and availability. 
