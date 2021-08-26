@@ -121,10 +121,10 @@ Here are some of the key features of the Tennis-Central web based application th
    
 ### Other key Project deliverables:
 #### Entity Requirements Document:
-   - [Tennis-Central ERD]() 
+   - [Tennis-Central Database ERD]() 
 
 #### Wireframe of Full UI:
-   - [Full Tennis-Central UI WireFrame]()
+   - [Full Featured Tennis-Central UI WireFrame]()
 
 ### ⚡Licensing: 
  Tennis-Central is free and open-source software licensed under the Apache 2.0 License. 
