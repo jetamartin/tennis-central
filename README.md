@@ -118,6 +118,13 @@ Here are some of the key features of the Tennis-Central web based application th
           "npm start"
  
    This will automatically start the app and open a browser with the app running it that browser window.
+   
+### Other key deliverables:
+#### Entity Requirements Document:
+   [Tennis-Central ERD]() 
+
+#### Wireframe of Full UI:
+   [Full Tennis-Central UI WireFrame]()
 
 ### ⚡Licensing: 
  Tennis-Central is free and open-source software licensed under the Apache 2.0 License. 
