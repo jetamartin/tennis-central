@@ -27,7 +27,7 @@ Here are some of the key features of the Tennis-Central web based application th
   to contact the partner. 
   * **Player Messaging** 📩
   
-     Gives you a quick and easy way to send a prospectiveor an existing partner an email message. This makes it easy to schedule matches. 
+     Gives you a quick and easy way to send a prospective or an existing partner an email message. Thus making it really easy to schedule matches. 
   * **Player Profile** 🧑🎾
   
      Allows the user to enter and retain key information that they might typically use in their Find-A-Partner searches so that they don't have to repeated have to 
