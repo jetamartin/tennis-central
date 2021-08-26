@@ -1,8 +1,8 @@
-# 🎾  Tennis-Central  🎾 <sub>(version .9)</sub>
+# Tennis-Central 🎾 <sub>(version .9)</sub>
 
 
 ## So what is Tennis-Central?  🤷‍♀️
-   In a nut shell Tennis-Central is web based application that helps match tennis players with other players of similar skills for either matches and/or practice sessions. 
+   In a nut shell Tennis-Central is web based application that helps match tennis players with other players of similar skills for either match play and/or practice sessions. 
 
 ### The Problem  😕
    It can be challenging to find new tennis partners with similar skill levels, availability and interests beyond your existing circles of tennis friends/partners.
@@ -44,9 +44,11 @@ Here are some of the key features of the Tennis-Central web based application th
   6. Play your match
   7. If the match went well add that player to your Tennis-Central Partner List with a click of a button add their contact information into the app.
   
-**NOTE:**  You'll need to add your email address and your NTRP rating (at minimum) to your Profile in order for others to contact you and to get Find-A-Partner search results.
+    **NOTE**  You'll need to add your email address and your NTRP rating (at minimum) to your 
+               Profile in order for others to contact you and to get Find-A-Partner search results.
+<hr>
 
-## Technology Behind Tennis-Central 👨‍💻
+## Technology Platform for Tennis-Central 👨‍💻
 
 ### Overview 👓
    Tennis-Central is a full stack web based application that uses **Nodejs** as the "backend" server, **PostgreSQL** as the relational database and **Reactjs** as the "frontend" UI framework. The "frontend" component communicates with the "backend" server via a **REST based API**.
