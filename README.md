@@ -16,7 +16,7 @@ They just want to play/practice with other players of similar skill level when t
 
 Here are some of the key features of the Tennis-Central web based application that make it an ideal solution for many players: 
 
-### Key Features
+### Key Features 🔔
   * **Find-A-Partner search** 🔍
   
      Is a powerful search feature that allows a user to find a partner based amongst other Tennis-Central users on a number of key criteria including: Skill level (based on NTRP rating), availability, proximity from your location, gender, 
@@ -88,7 +88,7 @@ Here are some of the key features of the Tennis-Central web based application th
 
       a. Open you terminal window and issue the following Git command:
 
-         $ git clone {the url to the GitHub repo}
+    $ git clone https://github.com/jetamartin/tennis-central
          
    3. In the terminal window navigate into the "backend" directory of the code you just cloned and enter the following command:
 
