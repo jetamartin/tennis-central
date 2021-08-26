@@ -100,7 +100,7 @@ Here are some of the key features of the Tennis-Central web based application th
 
     "node app.js"
 
-      This will start your node server
+   This will start your node server
 
    5. Now let's install the additional packages we will need for the React frontend component. 
     
