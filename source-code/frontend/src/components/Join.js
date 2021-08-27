@@ -53,6 +53,7 @@ const Join = ({registerUser}) => {
     } catch (error) {
       console.log(error);
       if (Array.isArray(error)) {
+        debugger
         setJoinErrorFormMsg(error)
       }
     }

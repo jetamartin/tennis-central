@@ -15,8 +15,6 @@ const Home = () => {
   }, []);
 
   const userInfo = useContext(UserContext);
-  console.log(userInfo);
-  debugger;
 
   return (
     <>

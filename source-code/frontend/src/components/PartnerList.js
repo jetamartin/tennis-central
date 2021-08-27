@@ -34,16 +34,9 @@ const PartnerList = () => {
   useEffect(() => {
     const getPartners = async () => {
       try {
-        // console.log("****getPartners - userInfo: ", userInfo);
-
-        // let partnerList = await TennisCentralAPI.getPartners(
-        //   userId,
-        //   userInfo?.token
-        // );
-
-        const partnerList = await toast.promise(
-          TennisCentralAPI.getPartners(userId, userInfo?.token),
-          { success: "Data was loaded", error: "Data could not be saved" }
+        let partnerList = await TennisCentralAPI.getPartners(
+          userId,
+          userInfo?.token
         );
 
         setPartners(partnerList);
@@ -51,16 +44,13 @@ const PartnerList = () => {
       } catch (error) {
         if (Array.isArray(error)) {
           setIsLoading(false);
-          setLoadFormApiErrorMsg(error);
+          errorToast(error);
+          // setLoadFormApiErrorMsg(error);
         }
       }
     };
 
     getPartners();
-    // return () => {
-    //   console.log("************************unmounted");
-    // };
-    // }
   }, []);
 
   const deletePartner = async (partnerId) => {
@@ -77,57 +67,42 @@ const PartnerList = () => {
         userId,
         userInfo?.token
       );
-
       setPartners(partnerList);
       setIsLoading(false);
     } catch (error) {
       if (Array.isArray(error)) {
-        errorToast("Error: Unable to delete partner");
       }
     }
   };
 
   const updatePartnerContact = async (contactObj, userId, partnerId) => {
-    // console.log("****UpdatePartnerContact() - userInfo: ", userInfo);
 
     try {
-      await TennisCentralAPI.updatePartnerTable(
-        contactObj,
+      await toast.promise(
+        TennisCentralAPI.updatePartnerTable(
+          contactObj,
+          userId,
+          partnerId,
+          userInfo?.token
+        ),
+        {
+          // loading: 'Data is loading...',
+          success: "Data was saved",
+          error: "Error occurred while saving data, try again",
+        }
+      );
+
+      let partnerList = await TennisCentralAPI.getPartners(
         userId,
-        partnerId,
         userInfo?.token
       );
-      // ----> Should be using this toast but until useEffect() bug is resolved I'll use above query
-      // await toast.promise(
-      //   TennisCentralAPI.updatePartnerTable(
-      //     contactObj,
-      //     userId,
-      //     partnerId,
-      //     userInfo?.token
-      //   ),
-      //   {
-      //     // loading: 'Data is loading...',
-      //     success: "Data was saved",
-      //     error: "Error occurred while saving data, try again",
-      //   }
-      // );
 
-      // ---> Due to useEffect() 'bug' no need to refresh partner list
-      // Once bug is addressed then the call below will be needed
-      // let partnerList = await TennisCentralAPI.getPartners(
-      //   userId,
-      //   userInfo?.token
-      // );
-
-      //---> Will need line below if i figure out why useEffect is exectuting after initial load
-      // This line is needed to re-render screen with updated partner info
-      // setPartners(partnerList);
+      setPartners(partnerList);
 
       setIsLoading(false);
     } catch (error) {
       if (Array.isArray(error)) {
-        errorToast(error);
-        // setSubmitFormApiErrorMsg(error);
+        // errorToast(error);
       }
     }
   };

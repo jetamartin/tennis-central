@@ -20,7 +20,6 @@ const Home = () => {
   if (isLoading) {
     return <p>Is loading ....</p>;
   }
-  debugger;
   return (
     <>{!userInfo?.firstName ? 
     <NotLoggedInHomePage /> 

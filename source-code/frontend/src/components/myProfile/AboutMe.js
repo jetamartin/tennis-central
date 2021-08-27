@@ -12,6 +12,8 @@ import UserContext from "../UserContext";
 import TennisCentralAPI from "../../TennisCentralAPI";
 import SubmitFormApiMsgs from "../SubmitFormApiMsgs";
 
+import { format } from "date-fns";
+
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import setHours from "date-fns/setHours";
@@ -22,7 +24,7 @@ import "./MyProfileForms.css";
 
 const AboutMe = ({ updateUserRecord }) => {
   const [profileData, setProfileData] = useState({});
-  const [startDate, setStartDate] = useState();
+  const [startDate, setStartDate] = useState(new Date());
 
   // State & vars associated with displaying and hiding API Error & Success Msgs arrising from submission of form
   const [dataSubmitted, setDataSubmitted] = useState(false);
@@ -43,17 +45,14 @@ const AboutMe = ({ updateUserRecord }) => {
   useEffect(() => {
     const loadFormData = async () => {
       try {
-        // setSubmitFormApiErrorMsg([]);
-        // if (userInfo?.token) {
-        let profileData = await TennisCentralAPI.getUserProfile(
+
+        let res = await TennisCentralAPI.getUserProfile(
           userInfo?.userId,
           userInfo?.token
         );
-        const throwError = false;
-        if (throwError) {
-          throw ["Failure to load partners"];
-        }
-        setProfileData(profileData.user);
+        setProfileData(res.user);
+        debugger;
+
         setIsLoading(false);
         // }
       } catch (error) {
@@ -68,6 +67,7 @@ const AboutMe = ({ updateUserRecord }) => {
 
   // Starts a timer to remove success message after some interval
   useEffect(() => {
+    console.log("UseEffect ==========> Start a timer");
     // Only need to set timer to automatically remove success msg submission was a success if not don't set timer
     if (submitFormApiErrorMsg.length === 0) {
       setTimeout(() => setSubmitFormApiSuccessMsg({ message: "" }), 3000);
@@ -83,11 +83,12 @@ const AboutMe = ({ updateUserRecord }) => {
     firstName: Yup.string().required("Required"),
     lastName: Yup.string().required("Required"),
     email: Yup.string().email("Invalid email format").required("Required"),
-    postalCode: Yup.string().required("Required"),
-    gender: Yup.string().required("Select a gender"),
+    // postalCode: Yup.string().required("Required"),
+    // gender: Yup.string().required("Select a gender"),
   });
 
   const onSubmit = async (values, { setSubmitting, setFieldValue, errors }) => {
+
     values.birthday = startDate;
     const throwError = false;
     try {
@@ -285,12 +286,13 @@ const AboutMe = ({ updateUserRecord }) => {
                           isClearable
                           className="form-control"
                           selected={startDate}
+                          // selected={values.birthday}
                           onChange={(date) => setStartDate(date)}
+                          // onChange={date => setFieldValue('birthday', date)}
                           showYearDropdown
                           dateFormatCalendar="MMMM"
                           yearDropdownItemNumber={70}
                           scrollableYearDropdown
-                          // dateFormat="yyyy/MM/dd"
                           dateFormat="MM/dd/yyyy"
                           type="date"
                           id="birthday"

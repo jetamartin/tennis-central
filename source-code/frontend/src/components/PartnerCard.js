@@ -21,12 +21,6 @@ const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
   const [profileData, setProfileData] = useState({});
   const [startDate, setStartDate] = useState();
 
-  // State & vars associated with displaying and hiding API Error & Success Msgs arrising from submission of form
-  // const [dataSubmitted, setDataSubmitted] = useState(false);
-  // const [submitFormApiErrorMsg, setSubmitFormApiErrorMsg] = useState([]);
-  // const [submitFormApiSuccessMsg, setSubmitFormApiSuccessMsg] = useState({
-  //   message: "",
-  // });
 
   // debugger;
   const {
@@ -56,24 +50,35 @@ const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
   };
 
   // const handleSubmit = async (values, setSubmitting) => {
-  const handleSubmit = async (e, { values }) => {
-    const contactObj = constructContactObject(values);
-    const partnerId = e.target.dataset.id;
-    await updatePartnerContact (contactObj, userId, partnerId);
+  // const handleSubmit = async (e, { values }) => {
+  //   e.preventDefault();
+  //   const contactObj = constructContactObject(values);
+  //   const partnerId = e.target.dataset.id;
+  //   await updatePartnerContact (contactObj, userId, partnerId);
 
-  };
+  // };
+
+  const handleSubmit = async (values, setSubmitting) => {
+    const contactObj = constructContactObject(values);
+    const partnerId = id;
+    try {
+      await updatePartnerContact (contactObj, userId, partnerId); 
+    } catch (error) {
+      // console.log(error)
+    }
+  }
 
   const removePartner = async (e) => {
     try {
-      const partnerId = e.target.dataset.id;
+      const partnerId = id;
       await deletePartner(partnerId);
     } catch (error) {
       // console.log(error);
     }
   };
 
-  // Supplemental feature not included:
-  // User would click edit icon and that would make form editable
+  // Supplemental feature not included at this point
+  // User would click edit icon and that would make form editable and make the save button visible
   const editForm = async (e) => {
     // try {
     // console.log("Edit contact info ");
@@ -109,7 +114,7 @@ const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          // onSubmit={handleSubmit}
+          onSubmit={handleSubmit}
           enableReinitialize
         >
           {({
@@ -124,9 +129,9 @@ const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
             // console.log(values);
             return (
               <Form
-                data-id={id}
+                // data-id={id}
                 className="mx-auto"
-                onSubmit={(e) => handleSubmit(e, { values })}
+                // onSubmit={(e) => handleSubmit(e, { values })}
               >
                 {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
                 <fieldset className="mb-3">
@@ -221,12 +226,6 @@ const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
               <span>{session_type}</span>{" "}
             </Card.Text>
           </fieldset>
-
-          {/* <Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>
-          <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </Card.Text> */}
         </fieldset>
         <Row>
           <Col className="d-flex justify-content-around">
@@ -234,7 +233,7 @@ const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
               href={`mailto:${email}`}
               target="_blank"
               className="btn btn-outline-primary btn-sm partner-btn"
-              data-id={id}
+              // data-id={id}
             >
               <i className="bi bi-envelope partner-card-icon"></i>
               Message
@@ -244,7 +243,7 @@ const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
             <div>
               <button
                 className="btn btn-outline-danger btn-sm partner-btn"
-                data-id={id}
+                // data-id={id}
                 onClick={removePartner}
               >
                 <i className="bi bi-person-x partner-card-icon"></i>

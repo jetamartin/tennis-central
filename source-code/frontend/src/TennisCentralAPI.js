@@ -20,10 +20,15 @@ class TennisCentralAPI {
     const url = `${BASE_URL}/${endpoint}`;
     const headers = { Authorization: `Bearer ${TennisCentralAPI.token}` };
     const params = method === "get" ? data : {};
+    let message;
     try {
       return (await axios({ url, method, data, params, headers })).data;
     } catch (err) {
-      let message = err.response.data.error.message;
+      if (err.response.data.error.status === 500) {
+        message = err.response.statusText;
+      } else {
+        message = err.response.data.error.message;
+      }
       throw Array.isArray(message) ? message : [message];
     }
   }
