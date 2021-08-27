@@ -3,8 +3,7 @@ const { sequelize } = require("../db");
 const ExpressError = require("../expressError");
 
 const bcrypt = require("bcrypt");
-const { BCRYPT_WORK_FACTOR } = require("../config.js")
-
+const { BCRYPT_WORK_FACTOR } = require("../config.js");
 
 // Model Definition
 const User = sequelize.define(
@@ -72,9 +71,7 @@ const User = sequelize.define(
     birthday: {
       // {month: 12, day: 10, year: 1970}
       type: DataTypes.DATEONLY,
-      // get: function() {
-      //      return moment(this.getDataValue('birthday')).format('MM.DD.YYYY')
-      //   }
+      defaultValue: new Date(),
     },
     gender: {
       // Male or Female
@@ -155,7 +152,7 @@ User.authenticate = async function (username, password) {
     where: { username: username },
   });
   if (user) {
-    const isValid = await bcrypt.compare(password, user.password)
+    const isValid = await bcrypt.compare(password, user.password);
     if (isValid) {
       delete user.password;
       return user;
@@ -181,7 +178,10 @@ User.register = async function (userRegInfo) {
       "Registration failed. User name already taken please select another one and re-submit"
     );
   }
-  const hashedPassword = await bcrypt.hash(userRegInfo.password, BCRYPT_WORK_FACTOR);
+  const hashedPassword = await bcrypt.hash(
+    userRegInfo.password,
+    BCRYPT_WORK_FACTOR
+  );
   userRegInfo.password = hashedPassword;
 
   const user = await User.create(userRegInfo);
