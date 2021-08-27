@@ -137,7 +137,7 @@ This will automatically start the app and open a browser with the app running it
 
 #### Wireframe of Full Featured Tennis-Central app UI:
 
-- [Full Featured Tennis-Central UI WireFrame](https://github.com/jetamartin/tennis-central/blob/main/project-planning/QuickDBD-TennisCentral.png)
+- [Full Featured Tennis-Central UI WireFrame](https://github.com/jetamartin/tennis-central/blob/main/project-planning/tennis-central-wireframe.pdf)
 
 #### Database Entity Requirements (ERD):
 
