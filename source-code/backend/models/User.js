@@ -71,7 +71,7 @@ const User = sequelize.define(
     birthday: {
       // {month: 12, day: 10, year: 1970}
       type: DataTypes.DATEONLY,
-      defaultValue: new Date(),
+      // defaultValue: new Date(),
     },
     gender: {
       // Male or Female
