@@ -132,7 +132,7 @@ This will install React and any additional React packages that are necessry to r
 
 This will automatically start the app and open a browser with the app running it that browser window.
 
-### Other key Project deliverables:
+### Project documentation/resources:
 
 
 #### Wireframe of Full Featured Tennis-Central app UI:
