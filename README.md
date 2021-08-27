@@ -145,7 +145,7 @@ This will automatically start the app and open a browser with the app running it
 
 #### REST API Documentation and Product planning spreadsheet:
 
-- [API reference docs (see "REST Endpoints tab)](https://github.com/jetamartin/tennis-central/blob/main/project-planning/TennisCentralPlanner.xlsx)
+- [API reference docs (see "REST Endpoints tab)](https://docs.google.com/spreadsheets/d/1liqitK_c9kwwGrvD0rUjn9lfIqhzPJ3i/edit?usp=sharing&ouid=114234330538485716912&rtpof=true&sd=true)
 
 ### ⚡Licensing:
 
