@@ -134,13 +134,18 @@ This will automatically start the app and open a browser with the app running it
 
 ### Other key Project deliverables:
 
-#### Entity Requirements Document:
 
-- [Tennis-Central Database ERD]()
+#### Wireframe of Full Featured Tennis-Central app UI:
 
-#### Wireframe of Full UI:
+- [Full Featured Tennis-Central UI WireFrame](https://github.com/jetamartin/tennis-central/blob/main/project-planning/QuickDBD-TennisCentral.png)
 
-- [Full Featured Tennis-Central UI WireFrame]()
+#### Database Entity Requirements (ERD):
+
+- [Tennis-Central Database ERD](https://github.com/jetamartin/tennis-central/blob/main/project-planning/QuickDBD-TennisCentral.png)
+
+#### REST API Documentation and Product planning spreadsheet:
+
+- [API reference docs (see "REST Endpoints tab)](https://github.com/jetamartin/tennis-central/blob/main/project-planning/TennisCentralPlanner.xlsx)
 
 ### ⚡Licensing:
 
