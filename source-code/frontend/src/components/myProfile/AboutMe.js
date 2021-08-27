@@ -24,7 +24,6 @@ import "./MyProfileForms.css";
 
 const AboutMe = ({ updateUserRecord }) => {
   const [profileData, setProfileData] = useState({});
-  const [startDate, setStartDate] = useState(new Date());
 
   // State & vars associated with displaying and hiding API Error & Success Msgs arrising from submission of form
   const [dataSubmitted, setDataSubmitted] = useState(false);
@@ -45,13 +44,11 @@ const AboutMe = ({ updateUserRecord }) => {
   useEffect(() => {
     const loadFormData = async () => {
       try {
-
         let res = await TennisCentralAPI.getUserProfile(
           userInfo?.userId,
           userInfo?.token
         );
         setProfileData(res.user);
-        debugger;
 
         setIsLoading(false);
         // }
@@ -74,9 +71,17 @@ const AboutMe = ({ updateUserRecord }) => {
     }
   }, [dataSubmitted]);
 
+  // On load sets birthday to value in DB or leave it blank if no value previously saved (e.g., brand new user)
+  const setBirthday = (birthday) => {
+    if (birthday) {
+      return new Date(birthday);
+    }
+    return "";
+  };
+
   const initialValues = {
     ...profileData,
-    birthday: moment(profileData.birthday).format("MM/DD/YYYY"),
+    birthday: setBirthday(profileData?.birthday),
   };
 
   const validationSchema = Yup.object({
@@ -88,8 +93,6 @@ const AboutMe = ({ updateUserRecord }) => {
   });
 
   const onSubmit = async (values, { setSubmitting, setFieldValue, errors }) => {
-
-    values.birthday = startDate;
     const throwError = false;
     try {
       // Clear out any prior api error messages on submission of the form so they don't persist
@@ -279,16 +282,11 @@ const AboutMe = ({ updateUserRecord }) => {
                           Birthday
                         </FormLabel>
                         <DatePicker
-                          // filterDate={d => {
-                          //   return new Date() > d;
-                          // }}
                           maxDate={new Date()}
                           isClearable
                           className="form-control"
-                          selected={startDate}
-                          // selected={values.birthday}
-                          onChange={(date) => setStartDate(date)}
-                          // onChange={date => setFieldValue('birthday', date)}
+                          selected={values.birthday}
+                          onChange={(date) => setFieldValue("birthday", date)}
                           showYearDropdown
                           dateFormatCalendar="MMMM"
                           yearDropdownItemNumber={70}
@@ -297,7 +295,6 @@ const AboutMe = ({ updateUserRecord }) => {
                           type="date"
                           id="birthday"
                           name="birthday"
-                          value={values.birthday}
                         />
                       </FormGroup>
                       <FormGroup className="form-group">
