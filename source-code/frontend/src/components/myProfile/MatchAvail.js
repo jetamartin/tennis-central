@@ -117,7 +117,6 @@ const MatchAvail = ({ updateUserRecord }) => {
   const onSubmit = async (values, { setSubmitting, setFieldValue }) => {
     values.match_availability = buildMatchAvailObject(values);
     console.log(values.match_availability);
-    debugger;
     const throwError = false;
     try {
       // Clear out any prior api error messages on submission of the form so they don't persist
@@ -144,7 +143,6 @@ const MatchAvail = ({ updateUserRecord }) => {
     return <p className="">Loading &hellip;</p>;
   }
   if (submitFormApiErrorMsg.length !== 0) {
-    debugger
     return (     
      <SubmitFormApiMsgs
       submitFormApiErrorMsg={submitFormApiErrorMsg}

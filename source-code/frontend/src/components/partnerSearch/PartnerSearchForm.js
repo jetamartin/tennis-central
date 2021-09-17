@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { useHistory } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { FormGroup, FormLabel, FormControl, FormCheck } from "react-bootstrap";
 import { Container, Col, Row, Table } from "react-bootstrap";
@@ -10,17 +9,14 @@ import isNil from "lodash/isNil";
 import inRange from "lodash/inRange";
 
 import TextError from "../TextError";
-import ErrorMsg from "../ErrorMsg";
 import "./PartnerSearchForm.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
-import { propTypes } from "react-bootstrap/esm/Image";
 import TennisCentralAPI from "../../TennisCentralAPI";
 import UserContext from "../UserContext";
 import PartnerSearchResultsTable from "./PartnerSearchResultsTable";
-import { set } from "lodash";
 import SubmitFormApiMsgs from "../SubmitFormApiMsgs";
 
 const FindAPartner = () => {
@@ -36,7 +32,6 @@ const FindAPartner = () => {
   const [partnerSearchType, setPartnerSearchType] = useState();
   const [fromProfile, setFromProfile] = useState(false);
   const load = fromProfile;
-  let inputCheckbox = "";
 
   // State for managing display or messages returned from API calls
   const [submitFormApiErrorMsg, setSubmitFormApiErrorMsg] = useState([]);
@@ -140,9 +135,9 @@ const FindAPartner = () => {
 
   const loadfromProfile = async (e, value, setFieldValue) => {
     try {
-      if (e.target.checked === false ) {
-        setProfileData({})
-        return
+      if (e.target.checked === false) {
+        setProfileData({});
+        return;
       }
 
       // Clear out any prior api error messages on submission of the form so they don't persist
@@ -322,8 +317,7 @@ const FindAPartner = () => {
         if (res.partner.playerId === userId) {
           currentPartners.push(res);
         }
-      } catch (error) {
-      }
+      } catch (error) {}
     }
     return currentPartners;
   };
@@ -1199,9 +1193,6 @@ const FindAPartner = () => {
                       submitFormApiSuccessMsg={submitFormApiSuccessMsg}
                     />
 
-                    {/* {submitFormApiErrorMsg.length !== 0 ? 
-                submitFormApiErrorMsg.map(errorMsg => <ErrorMsg errorMsg={errorMsg} />)
-               : null } */}
                     <Button
                       type="submit"
                       // className="btn btn-primary mt-3 float-right"

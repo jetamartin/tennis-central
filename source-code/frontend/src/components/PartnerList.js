@@ -24,6 +24,7 @@ const PartnerList = () => {
   const userInfo = useContext(UserContext);
   const userId = userInfo?.userId;
 
+  // Use lodash isEmpty instead
   function isObjectEmpty(value) {
     return (
       Object.prototype.toString.call(value) === "[object Object]" &&

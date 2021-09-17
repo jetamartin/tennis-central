@@ -2,7 +2,6 @@ import React from "react";
 import { capitalize } from "lodash";
 
 const PartnerMatchType = ({ matchType, index, length }) => {
-  // debugger;
   return (
     <span>
       <span className="match-type">{capitalize(matchType)}</span>
