@@ -11,7 +11,7 @@ const { ensureCorrectUserOrAdmin } = require("../middleware/auth");
   patch /users/:id (update)
   delete /users/:id (delete)
  */
-
+debugger;
 router.get("", async (req, res) => {
   try {
     const users = await User.findAll({
@@ -30,9 +30,10 @@ router.get("", async (req, res) => {
 //     },
 //   });
 
-router.get("/:userId", ensureCorrectUserOrAdmin, async (req, res, next) => {
+router.get("/:id", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
-    const userId = req.params.userId;
+    debugger;
+    const userId = req.params.id;
     const user = await User.findOne({ where: { id: userId } });
     if (!user) throw new ExpressError(404, "User not found");
     return res.json({ user });
@@ -41,10 +42,10 @@ router.get("/:userId", ensureCorrectUserOrAdmin, async (req, res, next) => {
   }
 });
 
-router.patch("/:userId", ensureCorrectUserOrAdmin, async (req, res, next) => {
+router.patch("/:id", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
     // First check to see if requested record exist in db
-    const userId = req.params.userId;
+    const userId = req.params.id;
     const result = await User.update(req.body, {
       where: { id: userId },
       returning: true,
@@ -57,7 +58,7 @@ router.patch("/:userId", ensureCorrectUserOrAdmin, async (req, res, next) => {
   }
 });
 
-router.delete("/:userId", ensureCorrectUserOrAdmin, async (req, res, next) => {
+router.delete("/:id", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
     const userId = req.params.id;
     const result = await User.destroy({
@@ -71,5 +72,4 @@ router.delete("/:userId", ensureCorrectUserOrAdmin, async (req, res, next) => {
   }
 });
 
-// ?? shouldn't I be exporting userRouter?? rather than router
 module.exports = { router };

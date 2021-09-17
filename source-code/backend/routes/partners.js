@@ -44,14 +44,11 @@ router.post("/users/:userId/partners/:partnerId", ensureCorrectUserOrAdmin, asyn
   }
 })
 
-// router.get("/:id", async (req, res, next) => {
 router.get("/users/:userId/partners/:id", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
     const playerId = +req.params.userId;
     const partnerId = +req.params.id;
-    // const partner = await Partner.findOne({ where: { id: req.params.id } });
     const partner = await Partner.findOne({ where: { partnerId: partnerId } });
-
     if (!partner) throw new ExpressError(404, "User not found");
     return res.json({ partner });
   } catch (error) {
@@ -59,7 +56,6 @@ router.get("/users/:userId/partners/:id", ensureCorrectUserOrAdmin, async (req, 
   }
 });
 
-// router.patch("/:id", async (req, res, next) => {
 router.patch("/users/:userId/partners/:id", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
     const playerId = +req.params.userId;
@@ -78,7 +74,6 @@ router.patch("/users/:userId/partners/:id", ensureCorrectUserOrAdmin, async (req
   }
 });
 
-// router.delete("/:id", async (req, res, next) => {
 router.delete("/users/:userId/partners/:id", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
     const playerId = +req.params.userId;

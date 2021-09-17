@@ -12,9 +12,7 @@ const ExpressError = require("../expressError");
  */
 
 router.get("/users/:userId/messages", async (req, res, next) => {
-  // router.get("", async (req, res) => {
   try {
-    debugger;
     const userId = +req.params.userId;
     const messages = await Message.findAll({ where: { fromUserId: userId } });
     return res.status(201).json({ messages });
@@ -36,9 +34,7 @@ router.post("/users/:userId/messages", async (req, res, next) => {
 });
 
 router.get("/users/:userId/messages/:id", async (req, res, next) => {
-  // router.get("/:id", async (req, res) => {
   try {
-    debugger;
     // ??? Do I need the users or will I only need the message id?
     const userId = +req.params.userId;
     const message = await Message.findOne({ where: { id: req.params.id }, returning: true });
@@ -50,10 +46,8 @@ router.get("/users/:userId/messages/:id", async (req, res, next) => {
   }
 });
 
-// router.patch("/:id", async (req, res, next) => {
 router.patch("/users/:userId/messages/:id", async (req, res, next) => {
   try {
-    debugger;
     const userId = +req.params.userId;
     const result = await Message.update(req.body, { where: { id: +req.params.id }, returning: true  });
     if (result[0] === 0) throw new ExpressError(404, "Message not found");
@@ -65,7 +59,6 @@ router.patch("/users/:userId/messages/:id", async (req, res, next) => {
   }
 });
 
-// router.delete("/:id", async (req, res, next) => {
 router.delete("/users/:userId/messages/:id", async (req, res, next) => {
   try {
     const requestedId = req.params.id;
