@@ -4,15 +4,14 @@ import UserContext from "./UserContext";
 
 const NoPartnersToLoad = ({ partners }) => {
   const userInfo = useContext(UserContext);
-  // console.log("NoPartnersToLoad: ", userInfo?.token);
 
+ // instead of using this function use lodash isEmpty() method.
   function isObjectEmpty(value) {
     return (
       Object.prototype.toString.call(value) === "[object Object]" &&
       JSON.stringify(value) === "{}"
     );
   }
-  // debugger
   return (
     <div>
       {/* Added this check to see if I could prevent message below from flashing up

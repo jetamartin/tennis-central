@@ -6,6 +6,14 @@ let sequelize;
 if (process.env.DATABASE_URL) {
   // use Heroku's Database URL
   sequelize = new Sequelize(process.env.DATABASE_URL)
+
+// Added 'if else' statement to account for test environment  
+} else if (process.env.NODE_ENV === "test") {
+  console.log("TEST_TEST");
+  sequelize = new Sequelize('tennis_central_test', 'postgres', '', {
+    host: 'localhost',
+    dialect: 'postgres'
+  })
 } else {
   sequelize = new Sequelize('tennis_central', 'postgres', '', {
     host: 'localhost',

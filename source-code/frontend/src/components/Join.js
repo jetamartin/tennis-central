@@ -1,24 +1,19 @@
 import React, { useState, useContext } from "react";
-import ReactDOM from "react-dom";
 import { useHistory } from "react-router-dom";
 
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { FormGroup, FormLabel, FormControl, FormCheck } from "react-bootstrap";
+import { FormGroup, FormLabel } from "react-bootstrap";
 
 import { Container, Col, Row } from "react-bootstrap";
 import { Button } from "react-bootstrap";
 import * as Yup from "yup";
 import TextError from "./TextError";
 import "./Join.css";
-import { mapValues } from "lodash";
-import ErrorMsg from './ErrorMsg';
-import UserContext from './UserContext'; 
+import ErrorMsg from "./ErrorMsg";
+import UserContext from "./UserContext";
 
-
-const Join = ({registerUser}) => {
-
-  const [ joinErrorFormMsg, setJoinErrorFormMsg] = useState([]);
-  const userInfo = useContext(UserContext);
+const Join = ({ registerUser }) => {
+  const [joinErrorFormMsg, setJoinErrorFormMsg] = useState([]);
   const history = useHistory();
   const initialValues = {
     username: "",
@@ -27,34 +22,32 @@ const Join = ({registerUser}) => {
     lastName: "",
     email: "",
   };
-  
+
   const validationSchema = Yup.object({
     username: Yup.string().required("Required"),
     password: Yup.string().required("Required"),
-    confirmPassword: Yup.string()
-    .test('match', 
-      'passwords do not match', 
-       function(confirmPassword) { 
-         return confirmPassword === this.parent.password; 
-       }),
+    confirmPassword: Yup.string().test(
+      "match",
+      "passwords do not match",
+      function (confirmPassword) {
+        return confirmPassword === this.parent.password;
+      }
+    ),
     email: Yup.string().email("Invalid email format").required("Required"),
     firstName: Yup.string().required("Required"),
     lastName: Yup.string().required("Required"),
-
   });
-  
-  const onSubmit = async (values, {setSubmitting, resetForm}) => {
-    console.log("Form Data", values);
+
+  const onSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      await registerUser(values)
-      setSubmitting(false)
-      history.push("/")
+      await registerUser(values);
+      setSubmitting(false);
+      history.push("/");
       // resetForm();
     } catch (error) {
       console.log(error);
       if (Array.isArray(error)) {
-        debugger
-        setJoinErrorFormMsg(error)
+        setJoinErrorFormMsg(error);
       }
     }
   };
@@ -73,83 +66,91 @@ const Join = ({registerUser}) => {
             onSubmit={onSubmit}
           >
             {({ isSubmitting }) => (
-            <Form className="mx-auto">
-              <fieldset>
-                <legend>Login info</legend>
-                <FormGroup>
-                  <FormLabel htmlFor="username">Username</FormLabel>
-                  <Field
-                    className="form-control"
-                    id="username"
-                    name="username"
-                    placeholder="jDoe"
-                  />
-                  <ErrorMessage name="username" component={TextError} />
-                </FormGroup>
-                <FormGroup>
-                  <FormLabel htmlFor="password">Password</FormLabel>
-                  <Field
-                    className="form-control"
-                    id="password"
-                    name="password"
-                    placeholder="password123"
-                  />
-                  <ErrorMessage name="password" component={TextError} />
-                </FormGroup>
-                <FormGroup>
-                  <FormLabel htmlFor="password">Confirm Password</FormLabel>
-                  <Field
-                    className="form-control"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    placeholder="password123"
-                  />
-                  <ErrorMessage name="confirmPassword" component={TextError} />
-                </FormGroup>
-              </fieldset>
-              <fieldset>
-                <legend>Contact info</legend>
-                <FormGroup>
-                  <FormLabel htmlFor="firstName">First Name</FormLabel>
-                  <Field
-                    className="form-control"
-                    id="firstName"
-                    name="firstName"
-                    placeholder="Jane"
-                  />
-                  <ErrorMessage name="firstName" component={TextError} />
-                </FormGroup>
-                <FormGroup>
-                  <FormLabel htmlFor="lastName">Last Name</FormLabel>
-                  <Field
-                    className="form-control"
-                    id="lastName"
-                    name="lastName"
-                    placeholder="Doe"
-                  />
-                  <ErrorMessage name="lastName" component={TextError} />
-                </FormGroup>
-                <FormGroup>
-                  <FormLabel htmlFor="email">Email</FormLabel>
-                  <Field
-                    className="form-control"
-                    id="email"
-                    name="email"
-                    placeholder="jDoe@email.com"
-                  />
-                  <ErrorMessage name="email" component={TextError} />
-                </FormGroup>
-              </fieldset>
-              {joinErrorFormMsg.length !== 0 ? 
-                joinErrorFormMsg.map(errorMsg => <ErrorMsg errorMsg={errorMsg} />)
-               : null }
-              <Button type="submit"   
-                // className="mt-3 float-right">
-                className="btn btn-primary btn-lg btn-block mt-3">
-
-                Submit
-              </Button>
-            </Form>
+              <Form className="mx-auto">
+                <fieldset>
+                  <legend>Login info</legend>
+                  <FormGroup>
+                    <FormLabel htmlFor="username">Username</FormLabel>
+                    <Field
+                      className="form-control"
+                      id="username"
+                      name="username"
+                      placeholder="jDoe"
+                    />
+                    <ErrorMessage name="username" component={TextError} />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel htmlFor="password">Password</FormLabel>
+                    <Field
+                      type="password"
+                      className="form-control"
+                      id="password"
+                      name="password"
+                      placeholder="password123"
+                    />
+                    <ErrorMessage name="password" component={TextError} />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel htmlFor="password">Confirm Password</FormLabel>
+                    <Field
+                      type="password"
+                      className="form-control"
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      placeholder="password123"
+                    />
+                    <ErrorMessage
+                      name="confirmPassword"
+                      component={TextError}
+                    />
+                  </FormGroup>
+                </fieldset>
+                <fieldset>
+                  <legend>Contact info</legend>
+                  <FormGroup>
+                    <FormLabel htmlFor="firstName">First Name</FormLabel>
+                    <Field
+                      className="form-control"
+                      id="firstName"
+                      name="firstName"
+                      placeholder="Jane"
+                    />
+                    <ErrorMessage name="firstName" component={TextError} />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel htmlFor="lastName">Last Name</FormLabel>
+                    <Field
+                      className="form-control"
+                      id="lastName"
+                      name="lastName"
+                      placeholder="Doe"
+                    />
+                    <ErrorMessage name="lastName" component={TextError} />
+                  </FormGroup>
+                  <FormGroup>
+                    <FormLabel htmlFor="email">Email</FormLabel>
+                    <Field
+                      className="form-control"
+                      id="email"
+                      name="email"
+                      placeholder="jDoe@email.com"
+                    />
+                    <ErrorMessage name="email" component={TextError} />
+                  </FormGroup>
+                </fieldset>
+                {joinErrorFormMsg.length !== 0
+                  ? joinErrorFormMsg.map((errorMsg) => (
+                      <ErrorMsg errorMsg={errorMsg} />
+                    ))
+                  : null}
+                <Button
+                  type="submit"
+                  // className="mt-3 float-right">
+                  className="btn btn-primary btn-lg btn-block mt-3"
+                >
+                  Submit
+                </Button>
+              </Form>
             )}
           </Formik>
         </Col>

@@ -1,28 +1,31 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Card, Container, Col, Row, Table } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import React, { useState, useContext } from "react";
+import { Card, Col, Row } from "react-bootstrap";
+import { Formik, Form, Field } from "formik";
 import { Button } from "react-bootstrap";
-import { FormGroup, FormLabel, FormControl, FormCheck } from "react-bootstrap";
+import { FormGroup, FormLabel } from "react-bootstrap";
 import * as Yup from "yup";
 import "./PartnerCard.css";
 import PartnerAvailDays from "./partnerSearch/PartnerAvailDays";
 import PartnerMatchType from "./PartnerMatchType";
-import TennisCentralAPI from "../TennisCentralAPI";
 import UserContext from "./UserContext";
-import { identity, set } from "lodash";
 
+const validationSchema = Yup.object({
+  // telNum: Yup.string().required("Required"),
+  // email: Yup.string().email("Invalid email format").required("Required"),
+});
+
+const constructContactObject = (values) => {
+  return { contact: { telNum: values.telNum, email: values.email } };
+};
 
 const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [partnerData, setPartnerData] = useState("");
-  const { id, contact } = partner;
+  const { id: partnerId, contact } = partner;
 
   const [profileData, setProfileData] = useState({});
   const [startDate, setStartDate] = useState();
 
-
-  // debugger;
   const {
     fullName,
     my_ntrp_rating,
@@ -36,59 +39,21 @@ const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
   } = partner.partner;
 
   const initialValues = contact;
-
-  const validationSchema = Yup.object({
-    // telNum: Yup.string().required("Required"),
-    // email: Yup.string().email("Invalid email format").required("Required"),
-  });
-
   const userInfo = useContext(UserContext);
   const userId = userInfo.userId;
 
-  const constructContactObject = (values) => {
-    return { contact: { telNum: values.telNum, email: values.email } };
-  };
-
-  // const handleSubmit = async (values, setSubmitting) => {
-  // const handleSubmit = async (e, { values }) => {
-  //   e.preventDefault();
-  //   const contactObj = constructContactObject(values);
-  //   const partnerId = e.target.dataset.id;
-  //   await updatePartnerContact (contactObj, userId, partnerId);
-
-  // };
-
   const handleSubmit = async (values, setSubmitting) => {
     const contactObj = constructContactObject(values);
-    const partnerId = id;
     try {
-      await updatePartnerContact (contactObj, userId, partnerId); 
-    } catch (error) {
-      // console.log(error)
-    }
-  }
+      await updatePartnerContact(contactObj, userId, partnerId);
+    } catch (error) {}
+  };
 
   const removePartner = async (e) => {
     try {
-      const partnerId = id;
+      // const partnerId = id;
       await deletePartner(partnerId);
-    } catch (error) {
-      // console.log(error);
-    }
-  };
-
-  // Supplemental feature not included at this point
-  // User would click edit icon and that would make form editable and make the save button visible
-  const editForm = async (e) => {
-    // try {
-    // console.log("Edit contact info ");
-    // const partnerId = e.target.parentElement.dataset.id;
-    // console.log(partnerId);
-    //   await TennisCentralAPI.addPartner(userInfo.userId, partnerId)
-    //   updatePartnerStatus(partnerId);
-    // } catch (error) {
-    //   console.log("Add Partner error", error)
-    // }
+    } catch (error) {}
   };
 
   const transformAvailability = (match_availability) => {
@@ -126,36 +91,23 @@ const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
             onSubmit,
             errors,
           }) => {
-            // console.log(values);
             return (
-              <Form
-                // data-id={id}
-                className="mx-auto"
-                // onSubmit={(e) => handleSubmit(e, { values })}
-              >
+              <Form className="mx-auto">
                 {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
                 <fieldset className="mb-3">
                   <legend>Partner Contact</legend>
-                  {/* <Row
-                    data-id="1"
-                    className="d-flex justify-content-end"
-                    onClick={editForm}
-                  >
-                    <i class="bi bi-pencil-square active edit-icon"></i>
-                  </Row> */}
                   <FormGroup className="row">
                     <FormLabel column sm="3" htmlFor="telNum">
                       Tel#
                     </FormLabel>
                     <Col sm={9}>
                       <Field
+                        type="tel"
                         className="form-control"
                         id="telNum"
                         type="text"
                         name="telNum"
                         placeholder="818-222-4531"
-                        // readOnly
-                        // plaintext
                       />
                     </Col>
                   </FormGroup>
@@ -170,7 +122,6 @@ const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
                         type="text"
                         name="email"
                         placeholder="jDoe@gmail.com"
-                        // readOnly
                       />
                     </Col>
                   </FormGroup>

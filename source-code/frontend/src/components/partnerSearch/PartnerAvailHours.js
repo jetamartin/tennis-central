@@ -1,7 +1,6 @@
 import React from "react";
 
 const PartnerAvailHours = ({timeSlot, index, length}) => {
-  // debugger;
 return (
   <>
     <span className="time-slots">
@@ -10,9 +9,7 @@ return (
     <span>
     {(index + 1 < length ? ", " : null)}
     </span>
-
   </>
-
 )
 }
 export default PartnerAvailHours;

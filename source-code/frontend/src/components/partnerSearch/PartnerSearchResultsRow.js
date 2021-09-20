@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { Container, Col, Row, Table } from "react-bootstrap";
 import "./PartnerSearchResultsTable.css";
 import PartnerAvailDays from "./PartnerAvailDays";
-import { daysInWeek } from "date-fns";
 import UserContext from "../UserContext";
 import TennisCentralAPI from "../../TennisCentralAPI";
 

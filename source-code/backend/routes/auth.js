@@ -6,7 +6,6 @@ const ExpressError = require("../expressError");
 
 router.post("/register", async (req, res, next) => {
   try {
-    debugger;
     const newUser = await User.register(req.body);
     const token = createToken(newUser);
     return res
@@ -21,12 +20,6 @@ router.post("/register", async (req, res, next) => {
 
 router.post("/login", async (req, res, next) => {
   try {
-    // const validator = jsonschema.validate(req.body, userAuthSchema);
-    // if (!validator.valid) {
-    //   const errs = validator.errors.map(e => e.stack);
-    //   throw new BadRequestError(errs);
-    // }
-
     const { username, password } = req.body;
     const user = await User.authenticate(username, password);
     const token = createToken(user);

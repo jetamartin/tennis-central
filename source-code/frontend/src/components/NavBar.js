@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 
 const NavBar = ({ userInfo, logoutUser }) => {
   const history = useHistory();
-  // Lodash isNil checks whether an object's value is null or u
+  // Lodash isNil checks whether an object's value is null or 
   const isLoggedIn = !isNil(userInfo) ? true : false;
 
   const logoutClicked = (e) => {
