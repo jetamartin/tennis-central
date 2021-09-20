@@ -4,8 +4,9 @@
   "description": "Backend server for Tennis-Central app",
   "main": "app.js",
   "scripts": {
-    "test": "jest",
-    "start": "node server.js"
+    "test": "jest -i",
+    "start": "node server.js",
+    "seed:test": "NODE_ENV=test node server.js"
   },
   "keywords": [
     "nodejs",

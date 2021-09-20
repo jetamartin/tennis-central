@@ -2,20 +2,10 @@ process.env.NODE_ENV = "test";
 
 const request = require("supertest");
 const app = require("../../app");
+const { commonBeforeAll, commonAfterAll, token } = require("../common");
 
-let token;
-beforeAll((done) => {
-  request(app)
-    .post("/auth/login")
-    .send({
-      username: "jMartin",
-      password: "1234",
-    })
-    .end((err, response) => {
-      token = response.body.userinfo.token;
-      done();
-    });
-});
+beforeAll(commonBeforeAll);
+afterAll(commonAfterAll);
 
 describe("POST /users/3/partners/1", () => {
   test("Add a partner", async () => {

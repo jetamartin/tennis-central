@@ -2,21 +2,11 @@ process.env.NODE_ENV = "test";
 
 const request = require("supertest");
 const app = require("../../app");
+const { commonBeforeAll, commonAfterAll, token } = require("../common");
 
-let token;
-beforeAll((done) => {
-  request(app)
-    .post("/auth/login")
-    .send({
-      username: "jMartin",
-      password: "1234",
-    })
-    .end((err, response) => {
-      token = response.body.userinfo.token;
-      console.log(token);
-      done();
-    });
-});
+beforeAll(commonBeforeAll);
+afterAll(commonAfterAll);
+
 
 describe("GET /users", () => {
   test("Get all users", async () => {
@@ -53,14 +43,14 @@ describe("GET /users/3", () => {
 describe("PATCH /users/3", () => {
   test("Test update of user profile information", async () => {
     const resp = await request(app)
-      .patch("/users/3")
-      .set("Authorization", `Bearer ${token}`)
-      .send({
-        email: "jet1@mail.com",
-      });
+        .patch("/users/3")
+        .set("Authorization", `Bearer ${token}`)
+        .send({
+          email: "jet1@mail.com",
+        });
     const response = await request(app)
-      .get("/users/3")
-      .set("Authorization", `Bearer ${token}`);
+        .get("/users/3")
+        .set("Authorization", `Bearer ${token}`);
     expect(response.body.user.email).toEqual("jet1@mail.com");
   });
 });

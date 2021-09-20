@@ -3,7 +3,6 @@
 const app = require("./app");
 const { PORT } = require("./config");
 const { sequelize } = require("./db");
-const { seedData } = require("./seed");
 
 // app.listen(PORT, function () {
 //   console.log(`Started on http://localhost:${PORT}`);
@@ -14,12 +13,13 @@ app.listen(PORT, async () => {
   try {
     // Establish connection to DB
     await sequelize.authenticate();
-    // Synchronizes all Models with the DB by dropping DB table and
-    // re-creating it to match model attributes    //
-    await sequelize.sync({ force: true });
-    // console.log("Connection has been established successfully.");
-    await seedData();
-    // console.log("Database has been seeded successfully");
+    //
+    // // Synchronizes all Models with the DB by dropping DB table and
+    // // re-creating it to match model attributes    //
+    // await sequelize.sync({ force: true });
+    // // console.log("Connection has been established successfully.");
+    // await seedData();
+    // // console.log("Database has been seeded successfully");
   } catch (error) {
     // console.error("Unable to connect to the database:", error);
   }
