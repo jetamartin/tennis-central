@@ -11,15 +11,14 @@ const { ensureCorrectUserOrAdmin } = require("../middleware/auth");
   patch /users/:id (update)
   delete /users/:id (delete)
  */
-debugger;
+
 router.get("", async (req, res) => {
   try {
     const users = await User.findAll({
       attributes: { exclude: ["createdAt", "password", "telNum"] },
     });
     res.json({ users });
-  } catch (error) {
-  }
+  } catch (error) {}
 });
 
 // Sample code to generate error messages from validation errors
@@ -30,11 +29,10 @@ router.get("", async (req, res) => {
 //     },
 //   });
 
-router.get("/:id", ensureCorrectUserOrAdmin, async (req, res, next) => {
+router.get("/:userId", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
-    debugger;
-    const userId = req.params.id;
-    const user = await User.findOne({ where: { id: userId } });
+    // const userId = req.params.id;
+    const user = await User.findOne({ where: { id: req.params.userId } });
     if (!user) throw new ExpressError(404, "User not found");
     return res.json({ user });
   } catch (error) {
@@ -42,12 +40,12 @@ router.get("/:id", ensureCorrectUserOrAdmin, async (req, res, next) => {
   }
 });
 
-router.patch("/:id", ensureCorrectUserOrAdmin, async (req, res, next) => {
+router.patch("/:userId", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
     // First check to see if requested record exist in db
-    const userId = req.params.id;
+    // const userId = req.params.id;
     const result = await User.update(req.body, {
-      where: { id: userId },
+      where: { id: +req.params.userId },
       returning: true,
     });
     if (result[0] === 0) throw new ExpressError(404, "User not found");
@@ -58,15 +56,15 @@ router.patch("/:id", ensureCorrectUserOrAdmin, async (req, res, next) => {
   }
 });
 
-router.delete("/:id", ensureCorrectUserOrAdmin, async (req, res, next) => {
+router.delete("/:userId", ensureCorrectUserOrAdmin, async (req, res, next) => {
   try {
-    const userId = req.params.id;
+    // const userId = req.params.id;
     const result = await User.destroy({
-      where: { id: userId },
+      where: { id: +req.params.userId },
       returning: true,
     });
     if (result === 0) throw new ExpressError(404, "User not found");
-    return res.status(200).json({ deleted: userId });
+    return res.status(200).json({ deleted: +req.params.userId });
   } catch (error) {
     return next(error);
   }

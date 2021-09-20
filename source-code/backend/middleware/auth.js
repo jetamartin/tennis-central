@@ -45,7 +45,6 @@ function ensureLoggedIn(req, res, next) {
   }
 }
 
-
 /** Middleware to use when they must provide a valid token & be user matching
  *  username provided as route param.
  *
@@ -54,6 +53,7 @@ function ensureLoggedIn(req, res, next) {
 
 function ensureCorrectUserOrAdmin(req, res, next) {
   try {
+    debugger;
     const user = res.locals.user;
     if (!(user && (user.isAdmin || user.userId === +req.params.userId))) {
       throw new ExpressError(
