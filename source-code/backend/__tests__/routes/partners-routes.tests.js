@@ -3,19 +3,10 @@ process.env.NODE_ENV = "test";
 const request = require("supertest");
 const app = require("../../app");
 
-let token;
-beforeAll((done) => {
-  request(app)
-    .post("/auth/login")
-    .send({
-      username: "jMartin",
-      password: "1234",
-    })
-    .end((err, response) => {
-      token = response.body.userinfo.token;
-      done();
-    });
-});
+const { testDbSetup, testDbTeardown, token } = require("../testSetup");
+
+beforeAll(testDbSetup);
+afterAll(testDbTeardown);
 
 describe("POST /users/3/partners/1", () => {
   test("Add a partner", async () => {
@@ -47,4 +38,3 @@ describe("DELETE /users/3/partners/1", () => {
     expect(resp.body.deleted).toEqual(1);
   });
 });
-

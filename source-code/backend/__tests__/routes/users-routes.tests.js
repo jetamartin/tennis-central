@@ -2,21 +2,10 @@ process.env.NODE_ENV = "test";
 
 const request = require("supertest");
 const app = require("../../app");
+const {testDbSetup, testDbTeardown, token } = require("../testSetup");
 
-let token;
-beforeAll((done) => {
-  request(app)
-    .post("/auth/login")
-    .send({
-      username: "jMartin",
-      password: "1234",
-    })
-    .end((err, response) => {
-      token = response.body.userinfo.token;
-      console.log(token);
-      done();
-    });
-});
+beforeAll(testDbSetup);
+afterAll(testDbTeardown)
 
 describe("GET /users", () => {
   test("Get all users", async () => {
