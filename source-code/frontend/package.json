@@ -25,7 +25,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
+    "test": "react-scripts test",
+    "test:debug": "react-scripts --inspect-brk test --runInBand",
+    "wintest": "winpty npm.cmd run test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

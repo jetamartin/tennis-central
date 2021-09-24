@@ -26,6 +26,7 @@ const Login = ({ loginUser }) => {
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
     console.log("Form Data", values);
     try {
+      debugger;
       await loginUser(values);
       setSubmitting(false);
       resetForm();

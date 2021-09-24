@@ -1,5 +1,6 @@
 "use strict";
-process.env.NODE_ENV = "test";
+// process.env.NODE_ENV = "test";
+process.env.NODE_ENV = "dev";
 const app = require("./app");
 const { PORT } = require("./config");
 const { sequelize } = require("./db");

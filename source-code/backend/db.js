@@ -14,6 +14,11 @@ if (process.env.DATABASE_URL) {
     host: "localhost",
     dialect: "postgres",
   });
+} else if (process.env.NODE_ENV === "dev") {
+  sequelize = new Sequelize("tennis_central", "postgres", "", {
+    host: "localhost",
+    dialect: "postgres",
+  });
 } else {
   sequelize = new Sequelize("tennis_central", "postgres", "", {
     host: "localhost",
