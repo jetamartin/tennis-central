@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import ErrorMsg from "./ErrorMsg";
 
 const SubmitFormApiMsgs = ({submitFormApiErrorMsg, submitFormApiSuccessMsg=undefined }) => {
-  console.log("SubmitFormApiMsgs Component")
   return (
     <div>
       {submitFormApiErrorMsg.length !== 0

@@ -55,38 +55,36 @@ const App = () => {
 
   return (
     <div className="base">
-      <BrowserRouter>
-        <UserContext.Provider value={userInfo}>
-          <NavBar userInfo={userInfo} logoutUser={logoutUser} />
-          <Switch>
-            <Route exact path="/">
-              <Home userInfo={userInfo} />
-            </Route>
-            <Route exact path="/login">
-              <Login loginUser={loginUser} />
-            </Route>
-            <Route exact path="/join">
-              <Join registerUser={registerUser} />
-            </Route>
-            <Route exact path="/AboutMe">
-              <AboutMe updateUserRecord={updateUserRecord} />
-            </Route>
-            <Route exact path="/SkillsPrefs">
-              <SkillsPrefs updateUserRecord={updateUserRecord} />
-            </Route>
-            <Route exact path="/MatchAvail">
-              <MatchAvail updateUserRecord={updateUserRecord} />
-            </Route>
-            <Route exact path="/PartnerList">
-              <PartnerList />
-            </Route>
-            <Route exact path="/Find-A-Partner">
-              <PartnerSearchForm />
-            </Route>
-            <Route component={NotFound} />
-          </Switch>
-        </UserContext.Provider>
-      </BrowserRouter>
+      <UserContext.Provider value={userInfo}>
+        <NavBar userInfo={userInfo} logoutUser={logoutUser} />
+        <Switch>
+          <Route exact path="/">
+            <Home userInfo={userInfo} />
+          </Route>
+          <Route exact path="/login">
+            <Login loginUser={loginUser} />
+          </Route>
+          <Route exact path="/join">
+            <Join registerUser={registerUser} />
+          </Route>
+          <Route exact path="/AboutMe">
+            <AboutMe updateUserRecord={updateUserRecord} />
+          </Route>
+          <Route exact path="/SkillsPrefs">
+            <SkillsPrefs updateUserRecord={updateUserRecord} />
+          </Route>
+          <Route exact path="/MatchAvail">
+            <MatchAvail updateUserRecord={updateUserRecord} />
+          </Route>
+          <Route exact path="/PartnerList">
+            <PartnerList />
+          </Route>
+          <Route exact path="/Find-A-Partner">
+            <PartnerSearchForm />
+          </Route>
+          <Route component={NotFound} />
+        </Switch>
+      </UserContext.Provider>
     </div>
   );
 };

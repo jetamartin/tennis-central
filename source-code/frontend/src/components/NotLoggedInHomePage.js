@@ -6,7 +6,6 @@ import UserContext from "./UserContext";
 
 const Home = () => {
   const userInfo = useContext(UserContext);
-  console.log(userInfo);
   return (
     <>
       <div className="image-box">

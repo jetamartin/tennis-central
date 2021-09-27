@@ -40,6 +40,7 @@ const Join = ({ registerUser }) => {
 
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
+      debugger;
       await registerUser(values);
       setSubmitting(false);
       history.push("/");
@@ -146,7 +147,7 @@ const Join = ({ registerUser }) => {
                 <Button
                   type="submit"
                   // className="mt-3 float-right">
-                  className="btn btn-primary btn-lg btn-block mt-3"
+                  className="btn btn-primary btn-lg btn-block mt-3 xyz"
                 >
                   Submit
                 </Button>

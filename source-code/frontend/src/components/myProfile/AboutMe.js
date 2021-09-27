@@ -44,7 +44,6 @@ const AboutMe = ({ updateUserRecord }) => {
   useEffect(() => {
     const loadFormData = async () => {
       try {
-        debugger;
         let res = await TennisCentralAPI.getUserProfile(
           userInfo?.userId,
           userInfo?.token
@@ -65,7 +64,6 @@ const AboutMe = ({ updateUserRecord }) => {
 
   // Starts a timer to remove success message after some interval
   useEffect(() => {
-    console.log("UseEffect ==========> Start a timer");
     // Only need to set timer to automatically remove success msg submission was a success if not don't set timer
     if (submitFormApiErrorMsg.length === 0) {
       setTimeout(() => setSubmitFormApiSuccessMsg({ message: "" }), 3000);

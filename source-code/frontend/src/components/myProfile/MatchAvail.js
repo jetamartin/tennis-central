@@ -40,7 +40,7 @@ const MatchAvail = ({ updateUserRecord }) => {
     const loadFormData = async () => {
       setSubmitFormApiErrorMsg([])
       try {
-        if (userInfo.token) {
+        if (userInfo?.token) {
           let data = await TennisCentralAPI.getUserProfile(userInfo?.userId, userInfo?.token);
           let profileData = transformBuildMatchAvailObject(
             data.user.match_availability
@@ -116,7 +116,6 @@ const MatchAvail = ({ updateUserRecord }) => {
 
   const onSubmit = async (values, { setSubmitting, setFieldValue }) => {
     values.match_availability = buildMatchAvailObject(values);
-    console.log(values.match_availability);
     const throwError = false;
     try {
       // Clear out any prior api error messages on submission of the form so they don't persist
