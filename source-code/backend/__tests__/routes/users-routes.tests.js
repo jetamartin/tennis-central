@@ -33,7 +33,6 @@ describe("GET /users/3", () => {
     const resp = await request(app)
       .get("/users/3")
       .set("Authorization", `Bearer ${token}`);
-    console.log(token);
     expect(resp.statusCode).toBe(200);
     expect(resp.type).toBe("application/json");
   });
