@@ -1,0 +1,16 @@
+.feature_icon {
+  display: inline;
+}
+.feature_desc {
+  display: inline;
+}
+
+.bi::before {
+  padding-right: 1rem;
+  text-align: left;
+  font-size: 1.5rem;
+}
+
+li {
+  text-align: left;
+}

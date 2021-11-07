@@ -1,38 +1,64 @@
 .form-header {
   text-align: center;
 }
-fieldset {
-  margin-top: 1rem;
+
+.reset-this {
+  all: initial;
 }
 
 .custom-form-label {
   margin-top: 1rem;
 }
 
-legend {
-  width: 40%;
+.redo-legend {
+  margin-bottom: 2rem;
+  width: 30%;
   color: #007bff;
   font-size: 1rem;
   font-weight: bold;
-  letter-spacing: .2rem;
-  padding-left: .5rem
-  
+  letter-spacing: 0.2rem;
+  padding-left: 0.5rem;
 }
 
-fieldset {
+.redo-fieldset {
+  /* all: initial; */
+  margin-top: 1rem;
   padding-left: 1rem;
-    padding-right: 1rem;
-    border: 1px solid #cccc;
-    /* border: 1px solid #007bff; */
-    /* border: 2px solid lightgrey; */
-    padding-bottom: 1rem;
-    border-radius: 5px;
+  padding-right: 1rem;
+  border: 1px solid #cccc;
+  padding-bottom: 1rem;
+  border-radius: 5px;
+}
+
+.required-field-styling {
+  color: red;
+  font-style: italic;
+}
+
+.ntrp-score {
+  color: #007bff;
+  margin-left: 0.5rem;
+}
+
+/* .slider-width {
+  width: 50%;
+} */
+
+.form-range {
+  width: 50% !important;
+  height: 0.5rem !important;
 }
 
 .success-msg {
-  padding: .5rem 0; 
+  padding: 0.5rem 0;
   background-color: lightgreen;
   color: white;
   text-align: center;
   border-radius: 5px;
+}
+
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -90,13 +90,15 @@ const SkillsPrefs = ({ updateUserRecord }) => {
   const initialValues = profileData;
 
   const validationSchema = Yup.object({
-    minNtrp: Yup.number().required("Please select a minimum NTRP rating"),
-    maxNtrp: Yup.number()
-      .required("Please select a maximum NTRP rating")
-      .moreThan(
-        Yup.ref("minNtrp"),
-        "Max NTRP rating must be higer than Min NTRP"
-      ),
+    my_ntrp_rating: Yup.number().typeError("Please use the slider to select your NTRP rating").required(),
+  
+    // minNtrp: Yup.number().required("Please select a minimum NTRP rating"),
+    // maxNtrp: Yup.number()
+    //   .required("Please select a maximum NTRP rating")
+    //   .moreThan(
+    //     Yup.ref("minNtrp"),
+    //     "Max NTRP rating must be higer than Min NTRP"
+    //   ),
   });
   const transformNtrpValues = (values) => {
     if (isNil(values.minNtrp)) return {};
@@ -105,7 +107,6 @@ const SkillsPrefs = ({ updateUserRecord }) => {
 
   const onSubmit = async (values, { setSubmitting, setFieldValue }) => {
     const throwError = false;
-
 
     values.opponent_ntrp_rating_range = transformNtrpValues(values);
     try {
@@ -141,7 +142,6 @@ const SkillsPrefs = ({ updateUserRecord }) => {
       />
     );
   }
-    
 
   return (
     <Container fluid className="pb-5 ml-1">
@@ -179,10 +179,13 @@ const SkillsPrefs = ({ updateUserRecord }) => {
             }) => (
               <Form className="mx-auto">
                 {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
-                <fieldset>
-                  <legend>Your skill level</legend>
+                <fieldset className="reset-this redo-fieldset col-md-11">
+                  <legend className="reset-this redo-legend">
+                    Your skill level
+                  </legend>
                   <FormGroup>
-                    What is your NTRP rating?
+                    What is your NTRP rating?{" "}
+                    <span className="required-field-styling">*</span>
                     <div className="external-link">
                       <Link
                         to={{
@@ -196,7 +199,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                     </div>
                   </FormGroup>
 
-                  <FormGroup>
+                  <FormGroup className="slider-width">
                     <Field
                       type="range"
                       name="my_ntrp_rating"
@@ -206,12 +209,29 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                       max="7.0"
                       step=".5"
                     />
-                    <div className="ntrp-num">{values.my_ntrp_rating}</div>
+                    <div className="ntrp-num">
+                      Value:
+                      <span className="ntrp-score">
+                        {values.my_ntrp_rating}
+                      </span>
+                    </div>
                   </FormGroup>
+                  <div className="required-field-styling mb-2">
+                    <span>* Required field</span>
+                  </div>
+                  <ErrorMessage name="my_ntrp_rating" component={TextError} />
+
+                  {/* {!values.my_ntrp_rating > 0 ?  
+                  <div className="required-field-styling mt-4">
+                    * Must set your NTRP rating to find partners
+                  </div>
+                  : null} */}
                 </fieldset>
 
-                <fieldset>
-                  <legend>Match Types</legend>
+                <fieldset className="reset-this redo-fieldset col-md-11">
+                  <legend className="reset-this redo-legend">
+                    Match Types
+                  </legend>
                   <FormGroup id="checkbox-group">
                     Types of matches you'd consider playing?
                   </FormGroup>
@@ -251,8 +271,10 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                     </FormGroup>
                   </FormGroup>
                 </fieldset>
-                <fieldset>
-                  <legend>Tennis Sessions</legend>
+                <fieldset className="reset-this redo-fieldset col-md-11">
+                  <legend className="reset-this redo-legend">
+                    Tennis Sessions
+                  </legend>
                   <FormGroup id="radio-group">
                     Types of sessions you'd consider?
                   </FormGroup>
@@ -292,8 +314,10 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                     </FormGroup>
                   </FormGroup>
                 </fieldset>
-                <fieldset>
-                  <legend>Opponent's Gender</legend>
+                <fieldset className="reset-this redo-fieldset col-md-11">
+                  <legend className="reset-this redo-legend">
+                    Opponent's Gender
+                  </legend>
                   <FormGroup id="radio-group">
                     Preferred gender of your opponent?
                   </FormGroup>
@@ -336,13 +360,15 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                   </FormGroup>
                 </fieldset>
 
-                <fieldset>
-                  <legend>Partner's NTRP range</legend>
+                <fieldset className="reset-this redo-fieldset col-md-11">
+                  <legend className="reset-this redo-legend">
+                    Partner's NTRP range
+                  </legend>
                   <FormGroup>
                     Select min and max NTRP rating for an opponent
                   </FormGroup>
 
-                  <FormGroup>
+                  <FormGroup className="slider-width">
                     <FormLabel className="ntrpLabel" htmlFor="minNtrp">
                       Min NTRP rating
                     </FormLabel>
@@ -355,11 +381,16 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                       max="7.0"
                       step=".5"
                     ></Field>
-                    {JSON.stringify(values.minNtrp)}
+                    <div className="ntrp-num">
+                      Value:
+                      <span className="ntrp-score">
+                        {JSON.stringify(values.minNtrp)}
+                      </span>
+                    </div>
                   </FormGroup>
                   <ErrorMessage name="minNtrp" component={TextError} />
 
-                  <FormGroup>
+                  <FormGroup className="slider-width">
                     <FormLabel className="ntrpLabel" htmlFor="maxNtrp">
                       Max NTRP rating
                     </FormLabel>
@@ -373,12 +404,19 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                       max="7.0"
                       step=".5"
                     ></Field>
-                    {JSON.stringify(values.maxNtrp)}
+                    <div className="ntrp-num">
+                      Value:
+                      <span className="ntrp-score">
+                        {JSON.stringify(values.maxNtrp)}
+                      </span>
+                    </div>
                   </FormGroup>
                   <ErrorMessage name="maxNtrp" component={TextError} />
                 </fieldset>
-                <fieldset>
-                  <legend>Match Travel Distance</legend>
+                <fieldset className="reset-this redo-fieldset col-md-11">
+                  <legend className="reset-this redo-legend">
+                    Match Travel Distance
+                  </legend>
                   <FormGroup>
                     Maximum distance you'd travel for a match?
                   </FormGroup>
@@ -407,7 +445,7 @@ const SkillsPrefs = ({ updateUserRecord }) => {
                 <Button
                   type="submit"
                   // className="btn btn-primary mt-3 float-right"
-                  className="btn btn-primary btn-lg btn-block mt-3"
+                  className="btn btn-primary btn-lg btn-block mt-3 col-md-11"
                 >
                   Save
                 </Button>

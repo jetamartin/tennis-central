@@ -3,7 +3,7 @@ import { fireEvent, render, waitFor } from "@testing-library/react";
 import Join from "./Join";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
-
+  
 function registerUser(values) {
   return {
     userinfo: {

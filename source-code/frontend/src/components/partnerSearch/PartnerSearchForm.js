@@ -457,8 +457,10 @@ const FindAPartner = () => {
                   <Form className="mx-auto">
                     {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
                     <Col>
-                      <fieldset>
-                        <legend>Partner Match</legend>
+                      <fieldset className="reset-this redo-fieldset col-md-11">
+                        <legend className="reset-this redo-legend mb-3">
+                          Partner Match
+                        </legend>
                         <FormGroup className="form-group">
                           <FormGroup className="form-check form-check-inline">
                             <Field
@@ -506,8 +508,10 @@ const FindAPartner = () => {
                       </fieldset>
                       {/* {values.partnerMatchType === "specificTime" ? ( */}
                       {partnerSearchType === "specificTime" ? (
-                        <fieldset>
-                          <legend>Specific Date and Time Search</legend>
+                        <fieldset className="reset-this redo-fieldset col-md-11">
+                          <legend className="reset-this redo-legend mb-3">
+                            Specific Date and Time Search
+                          </legend>
                           <FormGroup>
                             <FormLabel
                               className="datePickerLabel"
@@ -532,8 +536,10 @@ const FindAPartner = () => {
                             />
                           </FormGroup>
 
-                          <fieldset>
-                            <legend>Match Type</legend>
+                          <fieldset className="reset-this redo-fieldset col-md-11">
+                            <legend className="reset-this redo-legend mb-3">
+                              Match Type
+                            </legend>
                             <FormGroup
                               role="group"
                               aria-labelledby="checkbox-group"
@@ -580,8 +586,10 @@ const FindAPartner = () => {
                             component={TextError}
                           />
 
-                          <fieldset>
-                            <legend>Opponent's Gender</legend>
+                          <fieldset className="reset-this redo-fieldset col-md-11">
+                            <legend className="reset-this redo-legend mb-3">
+                              Opponent's Gender
+                            </legend>
                             <FormGroup id="radio-group">
                               {/* <FormLabel>Preffered Gender of Opponent</FormLabel> */}
                               <FormGroup
@@ -630,8 +638,10 @@ const FindAPartner = () => {
                               />
                             </FormGroup>
                           </fieldset>
-                          <fieldset>
-                            <legend>Partner's NTRP range</legend>
+                          <fieldset className="reset-this redo-fieldset col-md-11">
+                            <legend className="reset-this redo-legend mb-3">
+                              Partner's NTRP range
+                            </legend>
                             <FormGroup>
                               <FormLabel
                                 className="ntrpLabel"
@@ -683,8 +693,10 @@ const FindAPartner = () => {
                       {/* {(!isLoading) ?  */}
                       {/* {values.partnerMatchType === "generalTime" ? ( */}
                       {partnerSearchType === "generalTime" ? (
-                        <fieldset>
-                          <legend>General Match Availability</legend>
+                        <fieldset className="reset-this redo-fieldset col-md-11">
+                          <legend className="reset-this redo-legend mb-3">
+                            General Match Availability
+                          </legend>
                           <FormGroup className="form-check form-check-inline">
                             <Field
                               ref={loadValuesFromProfile}
@@ -1037,8 +1049,10 @@ const FindAPartner = () => {
 
                           {/****************************************************************/}
 
-                          <fieldset>
-                            <legend>Match Type</legend>
+                          <fieldset className="reset-this redo-fieldset col-md-11">
+                            <legend className="reset-this redo-legend mb-3">
+                              Match Type
+                            </legend>
                             <FormGroup
                               role="group"
                               aria-labelledby="checkbox-group"
@@ -1085,8 +1099,10 @@ const FindAPartner = () => {
                             component={TextError}
                           />
 
-                          <fieldset>
-                            <legend>Opponent's Gender</legend>
+                          <fieldset className="reset-this redo-fieldset col-md-11">
+                            <legend className="reset-this redo-legend mb-3">
+                              Opponent's Gender
+                            </legend>
                             <FormGroup id="radio-group">
                               {/* <FormLabel>Preffered Gender of Opponent</FormLabel> */}
                               <FormGroup
@@ -1135,8 +1151,10 @@ const FindAPartner = () => {
                               />
                             </FormGroup>
                           </fieldset>
-                          <fieldset>
-                            <legend>Partner's NTRP range</legend>
+                          <fieldset className="reset-this redo-fieldset col-md-11">
+                            <legend className="reset-this redo-legend mb-3">
+                              Partner's NTRP range
+                            </legend>
                             <FormGroup>
                               <FormLabel
                                 className="ntrpLabel"
@@ -1153,7 +1171,12 @@ const FindAPartner = () => {
                                 max="7.0"
                                 step=".5"
                               ></Field>
-                              {JSON.stringify(values.minNtrp)}
+                              <div className="ntrp-num">
+                                Value:
+                                <span className="ntrp-score">
+                                  {JSON.stringify(values.minNtrp)}
+                                </span>
+                              </div>
                             </FormGroup>
                             <ErrorMessage
                               name="minNtrp"
@@ -1177,7 +1200,12 @@ const FindAPartner = () => {
                                 max="7.0"
                                 step=".5"
                               ></Field>
-                              {JSON.stringify(values.maxNtrp)}
+                              <div className="ntrp-num">
+                                Value:
+                                <span className="ntrp-score">
+                                  {JSON.stringify(values.maxNtrp)}
+                                </span>
+                              </div>
                             </FormGroup>
                             <ErrorMessage
                               name="maxNtrp"

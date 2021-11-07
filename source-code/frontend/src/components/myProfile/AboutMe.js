@@ -166,14 +166,15 @@ const AboutMe = ({ updateUserRecord }) => {
                 <Container>
                   <Form className="mx-auto mb-5">
                     {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
-                    <fieldset>
-                      <legend>Contact</legend>
+                    <fieldset className="reset-this redo-fieldset col-md-11">
+                      <legend className="reset-this redo-legend">Contact</legend>
                       <Row>
                         <Col>
                           <FormGroup>
                             <FormLabel htmlFor="firstName">
-                              First Name
+                              First Name 
                             </FormLabel>
+                            <span className="required-field-styling">*</span>
                             <Field
                               className="form-control"
                               id="firstName"
@@ -190,6 +191,7 @@ const AboutMe = ({ updateUserRecord }) => {
                         <Col>
                           <FormGroup>
                             <FormLabel htmlFor="lastName">Last Name</FormLabel>
+                            <span className="required-field-styling">*</span>
                             <Field
                               className="form-control"
                               id="lastName"
@@ -207,6 +209,7 @@ const AboutMe = ({ updateUserRecord }) => {
                         <Col>
                           <FormGroup>
                             <FormLabel htmlFor="email">Email</FormLabel>
+                            <span className="required-field-styling">*</span>
                             <Field
                               className="form-control"
                               type="email"
@@ -231,10 +234,11 @@ const AboutMe = ({ updateUserRecord }) => {
                           </FormGroup>
                         </Col>
                       </Row>
+                      <div className="required-field-styling"><span>* Required fields</span></div>
                     </fieldset>
 
-                    <fieldset>
-                      <legend>Location</legend>
+                    <fieldset className="reset-this redo-fieldset col-md-11">
+                      <legend className="reset-this redo-legend">Location</legend>
                       <Row>
                         <Col>
                           <FormGroup>
@@ -271,8 +275,8 @@ const AboutMe = ({ updateUserRecord }) => {
                       <ErrorMessage name="postalCode" component={TextError} />
                     </fieldset>
 
-                    <fieldset>
-                      <legend>Demographics</legend>
+                    <fieldset className="reset-this redo-fieldset col-md-11">
+                      <legend className="reset-this redo-legend">Demographics</legend>
                       <FormGroup>
                         <FormLabel
                           className="datePickerLabel"
