@@ -14,3 +14,38 @@
 li {
   text-align: left;
 }
+
+.getting-started-section {
+  height: 200%;
+  width: 100%;
+  background-color: rgb(8, 66, 47);
+  color: yellowgreen;
+  padding-top: 3rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+.getting-started-text-area {
+  width: 80%;
+  margin: 0 auto;
+  
+
+}
+.getting-started-section h3 {
+  color: white;
+}
+
+.getting-started-section > li { 
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+.getting-started-section li {
+  color: white;
+  font-weight: bolder;
+  margin-bottom: 1.25rem;
+}
+
+.getting-started-section li p {
+  font-style: italic;
+}
+
