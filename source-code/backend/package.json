@@ -6,9 +6,11 @@
   "scripts": {
     "test": "jest -i",
     "start": "node server.js",
-    "seed:test": "SET NODE_ENV=test && node server.js",
-    "seed:dev": "SET NODE_ENV=dev && node server.js"
+    "winseed:test-debug": "SET NODE_ENV=test&&node --inspect-brk server.js",
+    "winseed:test": "SET NODE_ENV=test&&node server.js",
+    "seed:test": "SET NODE_ENV=test server.js"
   },
+  
   "keywords": [
     "nodejs",
     "REST",

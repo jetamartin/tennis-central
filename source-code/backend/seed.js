@@ -2,7 +2,7 @@
 const { User, Message, Partner } = require("./models");
 const bcrypt = require("bcrypt");
 const { BCRYPT_WORK_FACTOR } = require("./config.js");
-
+debugger;
 async function seedData() {
   // create a user
   const testUser = await User.create({
