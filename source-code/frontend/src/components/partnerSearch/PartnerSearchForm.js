@@ -717,7 +717,7 @@ const FindAPartner = () => {
                               className="form-check-label"
                               htmlFor="loadProfileData"
                             >
-                              Load using current Profile Match Availability data
+                              Load Search Preferences from MyProfile
                             </FormLabel>
                           </FormGroup>
                           <FormGroup>

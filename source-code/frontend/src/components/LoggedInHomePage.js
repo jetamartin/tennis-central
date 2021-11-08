@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
+import ProductFeatures from "./ProductFeatures";
 import "./Home.css";
 import { Button } from "react-bootstrap";
 import UserContext from "./UserContext";
@@ -49,8 +50,9 @@ const Home = () => {
                 A friendly place to find and connect with other Tennis Players
               </p>
             </div>
+            <ProductFeatures />
 
-            <p className="text-center value-prop-header green-yellow">
+            {/* <p className="text-center value-prop-header green-yellow">
               Tennis-Central provides a convienient way to...
             </p>
 
@@ -106,7 +108,7 @@ const Home = () => {
             <p className="top-spacing bottom-spacing green-yellow">
               And best of all it's <span className="boldIt">FREE</span> to
               use!!!
-            </p>
+            </p> */}
             {/* For use with "react-smooth-scroll-hook"...unable to get it to work...will remove if I can't get it to work */}
             {/* <Button className="ml-4 green-yellow-btn" variant="outline-primary"  onClick={() => scrollTo('#getting-started')}>
               Getting Started
