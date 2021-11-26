@@ -40,7 +40,6 @@ const Join = ({ registerUser }) => {
 
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      debugger;
       await registerUser(values);
       setSubmitting(false);
       history.push("/");

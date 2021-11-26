@@ -48,14 +48,11 @@ it("Allow the user to register", async () => {
   fireEvent.change(firstName, { target: { value: "Frank" } });
   fireEvent.change(lastName, { target: { value: "Jones" } });
   fireEvent.change(email, { target: { value: "fJones@email.com" } });
-  debugger;
   fireEvent.click(submitBtn);
 
   // wait for our functions to be called
   await waitFor(() => {
-    debugger;
     // Expect that our spy was called with '/'
     expect(pushSpy).toHaveBeenCalledWith("/");
-    debugger;
   });
 });
