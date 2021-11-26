@@ -31,7 +31,6 @@ const Login = ({ loginUser }) => {
       history.push("/");
       setLoginErrorFormMsg([]);
     } catch (error) {
-      console.log(error);
       if (Array.isArray(error)) {
         setLoginErrorFormMsg(error);
       }
