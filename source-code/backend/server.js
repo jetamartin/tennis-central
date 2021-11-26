@@ -5,12 +5,9 @@ const app = require("./app");
 const { PORT } = require("./config");
 const { sequelize } = require("./db");
 
-debugger;
-
 app.listen(PORT, async () => {
   console.log(`Server is running on http://localhost:${PORT}`);
   try {
-    debugger;
     // Establish connection to DB
     await sequelize.authenticate();
     // if ((process.env.NODE_ENV = "test")) {

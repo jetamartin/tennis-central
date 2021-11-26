@@ -98,14 +98,12 @@ router.delete(
   ensureCorrectUserOrAdmin,
   async (req, res, next) => {
     try {
-      debugger;
       const playerId = +req.params.userId;
       const partnerId = +req.params.partnerId;
       const result = await Partner.destroy({
         where: { id: partnerId },
         returning: true,
       });
-      debugger;
       if (result === 0) throw new ExpressError(404, "Partner not found");
       return res.status(200).json({ deleted: partnerId });
     } catch (error) {

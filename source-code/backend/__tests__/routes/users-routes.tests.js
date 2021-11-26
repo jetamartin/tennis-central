@@ -55,7 +55,6 @@ describe("PATCH /users/3", () => {
 
 describe("DELETE /users/3", () => {
   test("Test that user can be deleted", async () => {
-    debugger;
     let resp = await request(app)
       .delete("/users/3")
       .set("Authorization", `Bearer ${token}`);

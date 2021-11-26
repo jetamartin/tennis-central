@@ -30,7 +30,6 @@ describe("GET /users/3/partners", () => {
 
 describe("DELETE /users/3/partners/1", () => {
   test("Get a users partners", async () => {
-    debugger;
     const resp = await request(app)
       .delete("/users/3/partners/1")
       .set("Authorization", `Bearer ${token}`);

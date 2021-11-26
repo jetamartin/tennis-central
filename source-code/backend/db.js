@@ -5,8 +5,6 @@ const { DB_URI } = require("./config");
 */
 
 let sequelize;
-debugger;
-
 if (process.env.DATABASE_URL) {
   // use Heroku's Database URL
   sequelize = new Sequelize(process.env.DATABASE_URL);
