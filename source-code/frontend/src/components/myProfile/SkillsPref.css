@@ -6,5 +6,13 @@
 .external-link {
   display: inline-block;
   margin-left: 1rem;
-  font-size: .75rem;
+  font-size: 0.75rem;
+}
+
+form {
+  width: 100%;
+}
+
+fieldset {
+  width: 80%;
 }

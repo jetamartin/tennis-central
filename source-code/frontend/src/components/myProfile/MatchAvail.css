@@ -3,3 +3,10 @@
 {
   text-align: right;
 }
+form {
+  width: 100%
+}
+
+fieldset {
+  width: 80%
+}
