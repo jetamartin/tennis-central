@@ -94,8 +94,10 @@ const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
             return (
               <Form className="mx-auto">
                 {/* <pre>{JSON.stringify(values, null, 4)}</pre> */}
-                <fieldset className="mb-3">
-                  <legend>Partner Contact</legend>
+                <fieldset className="mb-3 reset-this redo-fieldset col-md-11">
+                  <legend className="reset-this redo-legend">
+                    Partner Contact
+                  </legend>
                   <FormGroup className="row">
                     <FormLabel column sm="3" htmlFor="telNum">
                       Tel#
@@ -139,22 +141,24 @@ const PartnerCard = ({ partner, deletePartner, updatePartnerContact }) => {
             );
           }}
         </Formik>
-        <fieldset className="mb-3">
-          <legend>Partner info</legend>
+        <fieldset className="mb-3 reset-this redo-fieldset col-md-11">
+          <legend className="reset-this redo-legend">Partner info</legend>
           <Card.Text>
             <span className="player-info">Gender: </span>
             <span>{gender}</span>{" "}
           </Card.Text>
-          <fieldset>
-            <legend>Availability</legend>
+          <fieldset className="reset-this redo-fieldset col-md-11">
+            <legend className="reset-this redo-legend">Availability</legend>
             <div>
               {transformAvail.map((availability, index) => (
                 <PartnerAvailDays key={index} availability={availability} />
               ))}
             </div>
           </fieldset>
-          <fieldset>
-            <legend>Partner Match Prefs</legend>
+          <fieldset className="reset-this redo-fieldset col-md-11">
+            <legend className="reset-this redo-legend">
+              Partner Match Prefs
+            </legend>
             <Card.Text>
               <span className="player-info">Opponent's Gender: </span>
               <span>{opponent_gender}</span>{" "}

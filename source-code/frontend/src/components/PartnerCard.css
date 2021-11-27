@@ -18,3 +18,33 @@
 .partner-card-icon {
   margin-right: .25rem;
 }
+
+.reset-this {
+  all: initial;
+}
+
+.custom-form-label {
+  margin-top: 1rem;
+}
+
+.redo-legend {
+  width: 40%;
+  color: #007bff;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 0.2rem;
+  padding-left: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.redo-fieldset {
+  /* all: initial; */
+  margin-top: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border: 1px solid #cccc;
+  /* border: 1px solid #007bff; */
+  /* border: 2px solid lightgrey; */
+  padding-bottom: 1rem;
+  border-radius: 5px;
+}
