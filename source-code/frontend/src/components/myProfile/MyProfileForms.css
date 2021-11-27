@@ -1,5 +1,5 @@
 form {
-  width: 100%;
+  width: 100% !important;
 }
 
 .form-header {
@@ -32,7 +32,7 @@ form {
   border: 1px solid #cccc;
   padding-bottom: 1rem;
   border-radius: 5px;
-  width: 80%;
+  width: 80% !important;
 }
 
 .required-field-styling {
