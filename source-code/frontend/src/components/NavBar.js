@@ -2,10 +2,12 @@ import React from "react";
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import isNil from "lodash/isNil";
 import { useHistory } from "react-router-dom";
+import logo from '../tennisCentralLogo200X200.png';
+
 
 const NavBar = ({ userInfo, logoutUser }) => {
   const history = useHistory();
-  // Lodash isNil checks whether an object's value is null or 
+  // Lodash isNil checks whether an object's value is null or
   const isLoggedIn = !isNil(userInfo) ? true : false;
 
   const logoutClicked = (e) => {
@@ -15,7 +17,9 @@ const NavBar = ({ userInfo, logoutUser }) => {
 
   return (
     <Navbar sticky="top" bg="primary" variant="dark" expand="lg">
-      <Navbar.Brand href="/">TennisCentral</Navbar.Brand>
+      <Navbar.Brand href="/">
+        <img className="logo" src={logo}  />
+      </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         {isLoggedIn ? (
